@@ -1,7 +1,0 @@
-TEAM_ID=
-
-PRODUCT_NAME=Medicalplatformmobile
-PRODUCT_BUNDLE_IDENTIFIER=com.yehorsk.medical_platform_mobile.Medicalplatformmobile$(TEAM_ID)
-
-CURRENT_PROJECT_VERSION=1
-MARKETING_VERSION=1.0

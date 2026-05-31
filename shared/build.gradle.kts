@@ -8,15 +8,6 @@ plugins {
 }
 
 kotlin {
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
-        }
-    }
     
     jvm()
     
@@ -24,6 +15,8 @@ kotlin {
        namespace = "com.yehorsk.medical_platform_mobile.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
+
+       androidResources.enable = true
     
        compilerOptions {
            jvmTarget = JvmTarget.JVM_11
@@ -54,6 +47,12 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+}
+
+compose.resources {
+    publicResClass = true
+    nameOfResClass = "UiRes"
+    packageOfResClass = "medicalplatformmobile.shared.generated.resources"
 }
 
 dependencies {
