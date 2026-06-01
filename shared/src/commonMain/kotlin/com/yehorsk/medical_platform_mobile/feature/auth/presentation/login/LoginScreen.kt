@@ -1,10 +1,5 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.register
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.login
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,10 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -29,49 +22,48 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.feature.auth.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.component.RoleToggle
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.component.DoctorRegisterForm
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.component.PatientRegisterForm
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel.RegisterAction
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel.RegisterScreenViewModel
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel.RegisterState
-import com.yehorsk.medical_platform_mobile.feature.auth.util.getRole
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.DefaultTextField
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.PwdTextField
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginScreenViewModel
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginState
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.create_account
-import medicalplatformmobile.shared.generated.resources.create_doctor_account
-import medicalplatformmobile.shared.generated.resources.create_patient_account
-import medicalplatformmobile.shared.generated.resources.join_medconnect_today
+import medicalplatformmobile.shared.generated.resources.app_description
+import medicalplatformmobile.shared.generated.resources.app_name
+import medicalplatformmobile.shared.generated.resources.email_input
+import medicalplatformmobile.shared.generated.resources.email_input_placeholder
+import medicalplatformmobile.shared.generated.resources.forgot_password
+import medicalplatformmobile.shared.generated.resources.password_input
 import medicalplatformmobile.shared.generated.resources.sign_in
+import medicalplatformmobile.shared.generated.resources.sign_up
 import medicalplatformmobile.shared.generated.resources.stethoscope_24px
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun RegisterScreen(
+fun LoginScreen(
     modifier: Modifier = Modifier,
-    viewModel: RegisterScreenViewModel,
-    onSignInClicked: () -> Unit
+    viewModel: LoginScreenViewModel= koinViewModel(),
+    onSignUpClicked: () -> Unit
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-
-    RegisterScreenRoot(
+    LoginScreenRoot(
         modifier = modifier,
         state = state,
         onAction = { action ->
-            when(action){
-                is RegisterAction.OnSignInClicked -> onSignInClicked()
+            when(action) {
+                is LoginAction.OnSignUpClicked -> onSignUpClicked()
                 else -> viewModel.onAction(action)
             }
         }
@@ -79,16 +71,14 @@ fun RegisterScreen(
 }
 
 @Composable
-fun RegisterScreenRoot(
+fun LoginScreenRoot(
     modifier: Modifier = Modifier,
-    state: RegisterState,
-    onAction: (RegisterAction) -> Unit
+    state: LoginState,
+    onAction: (LoginAction) -> Unit
 ){
-
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
     ) {
         Box(
             modifier = Modifier
@@ -96,7 +86,7 @@ fun RegisterScreenRoot(
                 .background(Color(0xFF2B5CE6))
                 .padding(vertical = 48.dp),
             contentAlignment = Alignment.Center
-        ) {
+        ){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -114,13 +104,13 @@ fun RegisterScreenRoot(
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = stringResource(UiRes.string.create_account),
+                    text = stringResource(UiRes.string.app_name),
                     color = Color.White,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = stringResource(UiRes.string.join_medconnect_today),
+                    text = stringResource(UiRes.string.app_description),
                     color = Color.White.copy(alpha = 0.8f),
                     fontSize = 14.sp
                 )
@@ -131,34 +121,31 @@ fun RegisterScreenRoot(
                 .fillMaxSize()
                 .padding(horizontal = 24.dp, vertical = 32.dp)
         ) {
-            RoleToggle(
-                selectedRole = getRole(state.registerForm.role),
-                onRoleSelected = { onAction(RegisterAction.UpdateRole(it.name)) }
+            Spacer(modifier = Modifier.height(24.dp))
+            DefaultTextField(
+                value = state.loginForm.email,
+                header = stringResource(UiRes.string.email_input),
+                placeholder = stringResource(UiRes.string.email_input_placeholder),
+                onValueChange = { onAction(LoginAction.UpdateEmail(it)) },
+                keyboardType = KeyboardType.Email
             )
-
-            AnimatedVisibility(
-                visible = getRole(state.registerForm.role) == UserRole.PATIENT,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ){
-                PatientRegisterForm(
-                    state = state,
-                    onAction = { onAction(it) }
-                )
-            }
-            AnimatedVisibility(
-                visible = getRole(state.registerForm.role) == UserRole.DOCTOR,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
-                DoctorRegisterForm(
-                    state = state,
-                    onAction = { onAction(it) }
-                )
-            }
             Spacer(modifier = Modifier.height(16.dp))
+            PwdTextField(
+                value = state.loginForm.password,
+                header = stringResource(UiRes.string.password_input),
+                onValueChange = { onAction(LoginAction.UpdatePwd(it)) },
+                passwordVisible = state.passwordVisible,
+                onPasswordVisibleChange = { onAction(LoginAction.ChangePwdVisibility) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                TextButton(onClick = {}) {
+                    Text(stringResource(UiRes.string.forgot_password), color = Color(0xFF2B5CE6))
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
             Button(
-                onClick = { onAction(RegisterAction.OnRegisterClicked) },
+                onClick = { onAction(LoginAction.OnSignInClicked) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp),
@@ -166,12 +153,7 @@ fun RegisterScreenRoot(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B5CE6))
             ) {
                 Text(
-                    text = stringResource(
-                        if (getRole(state.registerForm.role) == UserRole.PATIENT)
-                            UiRes.string.create_patient_account
-                        else
-                            UiRes.string.create_doctor_account
-                    ),
+                    text = stringResource(UiRes.string.sign_in),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -183,13 +165,14 @@ fun RegisterScreenRoot(
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextButton(
-                    onClick = {},
+                    onClick = { onAction(LoginAction.OnSignUpClicked) },
                     contentPadding = PaddingValues(0.dp)
                 ) {
-                    Text(stringResource(UiRes.string.sign_in), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
+                    Text(stringResource(UiRes.string.sign_up), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
                 }
             }
         }
+
     }
 }
 
@@ -197,8 +180,13 @@ fun RegisterScreenRoot(
 @Composable
 fun LoginScreenPreview(){
     MaterialTheme {
-        RegisterScreenRoot(
-            state = RegisterState(),
+        LoginScreenRoot(
+            state = LoginState(
+                loginForm = LoginForm(
+                    email = "test@gmail.com",
+                    password = "123456"
+                )
+            ),
             onAction = {}
         )
     }

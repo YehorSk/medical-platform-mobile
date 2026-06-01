@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.component
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth

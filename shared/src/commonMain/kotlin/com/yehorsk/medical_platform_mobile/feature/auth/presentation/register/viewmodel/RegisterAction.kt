@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel
 
 sealed interface RegisterAction {
     data class UpdateFirstName(val firstName: String) : RegisterAction

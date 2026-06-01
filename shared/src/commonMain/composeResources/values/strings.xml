@@ -5,6 +5,8 @@
     <string name="email_input_placeholder">Email:</string>
     <string name="password_input">Email:</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="forgot_password_instructions">No worries, we'll send you reset instructions</string>
+    <string name="send_reset_code">Send Reset Code</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="create_account">Create Account</string>

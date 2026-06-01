@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.login.viewmodel
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

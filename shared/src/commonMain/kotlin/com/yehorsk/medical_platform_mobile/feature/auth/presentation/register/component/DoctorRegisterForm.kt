@@ -1,10 +1,9 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.register.component
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -12,24 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.component.DefaultTextField
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.component.PwdTextField
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel.RegisterAction
-import com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel.RegisterState
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.DefaultTextField
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.PwdTextField
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.confirm_password
 import medicalplatformmobile.shared.generated.resources.email_input
 import medicalplatformmobile.shared.generated.resources.first_name
 import medicalplatformmobile.shared.generated.resources.last_name
+import medicalplatformmobile.shared.generated.resources.license_number
 import medicalplatformmobile.shared.generated.resources.password
-import medicalplatformmobile.shared.generated.resources.phone
+import medicalplatformmobile.shared.generated.resources.specialization
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun PatientRegisterForm(
+fun DoctorRegisterForm(
     state: RegisterState,
     onAction: (RegisterAction) -> Unit
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,11 +64,17 @@ fun PatientRegisterForm(
         )
         Spacer(modifier = Modifier.height(8.dp))
         DefaultTextField(
-            value = state.registerForm.phone,
-            header = stringResource(UiRes.string.phone),
-            placeholder = stringResource(UiRes.string.phone),
-            onValueChange = { onAction(RegisterAction.UpdatePhone(it)) },
-            keyboardType = KeyboardType.Phone
+            value = state.registerForm.licenseNumber,
+            header = stringResource(UiRes.string.license_number),
+            placeholder = stringResource(UiRes.string.license_number),
+            onValueChange = { onAction(RegisterAction.UpdateLicenseNumber(it)) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        DefaultTextField(
+            value = state.registerForm.specialization,
+            header = stringResource(UiRes.string.specialization),
+            placeholder = stringResource(UiRes.string.specialization),
+            onValueChange = { onAction(RegisterAction.UpdateSpecialization(it)) }
         )
         Spacer(modifier = Modifier.height(8.dp))
         PwdTextField(

@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.login.viewmodel
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel
 
 import kotlinx.serialization.Serializable
 import javax.management.relation.Role

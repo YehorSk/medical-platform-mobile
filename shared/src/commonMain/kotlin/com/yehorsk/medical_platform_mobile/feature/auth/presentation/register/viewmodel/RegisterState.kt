@@ -1,8 +1,7 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.ui.register.viewmodel
+package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import javax.management.relation.Role
 
 data class RegisterState(
     val registerForm: RegisterForm = RegisterForm(),
