@@ -1,12 +1,9 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,25 +32,19 @@ fun DoctorRegisterForm(
             .fillMaxWidth()
     ){
         Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Box(modifier = Modifier.weight(1f)) {
-                DefaultTextField(
-                    value = state.registerForm.firstName,
-                    header = stringResource(UiRes.string.first_name),
-                    placeholder = stringResource(UiRes.string.first_name),
-                    onValueChange = { onAction(RegisterAction.UpdateFirstName(it)) }
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Box(modifier = Modifier.weight(1f)) {
-                DefaultTextField(
-                    value = state.registerForm.lastName,
-                    header = stringResource(UiRes.string.last_name),
-                    placeholder = stringResource(UiRes.string.last_name),
-                    onValueChange = { onAction(RegisterAction.UpdateLastName(it)) }
-                )
-            }
-        }
+        DefaultTextField(
+            value = state.registerForm.firstName,
+            header = stringResource(UiRes.string.first_name),
+            placeholder = stringResource(UiRes.string.first_name),
+            onValueChange = { onAction(RegisterAction.UpdateFirstName(it)) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        DefaultTextField(
+            value = state.registerForm.lastName,
+            header = stringResource(UiRes.string.last_name),
+            placeholder = stringResource(UiRes.string.last_name),
+            onValueChange = { onAction(RegisterAction.UpdateLastName(it)) }
+        )
         Spacer(modifier = Modifier.height(8.dp))
         DefaultTextField(
             value = state.registerForm.email,

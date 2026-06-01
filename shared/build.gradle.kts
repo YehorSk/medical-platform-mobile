@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidMultiplatformLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -47,7 +48,10 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.compose.viewmodel.navigation)
+            implementation(libs.koin.androidx.navigation)
+
+            implementation(libs.jetbrains.compose.navigation)
+            implementation(libs.jetbrains.compose.backhandler)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

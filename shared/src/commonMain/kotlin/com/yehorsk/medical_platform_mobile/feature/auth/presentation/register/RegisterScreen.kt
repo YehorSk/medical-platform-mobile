@@ -25,6 +25,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -82,109 +83,113 @@ fun RegisterScreenRoot(
     state: RegisterState,
     onAction: (RegisterAction) -> Unit
 ){
-
-    Column(
+    Scaffold(
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xFF2B5CE6))
-                .padding(vertical = 48.dp),
-            contentAlignment = Alignment.Center
+            .fillMaxSize(),
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF2B5CE6))
+                    .padding(vertical = 48.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .background(Color(0xFF4A72F0), CircleShape),
-                    contentAlignment = Alignment.Center
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(
-                        painter = painterResource(UiRes.drawable.stethoscope_24px),
-                        contentDescription = null,
-                        modifier = Modifier.size(36.dp)
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .background(Color(0xFF4A72F0), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(UiRes.drawable.stethoscope_24px),
+                            contentDescription = null,
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(UiRes.string.create_account),
+                        color = Color.White,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = stringResource(UiRes.string.join_medconnect_today),
+                        color = Color.White.copy(alpha = 0.8f),
+                        fontSize = 14.sp
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp, vertical = 32.dp)
+            ) {
+                RoleToggle(
+                    selectedRole = getRole(state.registerForm.role),
+                    onRoleSelected = { onAction(RegisterAction.UpdateRole(it.name)) }
+                )
+
+                AnimatedVisibility(
+                    visible = getRole(state.registerForm.role) == UserRole.PATIENT,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically()
+                ){
+                    PatientRegisterForm(
+                        state = state,
+                        onAction = { onAction(it) }
+                    )
+                }
+                AnimatedVisibility(
+                    visible = getRole(state.registerForm.role) == UserRole.DOCTOR,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically()
+                ) {
+                    DoctorRegisterForm(
+                        state = state,
+                        onAction = { onAction(it) }
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(UiRes.string.create_account),
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = stringResource(UiRes.string.join_medconnect_today),
-                    color = Color.White.copy(alpha = 0.8f),
-                    fontSize = 14.sp
-                )
-            }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp, vertical = 32.dp)
-        ) {
-            RoleToggle(
-                selectedRole = getRole(state.registerForm.role),
-                onRoleSelected = { onAction(RegisterAction.UpdateRole(it.name)) }
-            )
-
-            AnimatedVisibility(
-                visible = getRole(state.registerForm.role) == UserRole.PATIENT,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ){
-                PatientRegisterForm(
-                    state = state,
-                    onAction = { onAction(it) }
-                )
-            }
-            AnimatedVisibility(
-                visible = getRole(state.registerForm.role) == UserRole.DOCTOR,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
-                DoctorRegisterForm(
-                    state = state,
-                    onAction = { onAction(it) }
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = { onAction(RegisterAction.OnRegisterClicked) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B5CE6))
-            ) {
-                Text(
-                    text = stringResource(
-                        if (getRole(state.registerForm.role) == UserRole.PATIENT)
-                            UiRes.string.create_patient_account
-                        else
-                            UiRes.string.create_doctor_account
-                    ),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                TextButton(
-                    onClick = {},
-                    contentPadding = PaddingValues(0.dp)
+                Button(
+                    onClick = { onAction(RegisterAction.OnRegisterClicked) },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B5CE6))
                 ) {
-                    Text(stringResource(UiRes.string.sign_in), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
+                    Text(
+                        text = stringResource(
+                            if (getRole(state.registerForm.role) == UserRole.PATIENT)
+                                UiRes.string.create_patient_account
+                            else
+                                UiRes.string.create_doctor_account
+                        ),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    TextButton(
+                        onClick = { onAction(RegisterAction.OnSignInClicked) },
+                        contentPadding = PaddingValues(0.dp)
+                    ) {
+                        Text(stringResource(UiRes.string.sign_in), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }

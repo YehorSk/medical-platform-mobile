@@ -34,25 +34,19 @@ fun PatientRegisterForm(
             .fillMaxWidth()
     ){
         Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Box(modifier = Modifier.weight(1f)) {
-                DefaultTextField(
-                    value = state.registerForm.firstName,
-                    header = stringResource(UiRes.string.first_name),
-                    placeholder = stringResource(UiRes.string.first_name),
-                    onValueChange = { onAction(RegisterAction.UpdateFirstName(it)) }
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Box(modifier = Modifier.weight(1f)) {
-                DefaultTextField(
-                    value = state.registerForm.lastName,
-                    header = stringResource(UiRes.string.last_name),
-                    placeholder = stringResource(UiRes.string.last_name),
-                    onValueChange = { onAction(RegisterAction.UpdateLastName(it)) }
-                )
-            }
-        }
+        DefaultTextField(
+            value = state.registerForm.firstName,
+            header = stringResource(UiRes.string.first_name),
+            placeholder = stringResource(UiRes.string.first_name),
+            onValueChange = { onAction(RegisterAction.UpdateFirstName(it)) }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        DefaultTextField(
+            value = state.registerForm.lastName,
+            header = stringResource(UiRes.string.last_name),
+            placeholder = stringResource(UiRes.string.last_name),
+            onValueChange = { onAction(RegisterAction.UpdateLastName(it)) }
+        )
         Spacer(modifier = Modifier.height(8.dp))
         DefaultTextField(
             value = state.registerForm.email,

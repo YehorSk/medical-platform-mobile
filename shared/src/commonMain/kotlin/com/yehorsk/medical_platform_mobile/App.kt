@@ -1,27 +1,22 @@
 package com.yehorsk.medical_platform_mobile
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.RegisterScreen
+import androidx.navigation.compose.rememberNavController
+import com.yehorsk.medical_platform_mobile.feature.auth.navigation.AuthGraphRoutes
+import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
 
 @Composable
 @Preview
 fun App() {
+
+    val navController = rememberNavController()
+
     MaterialTheme {
-        Scaffold(
-            modifier = Modifier
-                .fillMaxSize()
-        ){ paddingValues ->
-            RegisterScreen(
-                modifier = Modifier
-                    .padding(paddingValues),
-                onSignInClicked = {}
-            )
-        }
+        NavigationRoot(
+            navController = navController,
+            startDestination = AuthGraphRoutes.Graph
+        )
     }
 }
