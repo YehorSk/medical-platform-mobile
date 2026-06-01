@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MedConnect</string>
+    <string name="app_description">Doctor-Patient Healthcare Platform</string>
+    <string name="email_input">Email</string>
+    <string name="email_input_placeholder">Email:</string>
+    <string name="password_input">Email:</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="join_medconnect_today">Join MedConnect Today</string>
+    <string name="create_patient_account">Create Patient Account</string>
+    <string name="create_doctor_account">Create Doctor Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone">Phone</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="license_number">License Number</string>
+    <string name="specialization">Specialization</string>
+</resources>
