@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.domain.model
+package com.yehorsk.medical_platform_mobile.core.domain.model
 
 data class Doctor(
     val id: Int,

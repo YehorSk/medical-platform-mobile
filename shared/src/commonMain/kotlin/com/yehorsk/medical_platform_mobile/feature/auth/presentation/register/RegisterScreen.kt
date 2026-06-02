@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.feature.auth.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.RoleToggle
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.DoctorRegisterForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.PatientRegisterForm
@@ -46,6 +46,7 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.vi
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
 import com.yehorsk.medical_platform_mobile.feature.auth.util.getRole
+import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.create_account
 import medicalplatformmobile.shared.generated.resources.create_doctor_account
@@ -96,7 +97,7 @@ fun RegisterScreenRoot(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFF2B5CE6))
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(vertical = 48.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -106,7 +107,7 @@ fun RegisterScreenRoot(
                     Box(
                         modifier = Modifier
                             .size(72.dp)
-                            .background(Color(0xFF4A72F0), CircleShape),
+                            .background(MaterialTheme.colorScheme.primary, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -165,7 +166,7 @@ fun RegisterScreenRoot(
                     modifier = Modifier
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B5CE6))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = stringResource(
@@ -188,7 +189,7 @@ fun RegisterScreenRoot(
                         onClick = { onAction(RegisterAction.OnSignInClicked) },
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(stringResource(UiRes.string.sign_in), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
+                        Text(stringResource(UiRes.string.sign_in), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -199,7 +200,7 @@ fun RegisterScreenRoot(
 @Preview
 @Composable
 fun LoginScreenPreview(){
-    MaterialTheme {
+    AppTheme {
         RegisterScreenRoot(
             state = RegisterState(),
             onAction = {}

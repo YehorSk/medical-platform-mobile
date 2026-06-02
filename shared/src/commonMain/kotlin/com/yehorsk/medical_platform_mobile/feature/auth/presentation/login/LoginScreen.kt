@@ -34,12 +34,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.DefaultTextField
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginState
+import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.app_description
 import medicalplatformmobile.shared.generated.resources.app_name
@@ -92,7 +93,7 @@ fun LoginScreenRoot(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFF2B5CE6))
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(vertical = 48.dp),
                 contentAlignment = Alignment.Center
             ){
@@ -149,7 +150,7 @@ fun LoginScreenRoot(
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                     TextButton(onClick = {}) {
-                        Text(stringResource(UiRes.string.forgot_password), color = Color(0xFF2B5CE6))
+                        Text(stringResource(UiRes.string.forgot_password), color = MaterialTheme.colorScheme.primary)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
@@ -159,7 +160,7 @@ fun LoginScreenRoot(
                         .fillMaxWidth()
                         .height(52.dp),
                     shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2B5CE6))
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
                     Text(
                         text = stringResource(UiRes.string.sign_in),
@@ -177,7 +178,7 @@ fun LoginScreenRoot(
                         onClick = { onAction(LoginAction.OnSignUpClicked) },
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(stringResource(UiRes.string.sign_up), color = Color(0xFF2B5CE6), fontWeight = FontWeight.Bold)
+                        Text(stringResource(UiRes.string.sign_up), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -189,7 +190,7 @@ fun LoginScreenRoot(
 @Preview
 @Composable
 fun LoginScreenPreview(){
-    MaterialTheme {
+    AppTheme {
         LoginScreenRoot(
             state = LoginState(
                 loginForm = LoginForm(
