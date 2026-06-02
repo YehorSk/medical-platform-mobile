@@ -23,4 +23,6 @@
     <string name="welcome_back">Welcome back,</string>
     <string name="find_doctors">Find Doctors</string>
     <string name="find_doctors_descr">Search specialists near you</string>
+    <string name="upcoming_appointments">Upcoming Appointments</string>
+    <string name="view_all">View all</string>
 </resources>

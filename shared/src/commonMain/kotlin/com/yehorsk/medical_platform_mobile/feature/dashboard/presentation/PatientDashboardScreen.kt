@@ -2,13 +2,16 @@ package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
 import com.yehorsk.theme.AppTheme
 
 @Composable
@@ -40,6 +43,13 @@ fun PatientDashboardScreenRoot(
                 notificationCount = 23
             ),
             navigateToNotifications = {}
+        )
+        FindDoctorsButton(
+            modifier = Modifier
+                .padding(12.dp),
+            navigateToDoctorsScreen = {
+
+            }
         )
     }
 }
