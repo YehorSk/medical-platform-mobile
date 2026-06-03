@@ -36,7 +36,8 @@ fun DoctorDashboardScreenRoot(
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = "patient"
+                    role = "patient",
+                    title = "Bc."
                 ),
                 notificationCount = 23
             ),

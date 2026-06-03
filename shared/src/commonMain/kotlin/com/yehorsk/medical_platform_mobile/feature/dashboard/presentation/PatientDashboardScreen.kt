@@ -1,18 +1,31 @@
 package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.feature.dashboard.messages
+import com.yehorsk.medical_platform_mobile.feature.dashboard.messagesEmpty
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
 import com.yehorsk.theme.AppTheme
+import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.no_recent_messages
+import medicalplatformmobile.shared.generated.resources.recent_messages
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PatientDashboardScreen(
@@ -38,7 +51,8 @@ fun PatientDashboardScreenRoot(
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = "patient"
+                    role = "patient",
+                    title = "Bc."
                 ),
                 notificationCount = 23
             ),
@@ -51,10 +65,38 @@ fun PatientDashboardScreenRoot(
 
             }
         )
+        ContentBlock(
+            modifier = Modifier
+                .padding(12.dp),
+            title = stringResource(UiRes.string.recent_messages),
+            seeAllButtonClicked = {},
+            content = {
+                if (messages.isEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(UiRes.string.no_recent_messages),
+                        fontSize = 14.sp
+                    )
+                }else{
+                    messages.forEach { message ->
+                        DashChatItem(
+                            message = message,
+                            onClick = {  }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+        )
     }
 }
 
-@Preview
+@Preview(
+    showBackground = true
+)
 @Composable
 fun PatientDashboardScreenPreview(){
     AppTheme {
