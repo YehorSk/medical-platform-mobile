@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.theme.AppTheme
@@ -36,7 +37,7 @@ fun DoctorDashboardScreenRoot(
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = "patient",
+                    role = UserRole.PATIENT,
                     title = "Bc."
                 ),
                 notificationCount = 23

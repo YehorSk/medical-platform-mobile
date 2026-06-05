@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -29,15 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.domain.model.Message
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
-import com.yehorsk.medical_platform_mobile.feature.auth.util.formatTimeAgo
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.util.formatTimeAgo
+import com.yehorsk.medical_platform_mobile.util.toText
 
 @Composable
 fun DashChatItem(
+    modifier: Modifier = Modifier,
     message: Message,
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
             .background(
@@ -95,7 +97,7 @@ fun DashChatItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = formatTimeAgo(message.createdAt),
+            text = formatTimeAgo(message.createdAt).toText(),
             fontSize = 12.sp,
             color = Color(0xFF717182)
         )
@@ -113,7 +115,7 @@ fun ConversationItemPreview() {
             email = "sarah@example.com",
             firstName = "Sarah",
             lastName = "Johnson",
-            role = "doctor",
+            role = UserRole.DOCTOR,
             title = "Dr."
         ),
         content = "Your test results are ready",

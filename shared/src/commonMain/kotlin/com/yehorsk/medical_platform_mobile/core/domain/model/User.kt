@@ -5,7 +5,7 @@ data class User(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val role: String,
+    val role: UserRole,
     val title: String,
     val createdAt: String? = null,
     val patient: Patient? = null,

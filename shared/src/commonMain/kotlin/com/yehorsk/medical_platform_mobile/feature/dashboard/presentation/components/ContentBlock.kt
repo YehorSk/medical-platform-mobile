@@ -29,6 +29,7 @@ import org.jetbrains.compose.resources.stringResource
 fun ContentBlock(
     modifier: Modifier = Modifier,
     title: String,
+    showSeeAllButton: Boolean = true,
     seeAllButtonClicked: () -> Unit,
     content: @Composable () -> Unit
 ){
@@ -45,18 +46,19 @@ fun ContentBlock(
                     .padding(12.dp),
                 text = title
             )
-
-            Text(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .clickable(
-                        enabled = true,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                    ) { seeAllButtonClicked() },
-                text = stringResource(UiRes.string.view_all),
-                color = MaterialTheme.colorScheme.primary
-            )
+            if(showSeeAllButton){
+                Text(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .clickable(
+                            enabled = true,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) { seeAllButtonClicked() },
+                    text = stringResource(UiRes.string.view_all),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
 
         content()

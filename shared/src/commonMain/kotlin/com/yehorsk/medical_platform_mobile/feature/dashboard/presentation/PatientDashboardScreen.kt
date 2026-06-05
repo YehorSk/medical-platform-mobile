@@ -14,17 +14,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.feature.dashboard.appointments
 import com.yehorsk.medical_platform_mobile.feature.dashboard.messages
-import com.yehorsk.medical_platform_mobile.feature.dashboard.messagesEmpty
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashAppointmentItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.no_appointments
 import medicalplatformmobile.shared.generated.resources.no_recent_messages
+import medicalplatformmobile.shared.generated.resources.quick_actions
 import medicalplatformmobile.shared.generated.resources.recent_messages
+import medicalplatformmobile.shared.generated.resources.upcoming_appointments
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -51,7 +56,7 @@ fun PatientDashboardScreenRoot(
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = "patient",
+                    role = UserRole.PATIENT,
                     title = "Bc."
                 ),
                 notificationCount = 23
@@ -60,14 +65,23 @@ fun PatientDashboardScreenRoot(
         )
         FindDoctorsButton(
             modifier = Modifier
-                .padding(12.dp),
+                .padding(top = 12.dp, start = 12.dp, end = 12.dp),
             navigateToDoctorsScreen = {
 
             }
         )
+//        ContentBlock(
+//            modifier = Modifier
+//                .padding(horizontal = 12.dp),
+//            title = stringResource(UiRes.string.quick_actions),
+//            showSeeAllButton = false,
+//            seeAllButtonClicked = {},
+//            content = {
+//            }
+//        )
         ContentBlock(
             modifier = Modifier
-                .padding(12.dp),
+                .padding(horizontal = 12.dp),
             title = stringResource(UiRes.string.recent_messages),
             seeAllButtonClicked = {},
             content = {
@@ -85,6 +99,32 @@ fun PatientDashboardScreenRoot(
                         DashChatItem(
                             message = message,
                             onClick = {  }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+        )
+        ContentBlock(
+            modifier = Modifier
+                .padding(horizontal = 12.dp),
+            title = stringResource(UiRes.string.upcoming_appointments),
+            seeAllButtonClicked = {},
+            content = {
+                if (appointments.isEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 12.dp),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(UiRes.string.no_appointments),
+                        fontSize = 14.sp
+                    )
+                }else{
+                    appointments.forEach { appointment ->
+                        DashAppointmentItem(
+                            appointment = appointment,
+                            onClick = {}
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }

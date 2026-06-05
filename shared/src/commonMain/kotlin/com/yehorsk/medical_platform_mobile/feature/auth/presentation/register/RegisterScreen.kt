@@ -45,7 +45,7 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.co
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
-import com.yehorsk.medical_platform_mobile.feature.auth.util.getRole
+import com.yehorsk.medical_platform_mobile.util.getRole
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.create_account

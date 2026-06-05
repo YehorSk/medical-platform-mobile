@@ -36,6 +36,11 @@ val surfaceContainerLowLight = Color(0xFFF3F2FE)
 val surfaceContainerLight = Color(0xFFEDEDF9)
 val surfaceContainerHighLight = Color(0xFFE7E7F3)
 val surfaceContainerHighestLight = Color(0xFFE2E1ED)
+val statusPendingLight = Color(0xFFFFA500)
+val statusConfirmedLight = Color(0xFF4CAF50)
+val statusRejectedLight = Color(0xFFD4183D)
+val statusCancelledLight = Color(0xFF717182)
+val statusCompletedLight = Color(0xFF2B5CE6)
 
 val primaryDark = Color(0xFFB6C4FF)
 val onPrimaryDark = Color(0xFF00277F)
@@ -72,6 +77,11 @@ val surfaceContainerLowDark = Color(0xFF191B23)
 val surfaceContainerDark = Color(0xFF1D1F28)
 val surfaceContainerHighDark = Color(0xFF282A32)
 val surfaceContainerHighestDark = Color(0xFF33343D)
+val statusPendingDark = Color(0xFFFFB74D)
+val statusConfirmedDark = Color(0xFF81C784)
+val statusRejectedDark = Color(0xFFE57373)
+val statusCancelledDark = Color(0xFF9E9E9E)
+val statusCompletedDark = Color(0xFF64B5F6)
 
 
 

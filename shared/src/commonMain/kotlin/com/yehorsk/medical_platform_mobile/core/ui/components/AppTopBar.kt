@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -125,7 +126,7 @@ fun AppTopBarPreview(){
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = "patient",
+                    role = UserRole.PATIENT,
                     title = "Bc."
                 ),
                 notificationCount = 23

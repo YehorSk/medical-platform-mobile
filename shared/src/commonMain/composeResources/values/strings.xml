@@ -26,6 +26,12 @@
     <string name="upcoming_appointments">Upcoming Appointments</string>
     <string name="recent_messages">Recent Messages</string>
     <string name="no_recent_messages">No recent messages</string>
+    <string name="no_appointments">No appointments</string>
+    <string name="quick_actions">Quick Actions</string>
     <string name="view_all">View all</string>
+    <string name="just_now">just now</string>
+    <string name="m_ago">%1$dm ago</string>
+    <string name="h_ago">%1$dh ago</string>
+    <string name="d_ago">%1$dd ago</string>
 
 </resources>

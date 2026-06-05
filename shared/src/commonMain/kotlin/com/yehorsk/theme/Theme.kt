@@ -8,6 +8,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import com.yehorsk.theme.statusPendingLight
 
 val LocalExtendedColors = staticCompositionLocalOf {
     LightExtendedColors
@@ -28,6 +29,14 @@ data class ExtendedColors(
     val surfaceHigher: Color,
     val surfaceLower: Color,
     val accentBlue: Color,
+
+    // Status colors
+    val statusPending: Color,
+    val statusConfirmed: Color,
+    val statusRejected: Color,
+    val statusCancelled: Color,
+    val statusCompleted: Color,
+
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -41,7 +50,12 @@ val LightExtendedColors = ExtendedColors(
     surfaceHigher = surfaceContainerHighLight,
     surfaceLower = surfaceContainerLowLight,
 
-    accentBlue = primaryLight
+    accentBlue = primaryLight,
+    statusPending = statusPendingLight,
+    statusConfirmed = statusConfirmedLight,
+    statusRejected = statusRejectedLight,
+    statusCancelled = statusCancelledLight,
+    statusCompleted = statusCompletedLight
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -55,7 +69,12 @@ val DarkExtendedColors = ExtendedColors(
     surfaceHigher = surfaceContainerHighDark,
     surfaceLower = surfaceContainerLowDark,
 
-    accentBlue = primaryDark
+    accentBlue = primaryDark,
+    statusPending = statusPendingDark,
+    statusConfirmed = statusConfirmedDark,
+    statusRejected = statusRejectedDark,
+    statusCancelled = statusCancelledLight,
+    statusCompleted = statusCompletedDark
 )
 
 val lightScheme = lightColorScheme(
