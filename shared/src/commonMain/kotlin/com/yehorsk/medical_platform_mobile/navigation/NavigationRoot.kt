@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.yehorsk.medical_platform_mobile.core.ui.components.BottomBar
 import kotlinx.serialization.Serializable
 
 @Suppress("UnusedMaterial3ScaffoldPaddingParameter")
@@ -17,7 +18,12 @@ fun NavigationRoot(
 ){
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        bottomBar = {
+            BottomBar(
+                navController = navController
+            )
+        },
     ) { paddingValues ->
         NavHost(
             navController = navController,

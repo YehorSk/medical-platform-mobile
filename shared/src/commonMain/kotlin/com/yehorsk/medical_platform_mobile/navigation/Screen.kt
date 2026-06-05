@@ -8,7 +8,9 @@ sealed interface Screen {
     @Serializable data object SignUp : Screen
     @Serializable data object ForgotPwd : Screen
 
-    // Different implementation for Patient and Doctor
     @Serializable data object Dashboard : Screen
+    @Serializable data object Calendar : Screen
+    @Serializable data object Messages : Screen
+    @Serializable data object Profile : Screen
 
 }
