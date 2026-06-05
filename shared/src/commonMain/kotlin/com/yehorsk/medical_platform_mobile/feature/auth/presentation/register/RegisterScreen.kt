@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.RoleToggle
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.DoctorRegisterForm
@@ -62,7 +63,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel= koinViewModel(),
-    onSignInClicked: () -> Unit
+    onSignInClicked: () -> Unit,
+    onSignUpClicked: (UserRole) -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -72,6 +74,13 @@ fun RegisterScreen(
         onAction = { action ->
             when(action){
                 is RegisterAction.OnSignInClicked -> onSignInClicked()
+                is RegisterAction.OnRegisterClicked -> {
+                    if(state.registerForm.role.equals(UserRole.PATIENT.name, ignoreCase = true)){
+                        onSignUpClicked(UserRole.PATIENT)
+                    }else{
+                        onSignUpClicked(UserRole.DOCTOR)
+                    }
+                }
                 else -> viewModel.onAction(action)
             }
         }
