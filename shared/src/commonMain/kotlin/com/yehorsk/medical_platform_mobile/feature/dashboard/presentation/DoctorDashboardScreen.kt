@@ -1,18 +1,16 @@
 package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
 import com.yehorsk.theme.AppTheme
 
 @Composable
@@ -33,7 +31,7 @@ fun DoctorDashboardScreenRoot(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        AppTopBar(
+        DashboardTopBar(
             state = AppState(
                 user = User(
                     id = 0,

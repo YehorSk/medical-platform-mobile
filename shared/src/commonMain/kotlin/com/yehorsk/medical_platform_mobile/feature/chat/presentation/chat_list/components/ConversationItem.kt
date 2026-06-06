@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components
+package com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,25 +26,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
 import com.yehorsk.medical_platform_mobile.core.domain.model.Message
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
+import com.yehorsk.medical_platform_mobile.util.conversations
 import com.yehorsk.medical_platform_mobile.util.formatTimeAgo
 import com.yehorsk.medical_platform_mobile.util.toText
 
 @Composable
-fun DashChatItem(
+fun ConversationItem(
     modifier: Modifier = Modifier,
-    message: Message,
+    conversation: Conversation,
     onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
             .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(12.dp)
+                color = MaterialTheme.colorScheme.surface
             )
             .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -58,13 +59,13 @@ fun DashChatItem(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = message.sender.firstName.first().uppercaseChar().toString(),
+                    text = conversation.lastMessage.sender.firstName.first().uppercaseChar().toString(),
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color(0xFF717182)
                 )
             }
-            if (!message.isRead) {
+            if (!conversation.lastMessage.isRead) {
                 Box(
                     modifier = Modifier
                         .size(10.dp)
@@ -75,10 +76,9 @@ fun DashChatItem(
         }
 
         Spacer(modifier = Modifier.width(12.dp))
-
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "${message.sender.title} ${message.sender.firstName} ${message.sender.lastName}",
+                text = "${conversation.lastMessage.sender.title} ${conversation.lastMessage.sender.firstName} ${conversation.lastMessage.sender.lastName}",
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
                 maxLines = 1,
@@ -86,7 +86,7 @@ fun DashChatItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = message.content,
+                text = conversation.lastMessage.content,
                 fontSize = 14.sp,
                 color = Color(0xFF717182),
                 maxLines = 1,
@@ -97,7 +97,7 @@ fun DashChatItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = formatTimeAgo(message.createdAt).toText(),
+            text = formatTimeAgo(conversation.lastMessage.createdAt).toText(),
             fontSize = 12.sp,
             color = Color(0xFF717182)
         )
@@ -106,24 +106,9 @@ fun DashChatItem(
 
 @Preview
 @Composable
-fun DashChatItemPreview() {
-    val message = Message(
-        id = 1,
-        conversationId = 1,
-        sender = User(
-            id = 1,
-            email = "sarah@example.com",
-            firstName = "Sarah",
-            lastName = "Johnson",
-            role = UserRole.DOCTOR,
-            title = "Dr."
-        ),
-        content = "Your test results are ready",
-        isRead = false,
-        createdAt = "2026-06-03T10:30:00Z"
-    )
-    DashChatItem(
-        message = message,
+fun ConversationItemPreview() {
+    ConversationItem(
+        conversation = conversations[0],
         onClick = {}
     )
 }

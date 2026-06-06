@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import com.yehorsk.medical_platform_mobile.core.ui.components.BottomBar
 import kotlinx.serialization.Serializable
 
-@Suppress("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavigationRoot(
     navController: NavHostController,

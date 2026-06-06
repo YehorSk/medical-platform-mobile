@@ -9,6 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListState
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
 
 fun NavGraphBuilder.patientNavGraph(
@@ -35,15 +37,12 @@ fun NavGraphBuilder.patientNavGraph(
             }
         }
         composable<Screen.Messages> {
-            Box(
-                modifier = modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "Messages"
-                )
-            }
+            ChatListScreen(
+                modifier = modifier,
+                onConversationClick = {
+
+                },
+            )
         }
         composable<Screen.Profile> {
             Box(

@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.feature.dashboard.appointments
-import com.yehorsk.medical_platform_mobile.feature.dashboard.messages
+import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
+import com.yehorsk.medical_platform_mobile.util.appointments
+import com.yehorsk.medical_platform_mobile.util.conversations
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashAppointmentItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
@@ -29,7 +29,6 @@ import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.no_appointments
 import medicalplatformmobile.shared.generated.resources.no_recent_messages
-import medicalplatformmobile.shared.generated.resources.quick_actions
 import medicalplatformmobile.shared.generated.resources.recent_messages
 import medicalplatformmobile.shared.generated.resources.upcoming_appointments
 import org.jetbrains.compose.resources.stringResource
@@ -52,7 +51,7 @@ fun PatientDashboardScreenRoot(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        AppTopBar(
+        DashboardTopBar(
             state = AppState(
                 user = User(
                     id = 0,
@@ -88,7 +87,7 @@ fun PatientDashboardScreenRoot(
             title = stringResource(UiRes.string.recent_messages),
             seeAllButtonClicked = {},
             content = {
-                if (messages.isEmpty()) {
+                if (conversations.isEmpty()) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -98,9 +97,9 @@ fun PatientDashboardScreenRoot(
                         fontSize = 14.sp
                     )
                 }else{
-                    messages.forEach { message ->
+                    conversations.forEach { conversation ->
                         DashChatItem(
-                            message = message,
+                            message = conversation.lastMessage,
                             onClick = {  }
                         )
                         Spacer(modifier = Modifier.height(8.dp))
