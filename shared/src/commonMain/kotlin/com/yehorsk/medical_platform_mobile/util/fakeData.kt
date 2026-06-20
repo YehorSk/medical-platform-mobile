@@ -7,18 +7,20 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.Message
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import kotlin.time.Instant
 
 val conversations = listOf(
     Conversation(
         id = 1,
-        createdAt = "2026-06-01T10:00:00Z",
+        createdAt = Instant.parse("2026-06-01T10:00:00Z"),
         patient = User(
             id = 1,
             email = "john.doe@example.com",
             firstName = "John",
             lastName = "Doe",
             role = UserRole.PATIENT,
-            title = "Mr."
+            title = "Mr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         doctor = User(
             id = 2,
@@ -26,7 +28,8 @@ val conversations = listOf(
             firstName = "Anna",
             lastName = "Smith",
             role = UserRole.DOCTOR,
-            title = "Dr."
+            title = "Dr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         lastMessage = Message(
             id = 1,
@@ -37,23 +40,25 @@ val conversations = listOf(
                 firstName = "John",
                 lastName = "Doe",
                 role = UserRole.PATIENT,
-                title = "Mr."
+                title = "Mr.",
+                createdAt = Instant.parse("2026-06-03T10:30:00Z"),
             ),
             content = "Hello doctor, I have a question.",
             isRead = true,
-            createdAt = "2026-06-01T10:05:00Z"
+            createdAt = Instant.parse("2026-06-01T10:05:00Z")
         )
     ),
     Conversation(
         id = 2,
-        createdAt = "2026-06-02T14:30:00Z",
+        createdAt = Instant.parse("2026-06-02T14:30:00Z"),
         patient = User(
             id = 3,
             email = "maria.wilson@example.com",
             firstName = "Maria",
             lastName = "Wilson",
             role = UserRole.PATIENT,
-            title = "Mrs."
+            title = "Mrs.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         doctor = User(
             id = 4,
@@ -61,7 +66,8 @@ val conversations = listOf(
             firstName = "Peter",
             lastName = "Brown",
             role = UserRole.DOCTOR,
-            title = "Dr."
+            title = "Dr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         lastMessage = Message(
             id = 2,
@@ -72,23 +78,25 @@ val conversations = listOf(
                 firstName = "Peter",
                 lastName = "Brown",
                 role = UserRole.DOCTOR,
-                title = "Dr."
+                title = "Dr.",
+                createdAt = Instant.parse("2026-06-03T10:30:00Z"),
             ),
             content = "Your test results look good.",
             isRead = false,
-            createdAt = "2026-06-02T14:45:00Z"
+            createdAt = Instant.parse("2026-06-02T14:45:00Z")
         )
     ),
     Conversation(
         id = 3,
-        createdAt = "2026-06-03T09:15:00Z",
+        createdAt = Instant.parse("2026-06-03T09:15:00Z"),
         patient = User(
             id = 5,
             email = "alex.miller@example.com",
             firstName = "Alex",
             lastName = "Miller",
             role = UserRole.PATIENT,
-            title = "Mr."
+            title = "Mr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         doctor = User(
             id = 6,
@@ -96,7 +104,8 @@ val conversations = listOf(
             firstName = "Sarah",
             lastName = "Johnson",
             role = UserRole.DOCTOR,
-            title = "Dr."
+            title = "Dr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         ),
         lastMessage = Message(
             id = 3,
@@ -107,11 +116,12 @@ val conversations = listOf(
                 firstName = "Alex",
                 lastName = "Miller",
                 role = UserRole.PATIENT,
-                title = "Mr."
+                title = "Mr.",
+                createdAt = Instant.parse("2026-06-03T10:30:00Z"),
             ),
             content = "Thank you for your help.",
             isRead = true,
-            createdAt = "2026-06-03T09:20:00Z"
+            createdAt = Instant.parse("2026-06-03T09:20:00Z")
         )
     )
 )
@@ -121,11 +131,11 @@ val messagesEmpty = emptyList<Message>()
 val appointments = listOf(
     Appointment(
         id = 1,
-        datetime = "2026-06-03T10:30:00Z",
+        datetime = Instant.parse("2026-06-03T10:30:00Z"),
         status = AppointmentStatus.CONFIRMED,
         note = "Regular checkup",
-        createdAt = "2026-06-03T10:30:00Z",
-        updatedAt = "2026-06-03T10:30:00Z",
+        createdAt = Instant.parse("2026-06-03T10:30:00Z"),
+        updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
         specialization = Specialization(
             id = 1,
             name = "Cardiology"
@@ -136,16 +146,17 @@ val appointments = listOf(
             firstName = "John",
             lastName = "Doe",
             role = UserRole.DOCTOR,
-            title = "MUDr."
+            title = "MUDr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         )
     ),
     Appointment(
-        id = 1,
-        datetime = "2026-06-03T10:30:00Z",
+        id = 2,
+        datetime = Instant.parse("2026-06-03T10:30:00Z"),
         status = AppointmentStatus.REJECTED,
         note = "Regular checkup",
-        createdAt = "2026-06-03T10:30:00Z",
-        updatedAt = "2026-06-03T10:30:00Z",
+        createdAt = Instant.parse("2026-06-03T10:30:00Z"),
+        updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
         specialization = Specialization(
             id = 1,
             name = "Dentist"
@@ -156,7 +167,8 @@ val appointments = listOf(
             firstName = "Sam",
             lastName = "Smith",
             role = UserRole.DOCTOR,
-            title = "MUDr."
+            title = "MUDr.",
+            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         )
     )
 )

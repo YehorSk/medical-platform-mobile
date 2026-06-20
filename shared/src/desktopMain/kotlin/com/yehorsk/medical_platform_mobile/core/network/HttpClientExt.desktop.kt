@@ -1,0 +1,41 @@
+package com.yehorsk.medical_platform_mobile.core.network
+
+import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.Result
+import io.ktor.client.network.sockets.SocketTimeoutException
+import io.ktor.client.plugins.HttpRequestTimeoutException
+import io.ktor.client.statement.HttpResponse
+import io.ktor.serialization.JsonConvertException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.serialization.SerializationException
+import java.io.IOException
+import java.net.ConnectException
+import java.net.UnknownHostException
+
+actual suspend fun <T> platformSafeCall(
+    execute: suspend () -> HttpResponse,
+    handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
+): Result<T, DataError.Remote> {
+    return try {
+        val response = execute()
+        handleResponse(response)
+    } catch (e: UnknownHostException) {
+        Result.Failure(DataError.Remote.Status.NO_INTERNET)
+    } catch (e: ConnectException) {
+        Result.Failure(DataError.Remote.Status.NO_INTERNET)
+    } catch (e: java.net.SocketTimeoutException) {
+        Result.Failure(DataError.Remote.Status.REQUEST_TIMEOUT)
+    } catch (e: HttpRequestTimeoutException) {
+        Result.Failure(DataError.Remote.Status.REQUEST_TIMEOUT)
+    } catch (e: JsonConvertException) {
+        Result.Failure(DataError.Remote.Status.SERIALIZATION)
+    } catch (e: SerializationException) {
+        Result.Failure(DataError.Remote.Status.SERIALIZATION)
+    } catch (e: IOException) {
+        Result.Failure(DataError.Remote.Status.NO_INTERNET)
+    } catch (e: Exception) {
+        currentCoroutineContext().ensureActive()
+        Result.Failure(DataError.Remote.Status.UNKNOWN)
+    }
+}

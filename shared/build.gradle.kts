@@ -10,7 +10,7 @@ plugins {
 
 kotlin {
     
-    jvm()
+    jvm("desktop")
     
     androidLibrary {
        namespace = "com.yehorsk.medical_platform_mobile.shared"
@@ -31,9 +31,17 @@ kotlin {
     }
     
     sourceSets {
+        val desktopMain by getting{
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.androidx.navigation)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -50,10 +58,13 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.androidx.navigation)
 
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.jetbrains.compose.backhandler)
+
+            implementation(libs.datastore.preferences)
+
+            implementation(libs.bundles.ktor.common)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

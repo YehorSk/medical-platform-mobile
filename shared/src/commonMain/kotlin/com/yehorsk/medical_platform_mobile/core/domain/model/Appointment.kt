@@ -1,12 +1,14 @@
 package com.yehorsk.medical_platform_mobile.core.domain.model
 
+import kotlin.time.Instant
+
 data class Appointment(
     val id: Int,
-    val datetime: String,
+    val datetime: Instant,
     val status: AppointmentStatus,
     val note: String? = null,
-    val createdAt: String,
-    val updatedAt: String,
+    val createdAt: Instant,
+    val updatedAt: Instant,
     val patient: User? = null,
     val specialization: Specialization,
     val doctor: User

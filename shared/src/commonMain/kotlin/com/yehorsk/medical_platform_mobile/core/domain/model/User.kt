@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.core.domain.model
 
+import kotlin.time.Instant
+
 data class User(
     val id: Int,
     val email: String,
@@ -7,7 +9,7 @@ data class User(
     val lastName: String,
     val role: UserRole,
     val title: String,
-    val createdAt: String? = null,
+    val createdAt: Instant,
     val patient: Patient? = null,
     val doctor: Doctor? = null
 )

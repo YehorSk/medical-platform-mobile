@@ -33,6 +33,10 @@
     <string name="m_ago">%1$dm ago</string>
     <string name="h_ago">%1$dh ago</string>
     <string name="d_ago">%1$dd ago</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="today_x">Today, %1$s</string>
+    <string name="yesterday_x">Yesterday, %1$s</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="calendar">Calendar</string>
