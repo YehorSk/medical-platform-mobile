@@ -113,23 +113,26 @@ fun DashboardTopBar(
     }
 }
 
-@Preview
-@Composable
-fun DashboardTopBarPreview(){
-    AppTheme {
-        DashboardTopBar(
-            state = AppState(
-                user = User(
-                    id = 0,
-                    email = "test@gmail.com",
-                    firstName = "John",
-                    lastName = "Doe",
-                    role = UserRole.PATIENT,
-                    title = "Bc."
-                ),
-                notificationCount = 23
-            ),
-            navigateToNotifications = {}
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun DashboardTopBarPreview(){
+//    AppTheme {
+//        DashboardTopBar(
+//            state = AppState(
+//                user = User(
+//                    id = 0,
+//                    email = "test@gmail.com",
+//                    firstName = "John",
+//                    lastName = "Doe",
+//                    role = UserRole.PATIENT,
+//                    title = "Bc.",
+//                    createdAt = TODO(),
+//                    patient = TODO(),
+//                    doctor = TODO()
+//                ),
+//                notificationCount = 23
+//            ),
+//            navigateToNotifications = {}
+//        )
+//    }
+//}

@@ -31,7 +31,8 @@ fun PwdTextField(
     header: String? = null,
     passwordVisible: Boolean,
     onValueChange: (String) -> Unit,
-    onPasswordVisibleChange: () -> Unit
+    onPasswordVisibleChange: () -> Unit,
+    error: String= ""
 ){
     header?.let {
         Text(it, fontWeight = FontWeight.Medium)
@@ -46,6 +47,16 @@ fun PwdTextField(
             Text(
                 text = placeholder
             )
+        },
+        isError = error.isNotBlank(),
+        supportingText = {
+            if (error.isNotBlank()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = error,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         },
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = Color(0xFFF5F5F5),

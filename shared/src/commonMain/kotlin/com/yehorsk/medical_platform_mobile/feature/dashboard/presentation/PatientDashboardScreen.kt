@@ -32,6 +32,7 @@ import medicalplatformmobile.shared.generated.resources.no_recent_messages
 import medicalplatformmobile.shared.generated.resources.recent_messages
 import medicalplatformmobile.shared.generated.resources.upcoming_appointments
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Clock
 
 @Composable
 fun PatientDashboardScreen(
@@ -59,7 +60,8 @@ fun PatientDashboardScreenRoot(
                     firstName = "John",
                     lastName = "Doe",
                     role = UserRole.PATIENT,
-                    title = "Bc."
+                    title = "Bc.",
+                    createdAt = Clock.System.now()
                 ),
                 notificationCount = 23
             ),

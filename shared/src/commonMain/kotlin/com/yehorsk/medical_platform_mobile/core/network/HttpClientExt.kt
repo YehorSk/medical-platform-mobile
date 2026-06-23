@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.core.network
 
+import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
@@ -128,9 +129,12 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
 }
 
 fun constructRoute(route: String): String {
-    return when {
+    val result = when {
         route.contains(UrlConstants.BASE_URL_HTTP) -> route
         route.startsWith("/") -> "${UrlConstants.BASE_URL_HTTP}$route"
         else -> "${UrlConstants.BASE_URL_HTTP}/$route"
     }
+    Logger.withTag("HttpClientExt").e { result }
+
+    return result
 }

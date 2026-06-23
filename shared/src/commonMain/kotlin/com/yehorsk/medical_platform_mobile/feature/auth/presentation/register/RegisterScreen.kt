@@ -74,13 +74,13 @@ fun RegisterScreen(
         onAction = { action ->
             when(action){
                 is RegisterAction.OnSignInClicked -> onSignInClicked()
-                is RegisterAction.OnRegisterClicked -> {
-                    if(state.registerForm.role.equals(UserRole.PATIENT.name, ignoreCase = true)){
-                        onSignUpClicked(UserRole.PATIENT)
-                    }else{
-                        onSignUpClicked(UserRole.DOCTOR)
-                    }
-                }
+//                is RegisterAction.OnRegisterClicked -> {
+//                    if(state.registerForm.role.equals(UserRole.PATIENT.name, ignoreCase = true)){
+//                        onSignUpClicked(UserRole.PATIENT)
+//                    }else{
+//                        onSignUpClicked(UserRole.DOCTOR)
+//                    }
+//                }
                 else -> viewModel.onAction(action)
             }
         }

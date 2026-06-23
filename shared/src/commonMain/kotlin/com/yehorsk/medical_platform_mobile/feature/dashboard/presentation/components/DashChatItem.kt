@@ -97,33 +97,33 @@ fun DashChatItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = formatTimeAgo(message.createdAt).toText(),
+            text = formatTimeAgo(message.createdAt.toString()).toText(),
             fontSize = 12.sp,
             color = Color(0xFF717182)
         )
     }
 }
 
-@Preview
-@Composable
-fun DashChatItemPreview() {
-    val message = Message(
-        id = 1,
-        conversationId = 1,
-        sender = User(
-            id = 1,
-            email = "sarah@example.com",
-            firstName = "Sarah",
-            lastName = "Johnson",
-            role = UserRole.DOCTOR,
-            title = "Dr."
-        ),
-        content = "Your test results are ready",
-        isRead = false,
-        createdAt = "2026-06-03T10:30:00Z"
-    )
-    DashChatItem(
-        message = message,
-        onClick = {}
-    )
-}
+//@Preview
+//@Composable
+//fun DashChatItemPreview() {
+//    val message = Message(
+//        id = 1,
+//        conversationId = 1,
+//        sender = User(
+//            id = 1,
+//            email = "sarah@example.com",
+//            firstName = "Sarah",
+//            lastName = "Johnson",
+//            role = UserRole.DOCTOR,
+//            title = "Dr."
+//        ),
+//        content = "Your test results are ready",
+//        isRead = false,
+//        createdAt = "2026-06-03T10:30:00Z"
+//    )
+//    DashChatItem(
+//        message = message,
+//        onClick = {}
+//    )
+//}

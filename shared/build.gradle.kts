@@ -65,6 +65,8 @@ kotlin {
             implementation(libs.datastore.preferences)
 
             implementation(libs.bundles.ktor.common)
+
+            implementation(libs.touchlab.kermit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

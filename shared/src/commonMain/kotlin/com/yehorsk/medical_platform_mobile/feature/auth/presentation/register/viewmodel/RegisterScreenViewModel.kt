@@ -1,12 +1,22 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toRegisterFormErrors
+import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class RegisterScreenViewModel: ViewModel() {
+class RegisterScreenViewModel(
+    private val authService: AuthService
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
@@ -18,7 +28,7 @@ class RegisterScreenViewModel: ViewModel() {
             }
 
             RegisterAction.OnRegisterClicked -> {
-                onRegisterClicked()
+                register()
             }
 
             RegisterAction.OnSignInClicked -> {
@@ -28,9 +38,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateEmail -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(email = action.email) ?: RegisterForm(
-                            email = action.email
-                        )
+                        registerForm = it.registerForm.copy(email = action.email)
                     )
                 }
             }
@@ -38,8 +46,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateFirstName -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(firstName = action.firstName)
-                            ?: RegisterForm(firstName = action.firstName)
+                        registerForm = it.registerForm.copy(firstName = action.firstName)
                     )
                 }
             }
@@ -47,8 +54,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateLastName -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(lastName = action.lastName)
-                            ?: RegisterForm(lastName = action.lastName)
+                        registerForm = it.registerForm.copy(lastName = action.lastName)
                     )
                 }
             }
@@ -56,8 +62,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateLicenseNumber -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(licenseNumber = action.licenseNumber)
-                            ?: RegisterForm(licenseNumber = action.licenseNumber)
+                        registerForm = it.registerForm.copy(licenseNumber = action.licenseNumber)
                     )
                 }
             }
@@ -65,9 +70,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdatePhone -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(phone = action.phone) ?: RegisterForm(
-                            phone = action.phone
-                        )
+                        registerForm = it.registerForm.copy(phone = action.phone)
                     )
                 }
             }
@@ -75,9 +78,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdatePwd -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(password = action.pwd) ?: RegisterForm(
-                            password = action.pwd
-                        )
+                        registerForm = it.registerForm.copy(password = action.pwd)
                     )
                 }
             }
@@ -85,8 +86,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdatePwdRepeat -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(passwordConfirm = action.pwdRepeat)
-                            ?: RegisterForm(passwordConfirm = action.pwdRepeat)
+                        registerForm = it.registerForm.copy(passwordConfirm = action.pwdRepeat)
                     )
                 }
             }
@@ -94,9 +94,7 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateRole -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(role = action.role) ?: RegisterForm(
-                            role = action.role
-                        )
+                        registerForm = it.registerForm.copy(role = action.role)
                     )
                 }
             }
@@ -104,16 +102,42 @@ class RegisterScreenViewModel: ViewModel() {
             is RegisterAction.UpdateSpecialization -> {
                 _uiState.update {
                     it.copy(
-                        registerForm = it.registerForm?.copy(specialization = action.specialization)
-                            ?: RegisterForm(specialization = action.specialization)
+                        registerForm = it.registerForm.copy(specialization = action.specialization)
                     )
                 }
             }
         }
     }
 
-    fun onRegisterClicked(){
+    fun register(){
+        viewModelScope.launch {
+            clearFormErrors()
+            authService
+                .register(
+                    form = _uiState.value.registerForm
+                )
+                .onSuccess { response, _ ->
+                    Logger.withTag("RegisterScreenViewModel").i { response.message }
+                }.onFailure { dataErrorRemote ->
+                    when(dataErrorRemote) {
+                        is DataError.Remote.ValidationError -> {
+                            dataErrorRemote.errors?.let { errors ->
+                                Logger.withTag("RegisterScreenViewModel").e { errors.toRegisterFormErrors().toString() }
+                                _uiState.update { it.copy(
+                                    registerFormErrors = errors.toRegisterFormErrors()
+                                ) }
+                            }
+                        }
+                        else -> Logger.withTag("RegisterScreenViewModel").e { "Error $dataErrorRemote"}
+                    }
+                }
+        }
+    }
 
+    fun clearFormErrors(){
+        _uiState.update { it.copy(
+            registerFormErrors = RegisterFormErrors()
+        ) }
     }
 
 }

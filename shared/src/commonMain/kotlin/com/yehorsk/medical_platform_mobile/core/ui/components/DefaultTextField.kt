@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.yehorsk.theme.AppTheme
 
 @Composable
 fun DefaultTextField(
@@ -23,7 +25,8 @@ fun DefaultTextField(
     header: String? = null,
     placeholder: String = "",
     onValueChange: (String) -> Unit,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    error: String= ""
 ){
     header?.let {
         Text(it, fontWeight = FontWeight.Medium)
@@ -37,6 +40,16 @@ fun DefaultTextField(
             Text(
                 text = placeholder
             )
+        },
+        isError = error.isNotBlank(),
+        supportingText = {
+            if (error.isNotBlank()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = error,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         },
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
@@ -53,8 +66,11 @@ fun DefaultTextField(
 @Preview
 @Composable
 fun DefaultTextFieldPreview(){
-    DefaultTextField(
-        value = "test@gmail.com",
-        onValueChange = {}
-    )
+    AppTheme {
+        DefaultTextField(
+            value = "test@gmail.com",
+            onValueChange = {},
+            error = "Password is required"
+        )
+    }
 }

@@ -1,12 +1,21 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
+import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginScreenViewModel: ViewModel() {
+class LoginScreenViewModel(
+    private val authService: AuthService
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
@@ -22,7 +31,22 @@ class LoginScreenViewModel: ViewModel() {
     }
 
     private fun signIn() {
-
+        viewModelScope.launch {
+            authService
+                .login(
+                    form = _uiState.value.loginForm
+                )
+                .onSuccess { data, message ->
+                    Logger.withTag("LoginScreenViewModel").i { message ?: "Test" }
+                }.onFailure { dataErrorRemote ->
+                    when(dataErrorRemote) {
+                        is DataError.Remote.ValidationError -> {
+                            Logger.withTag("LoginScreenViewModel").e { dataErrorRemote.errors?.errors.toString() }
+                        }
+                        else -> Logger.withTag("LoginScreenViewModel").e { "Error $dataErrorRemote"}
+                    }
+                }
+        }
     }
 
     private fun updatePwd(pwd: String) {

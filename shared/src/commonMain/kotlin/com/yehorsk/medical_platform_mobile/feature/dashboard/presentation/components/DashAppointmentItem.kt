@@ -64,7 +64,7 @@ fun DashAppointmentItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = "${extractDate(appointment.datetime)} ${extractTime(appointment.datetime)}",
+                text = "${extractDate(appointment.datetime.toString())} ${extractTime(appointment.datetime.toString())}",
                 fontSize = 14.sp,
                 color = Color(0xFF717182),
                 maxLines = 1,
@@ -77,34 +77,34 @@ fun DashAppointmentItem(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun DashAppointmentItemPreview() {
-    val appointment = Appointment(
-        id = 1,
-        datetime = "2026-06-03T10:30:00Z",
-        status = AppointmentStatus.CONFIRMED,
-        note = "Regular checkup",
-        createdAt = "2026-06-03T10:30:00Z",
-        updatedAt = "2026-06-03T10:30:00Z",
-        specialization = Specialization(
-            id = 1,
-            name = "Cardiology"
-        ),
-        doctor = User(
-            id = 1,
-            email = "doctor@example.com",
-            firstName = "John",
-            lastName = "Doe",
-            role = UserRole.DOCTOR,
-            title = "MUDr."
-        )
-    )
-
-    AppTheme {
-        DashAppointmentItem(
-            appointment = appointment,
-            onClick = {}
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//private fun DashAppointmentItemPreview() {
+//    val appointment = Appointment(
+//        id = 1,
+//        datetime = "2026-06-03T10:30:00Z",
+//        status = AppointmentStatus.CONFIRMED,
+//        note = "Regular checkup",
+//        createdAt = "2026-06-03T10:30:00Z",
+//        updatedAt = "2026-06-03T10:30:00Z",
+//        specialization = Specialization(
+//            id = 1,
+//            name = "Cardiology"
+//        ),
+//        doctor = User(
+//            id = 1,
+//            email = "doctor@example.com",
+//            firstName = "John",
+//            lastName = "Doe",
+//            role = UserRole.DOCTOR,
+//            title = "MUDr."
+//        )
+//    )
+//
+//    AppTheme {
+//        DashAppointmentItem(
+//            appointment = appointment,
+//            onClick = {}
+//        )
+//    }
+//}

@@ -40,5 +40,11 @@ sealed interface DataError : Error {
 @Serializable
 data class ValidationErrorsDto(
     val message: String,
-    val errors: Map<String, List<String>>
+    val errors: List<ValidationError>
+)
+
+@Serializable
+data class ValidationError(
+    val field: String,
+    val message: String
 )

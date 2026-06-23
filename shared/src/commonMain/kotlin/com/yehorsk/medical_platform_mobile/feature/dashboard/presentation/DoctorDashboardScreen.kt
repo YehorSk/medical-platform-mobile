@@ -12,6 +12,9 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
 import com.yehorsk.theme.AppTheme
+import kotlin.time.Clock
+import kotlin.time.Instant
+
 
 @Composable
 fun DoctorDashboardScreen(
@@ -39,7 +42,8 @@ fun DoctorDashboardScreenRoot(
                     firstName = "John",
                     lastName = "Doe",
                     role = UserRole.PATIENT,
-                    title = "Bc."
+                    title = "Bc.",
+                    createdAt = Clock.System.now(),
                 ),
                 notificationCount = 23
             ),

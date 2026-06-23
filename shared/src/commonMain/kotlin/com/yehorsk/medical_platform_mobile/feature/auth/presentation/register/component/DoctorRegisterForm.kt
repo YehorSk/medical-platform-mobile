@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toRegisterFormErrors
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
@@ -36,6 +39,7 @@ fun DoctorRegisterForm(
             value = state.registerForm.firstName,
             header = stringResource(UiRes.string.first_name),
             placeholder = stringResource(UiRes.string.first_name),
+            error = state.registerFormErrors.firstName,
             onValueChange = { onAction(RegisterAction.UpdateFirstName(it)) }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -43,6 +47,7 @@ fun DoctorRegisterForm(
             value = state.registerForm.lastName,
             header = stringResource(UiRes.string.last_name),
             placeholder = stringResource(UiRes.string.last_name),
+            error = state.registerFormErrors.lastName,
             onValueChange = { onAction(RegisterAction.UpdateLastName(it)) }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -50,6 +55,7 @@ fun DoctorRegisterForm(
             value = state.registerForm.email,
             header = stringResource(UiRes.string.email_input),
             placeholder = stringResource(UiRes.string.email_input),
+            error = state.registerFormErrors.email,
             onValueChange = { onAction(RegisterAction.UpdateEmail(it)) },
             keyboardType = KeyboardType.Email
         )
@@ -58,6 +64,7 @@ fun DoctorRegisterForm(
             value = state.registerForm.licenseNumber,
             header = stringResource(UiRes.string.license_number),
             placeholder = stringResource(UiRes.string.license_number),
+            error = state.registerFormErrors.licenseNumber,
             onValueChange = { onAction(RegisterAction.UpdateLicenseNumber(it)) }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -73,6 +80,7 @@ fun DoctorRegisterForm(
             header = stringResource(UiRes.string.password),
             onValueChange = { onAction(RegisterAction.UpdatePwd(it)) },
             passwordVisible = state.passwordVisible,
+            error = state.registerFormErrors.password,
             onPasswordVisibleChange = { onAction(RegisterAction.ChangePwdVisibility) }
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -81,6 +89,7 @@ fun DoctorRegisterForm(
             header = stringResource(UiRes.string.confirm_password),
             onValueChange = { onAction(RegisterAction.UpdatePwdRepeat(it)) },
             passwordVisible = state.passwordVisible,
+            error = state.registerFormErrors.passwordConfirm,
             onPasswordVisibleChange = { onAction(RegisterAction.ChangePwdVisibility) }
         )
     }

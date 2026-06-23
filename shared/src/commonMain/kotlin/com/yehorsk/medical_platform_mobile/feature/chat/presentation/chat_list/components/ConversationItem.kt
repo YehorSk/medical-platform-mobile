@@ -97,7 +97,7 @@ fun ConversationItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = formatTimeAgo(conversation.lastMessage.createdAt).toText(),
+            text = formatTimeAgo(conversation.lastMessage.createdAt.toString()).toText(),
             fontSize = 12.sp,
             color = Color(0xFF717182)
         )
