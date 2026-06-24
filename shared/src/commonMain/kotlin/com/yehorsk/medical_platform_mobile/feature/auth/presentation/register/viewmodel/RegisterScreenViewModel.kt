@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toRegisterFormErrors
 import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
@@ -122,13 +124,18 @@ class RegisterScreenViewModel(
                     when(dataErrorRemote) {
                         is DataError.Remote.ValidationError -> {
                             dataErrorRemote.errors?.let { errors ->
-                                Logger.withTag("RegisterScreenViewModel").e { errors.toRegisterFormErrors().toString() }
                                 _uiState.update { it.copy(
                                     registerFormErrors = errors.toRegisterFormErrors()
                                 ) }
                             }
                         }
-                        else -> Logger.withTag("RegisterScreenViewModel").e { "Error $dataErrorRemote"}
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = dataErrorRemote
+                                )
+                            )
+                        }
                     }
                 }
         }

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
@@ -39,12 +41,11 @@ class LoginScreenViewModel(
                 .onSuccess { data, message ->
                     Logger.withTag("LoginScreenViewModel").i { message ?: "Test" }
                 }.onFailure { dataErrorRemote ->
-                    when(dataErrorRemote) {
-                        is DataError.Remote.ValidationError -> {
-                            Logger.withTag("LoginScreenViewModel").e { dataErrorRemote.errors?.errors.toString() }
-                        }
-                        else -> Logger.withTag("LoginScreenViewModel").e { "Error $dataErrorRemote"}
-                    }
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = dataErrorRemote
+                        )
+                    )
                 }
         }
     }
