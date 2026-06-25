@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AuthDataDto(
     val user: UserDto,
-    val message: String? = null,
     val accessToken: String,
     val refreshToken: String
 )

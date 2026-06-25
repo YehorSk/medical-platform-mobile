@@ -119,6 +119,11 @@ class RegisterScreenViewModel(
                     form = _uiState.value.registerForm
                 )
                 .onSuccess { response, _ ->
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = response.message
+                        )
+                    )
                     Logger.withTag("RegisterScreenViewModel").i { response.message }
                 }.onFailure { dataErrorRemote ->
                     when(dataErrorRemote) {

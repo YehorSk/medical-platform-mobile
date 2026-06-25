@@ -7,6 +7,7 @@ import com.yehorsk.medical_platform_mobile.core.network.post
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.core.util.map
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthData
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
@@ -23,14 +24,18 @@ class AuthServiceImpl(
         return httpClient.post<LoginForm, AuthDataDto>(
             route = "/auth/login",
             body = form
-        ).map { it.toAuthData() }
+        ).map {
+            it.toAuthData()
+        }
     }
 
     override suspend fun register(form: RegisterForm): Result<MessageResponse, DataError.Remote> {
         return httpClient.post<RegisterForm, MessageResponseDto>(
             route = "/auth/register",
             body = form
-        ).map { it.toMessageResponse()}
+        ).map {
+            it.toMessageResponse()
+        }
     }
 
 }

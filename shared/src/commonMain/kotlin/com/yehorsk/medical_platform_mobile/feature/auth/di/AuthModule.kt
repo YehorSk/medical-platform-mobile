@@ -16,7 +16,7 @@ val authModule = module {
     viewModelOf(::RegisterScreenViewModel)
     viewModelOf(::ForgotScreenViewModel)
     single {
-        HttpClientFactory().create(get())
+        HttpClientFactory(get()).create(get())
     }
     singleOf(::AuthServiceImpl) bind AuthService::class
 }
