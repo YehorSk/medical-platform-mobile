@@ -4,16 +4,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
-import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
+import com.yehorsk.medical_platform_mobile.util.getRole
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,6 +23,9 @@ class LoginScreenViewModel(
     private val authService: AuthService,
     private val sessionStorage: SessionStorage
 ): ViewModel() {
+
+    private val eventChannel = Channel<LoginEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
@@ -35,39 +40,52 @@ class LoginScreenViewModel(
         }
     }
 
+    private fun validateForm(){
+        with(_uiState.value){
+            _uiState.update { it.copy(
+                isEntryValid = loginForm.password.isNotBlank() && loginForm.email.matches(Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"))
+            ) }
+        }
+    }
+
     private fun signIn() {
         viewModelScope.launch {
-            _uiState.update { it.copy(
-                isLoading = true
-            ) }
-            authService
-                .login(
-                    form = _uiState.value.loginForm
-                )
-                .onSuccess { data, message ->
-                    sessionStorage.setAuthData(authData = data.toAuthDataDto())
-                    _uiState.update { it.copy(
-                        isLoading = false
-                    ) }
-                    Logger.withTag("LoginScreenViewModel").i { message ?: "Test" }
-                }.onFailure { dataErrorRemote ->
-                    _uiState.update { it.copy(
-                        isLoading = false
-                    ) }
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = dataErrorRemote
-                        )
+            if(_uiState.value.isEntryValid){
+                _uiState.update { it.copy(
+                    isLoading = true
+                ) }
+                authService
+                    .login(
+                        form = _uiState.value.loginForm
                     )
-                }
+                    .onSuccess { data, message ->
+                        sessionStorage.setAuthData(authData = data.toAuthDataDto())
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                        eventChannel.send(LoginEvent.Success(getRole(data.user.role)))
+                        Logger.withTag("LoginScreenViewModel").i { message ?: "Test" }
+                    }.onFailure { dataErrorRemote ->
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = dataErrorRemote
+                            )
+                        )
+                    }
+            }
         }
     }
 
     private fun updatePwd(pwd: String) {
+        validateForm()
         _uiState.update { it.copy(loginForm = it.loginForm.copy(password = pwd)) }
     }
 
     private fun updateEmail(email: String) {
+        validateForm()
         _uiState.update { it.copy(loginForm = it.loginForm.copy(email = email)) }
     }
 

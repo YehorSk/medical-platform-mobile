@@ -68,13 +68,6 @@ fun DoctorRegisterForm(
             onValueChange = { onAction(RegisterAction.UpdateLicenseNumber(it)) }
         )
         Spacer(modifier = Modifier.height(8.dp))
-        DefaultTextField(
-            value = state.registerForm.specialization,
-            header = stringResource(UiRes.string.specialization),
-            placeholder = stringResource(UiRes.string.specialization),
-            onValueChange = { onAction(RegisterAction.UpdateSpecialization(it)) }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
         PwdTextField(
             value = state.registerForm.password,
             header = stringResource(UiRes.string.password),

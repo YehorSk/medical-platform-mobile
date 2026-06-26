@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -97,6 +98,16 @@ fun RegisterScreenRoot(
         modifier = modifier
             .fillMaxSize(),
     ) { paddingValues ->
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -174,6 +185,7 @@ fun RegisterScreenRoot(
                     onClick = { onAction(RegisterAction.OnRegisterClicked) },
                     modifier = Modifier
                         .fillMaxWidth(),
+                    enabled = state.isEntryValid,
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {

@@ -6,6 +6,7 @@ data class RegisterState(
     val registerForm: RegisterForm = RegisterForm(),
     val isEntryValid: Boolean = false,
     val passwordVisible: Boolean = false,
+    val isLoading: Boolean = false,
     val registerFormErrors: RegisterFormErrors = RegisterFormErrors()
 )
 
@@ -27,7 +28,6 @@ data class RegisterFormErrors(
 data class RegisterForm(
     val firstName: String = "",
     val lastName: String = "",
-    val specialization: String = "",
     val licenseNumber: String = "",
     val email: String = "",
     val phone: String = "",

@@ -21,6 +21,9 @@ fun NavGraphBuilder.authGraph(
                         restoreState = true
                         launchSingleTop = true
                     }
+                },
+                onLoginSuccess = { role ->
+                    navigateToMain(navController, role)
                 }
             )
         }
@@ -33,19 +36,23 @@ fun NavGraphBuilder.authGraph(
                     }
                 },
                 onSignUpClicked = { role ->
-                    when(role){
-                        UserRole.PATIENT -> navController.navigate(Graph.Patient){
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                        UserRole.DOCTOR -> navController.navigate(Graph.Doctor){
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                        UserRole.ADMIN -> {}
-                    }
+                    navigateToMain(navController, role)
                 }
             )
         }
+    }
+}
+
+private fun navigateToMain(navController: NavController, role: UserRole){
+    when(role){
+        UserRole.PATIENT -> navController.navigate(Graph.Patient){
+            restoreState = true
+            launchSingleTop = true
+        }
+        UserRole.DOCTOR -> navController.navigate(Graph.Doctor){
+            restoreState = true
+            launchSingleTop = true
+        }
+        UserRole.ADMIN -> {}
     }
 }

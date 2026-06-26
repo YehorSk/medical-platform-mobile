@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,9 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginState
@@ -59,9 +63,16 @@ import org.koin.compose.viewmodel.koinViewModel
 fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginScreenViewModel= koinViewModel(),
-    onSignUpClicked: () -> Unit
+    onSignUpClicked: () -> Unit,
+    onLoginSuccess: (UserRole) -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is LoginEvent.Success -> onLoginSuccess(event.role)
+        }
+    }
     LoginScreenRoot(
         modifier = modifier,
         state = state,
@@ -84,6 +95,16 @@ fun LoginScreenRoot(
         modifier = modifier
             .fillMaxSize(),
     ) { paddingValues ->
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -159,6 +180,7 @@ fun LoginScreenRoot(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
+                    enabled = state.isEntryValid,
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
