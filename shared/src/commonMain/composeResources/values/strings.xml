@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">MedConnect</string>
     <string name="app_description">Doctor-Patient Healthcare Platform</string>
-    <string name="email_input">Email</string>
+    <string name="email_input">Email Address</string>
     <string name="email_input_placeholder">Email:</string>
+    <string name="otp_input_placeholder">Enter 6-digit verification code</string>
+    <string name="otp_verify_btn">Verify code</string>
     <string name="password_input">Password:</string>
+    <string name="did_not_receive_code">Didn't receive the code?</string>
+    <string name="resend">Resend</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="forgot_password_instructions">No worries, we'll send you reset instructions</string>
     <string name="send_reset_code">Send Reset Code</string>
+    <string name="reset_password">Reset Password</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="create_account">Create Account</string>

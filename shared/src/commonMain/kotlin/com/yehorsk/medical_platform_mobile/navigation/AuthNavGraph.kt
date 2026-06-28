@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.ForgotPasswordScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.LoginScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.RegisterScreen
 
@@ -24,6 +25,12 @@ fun NavGraphBuilder.authGraph(
                 },
                 onLoginSuccess = { role ->
                     navigateToMain(navController, role)
+                },
+                onForgotPwdClicked = {
+                    navController.navigate(Screen.ForgotPwd){
+                        restoreState = true
+                        launchSingleTop = true
+                    }
                 }
             )
         }
@@ -38,6 +45,11 @@ fun NavGraphBuilder.authGraph(
                 onSignUpClicked = { role ->
                     navigateToMain(navController, role)
                 }
+            )
+        }
+        composable<Screen.ForgotPwd> {
+            ForgotPasswordScreen(
+
             )
         }
     }

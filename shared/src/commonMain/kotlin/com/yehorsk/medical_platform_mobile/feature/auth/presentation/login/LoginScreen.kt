@@ -64,6 +64,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     viewModel: LoginScreenViewModel= koinViewModel(),
     onSignUpClicked: () -> Unit,
+    onForgotPwdClicked: () -> Unit,
     onLoginSuccess: (UserRole) -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -79,6 +80,7 @@ fun LoginScreen(
         onAction = { action ->
             when(action) {
                 is LoginAction.OnSignUpClicked -> onSignUpClicked()
+                is LoginAction.OnForgotPwdClicked -> onForgotPwdClicked()
                 else -> viewModel.onAction(action)
             }
         }
@@ -170,7 +172,7 @@ fun LoginScreenRoot(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                    TextButton(onClick = {}) {
+                    TextButton(onClick = { onAction(LoginAction.OnForgotPwdClicked) }) {
                         Text(stringResource(UiRes.string.forgot_password), color = MaterialTheme.colorScheme.primary)
                     }
                 }

@@ -37,6 +37,7 @@ class LoginScreenViewModel(
             is LoginAction.UpdatePwd -> updatePwd(action.pwd)
             LoginAction.OnSignInClicked -> signIn()
             LoginAction.OnSignUpClicked -> {}
+            LoginAction.OnForgotPwdClicked -> {}
         }
     }
 

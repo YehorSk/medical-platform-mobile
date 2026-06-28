@@ -7,5 +7,6 @@ sealed interface LoginAction {
     data object ChangePwdVisibility: LoginAction
     data object OnSignUpClicked: LoginAction
     data object OnSignInClicked: LoginAction
+    data object OnForgotPwdClicked: LoginAction
 
 }
