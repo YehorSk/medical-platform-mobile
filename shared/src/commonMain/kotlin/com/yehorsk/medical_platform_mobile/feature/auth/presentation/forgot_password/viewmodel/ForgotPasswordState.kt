@@ -14,9 +14,9 @@ data class ForgotPasswordState(
 @Serializable
 data class ForgotPasswordForm(
     val email: String = "",
-    val otpCode: String = "",
-    val newPassword: String = "",
-    val newPasswordConfirm: String = "",
+    val code: String = "",
+    val password: String = "",
+    val passwordConfirm: String = "",
 )
 
 enum class PasswordResetStep { Email, Code, Password }

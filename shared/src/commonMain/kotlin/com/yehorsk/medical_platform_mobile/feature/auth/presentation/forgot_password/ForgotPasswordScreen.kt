@@ -1,7 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,13 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.components.ForgotPwdHeader
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.components.StepIndicator
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordState
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPwdEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.PasswordResetStep
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.forgot_password
@@ -46,10 +48,17 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForgotPasswordScreenViewModel = koinViewModel()
+    viewModel: ForgotPasswordScreenViewModel = koinViewModel(),
+    onUpdatePwdSuccess: () -> Unit
 ) {
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is ForgotPwdEvent.Success -> onUpdatePwdSuccess()
+        }
+    }
 
     ForgotPasswordScreenRoot(
         modifier = modifier,
@@ -69,16 +78,6 @@ fun ForgotPasswordScreenRoot(
         modifier = modifier
             .fillMaxSize(),
     ) { paddingValues ->
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -122,14 +121,14 @@ fun ForgotPasswordScreenRoot(
                             onButtonClicked = { onAction(ForgotPasswordAction.OnSendResetTokenClicked) }
                         )
                         PasswordResetStep.Code -> ForgotPwdSecondStep(
-                            code = state.form.otpCode,
+                            code = state.form.code,
                             isEntryValid = state.isEntryValid,
                             onCodeChanged = { onAction(ForgotPasswordAction.UpdateCode(it)) },
                             onButtonClicked = { onAction(ForgotPasswordAction.OnSendCodeClicked) }
                         )
                         PasswordResetStep.Password -> ForgotPwdThirdStep(
-                            pwd = state.form.newPassword,
-                            pwdConfirm = state.form.newPasswordConfirm,
+                            pwd = state.form.password,
+                            pwdConfirm = state.form.passwordConfirm,
                             isEntryValid = state.isEntryValid,
                             isVisible = state.isPwdVisible,
                             onPwdChanged = { onAction(ForgotPasswordAction.UpdatePassword(it)) },
@@ -139,6 +138,16 @@ fun ForgotPasswordScreenRoot(
                         )
                     }
                 }
+            }
+        }
+        if (state.isLoading) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
     }

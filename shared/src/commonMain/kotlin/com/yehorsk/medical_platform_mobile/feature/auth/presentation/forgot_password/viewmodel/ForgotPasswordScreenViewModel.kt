@@ -1,15 +1,29 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterEvent
+import com.yehorsk.medical_platform_mobile.util.getRole
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class ForgotPasswordScreenViewModel(
     private val authService: AuthService,
 ): ViewModel() {
+
+    private val eventChannel = Channel<ForgotPwdEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(ForgotPasswordState())
     val uiState: StateFlow<ForgotPasswordState> = _uiState.asStateFlow()
@@ -32,39 +46,127 @@ class ForgotPasswordScreenViewModel(
     }
 
     private fun onSendNewPwdClicked() {
-
+        viewModelScope.launch {
+            if(_uiState.value.isEntryValid){
+                _uiState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                authService
+                    .resetPassword(
+                        form = _uiState.value.form
+                    )
+                    .onSuccess { response, _ ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = response.message
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            isEntryValid = false
+                        ) }
+                        eventChannel.send(ForgotPwdEvent.Success)
+                    }.onFailure { dataErrorRemote ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = dataErrorRemote
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                    }
+            }
+        }
     }
 
     private fun onSendCodeClicked() {
-        _uiState.update {
-            it.copy(
-                currentStep = PasswordResetStep.Password,
-                isEntryValid = false
-            )
+        viewModelScope.launch {
+            if(_uiState.value.isEntryValid){
+                _uiState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                authService
+                    .verifyResetCode(
+                        form = _uiState.value.form
+                    )
+                    .onSuccess { response, _ ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = response.message
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            currentStep = PasswordResetStep.Password,
+                            isEntryValid = false,
+                            isLoading = false
+                        ) }
+                    }.onFailure { dataErrorRemote ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = dataErrorRemote
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                    }
+            }
         }
     }
 
     private fun onSendResetTokenClicked() {
-        _uiState.update {
-            it.copy(
-                currentStep = PasswordResetStep.Code,
-                isEntryValid = false
-            )
+        viewModelScope.launch {
+            if(_uiState.value.isEntryValid){
+                _uiState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                authService
+                    .forgotPassword(
+                        form = _uiState.value.form
+                    )
+                    .onSuccess { response, _ ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = response.message
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            currentStep = PasswordResetStep.Code,
+                            isEntryValid = false,
+                            isLoading = false
+                        ) }
+                    }.onFailure { dataErrorRemote ->
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = dataErrorRemote
+                            )
+                        )
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                    }
+            }
         }
     }
 
     private fun updatePwdConfirm(pwd: String) {
-        _uiState.update { it.copy(form = it.form.copy(newPasswordConfirm = pwd)) }
+        _uiState.update { it.copy(form = it.form.copy(passwordConfirm = pwd)) }
         validateForm()
     }
 
     private fun updatePwd(pwd: String) {
-        _uiState.update { it.copy(form = it.form.copy(newPassword = pwd)) }
+        _uiState.update { it.copy(form = it.form.copy(password = pwd)) }
         validateForm()
     }
 
     private fun updateCode(code: String) {
-        _uiState.update { it.copy(form = it.form.copy(otpCode = code)) }
+        _uiState.update { it.copy(form = it.form.copy(code = code)) }
         validateForm()
     }
 
@@ -82,13 +184,13 @@ class ForgotPasswordScreenViewModel(
                     ) }
                 }
                 PasswordResetStep.Code -> {
-                    val isValid = form.otpCode.length == 6 && form.otpCode.all { it.isDigit() }
+                    val isValid = form.code.length == 6 && form.code.all { it.isDigit() }
                     _uiState.update { it.copy(
                         isEntryValid = isValid
                     ) }
                 }
                 PasswordResetStep.Password -> {
-                    val isValid = form.newPassword.isNotEmpty() && (form.newPassword == form.newPasswordConfirm)
+                    val isValid = form.password.isNotEmpty() && (form.password == form.passwordConfirm)
                     _uiState.update { it.copy(
                         isEntryValid = isValid
                     ) }

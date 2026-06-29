@@ -49,7 +49,12 @@ fun NavGraphBuilder.authGraph(
         }
         composable<Screen.ForgotPwd> {
             ForgotPasswordScreen(
-
+                onUpdatePwdSuccess = {
+                    navController.navigate(Screen.Login){
+                        restoreState = true
+                        launchSingleTop = true
+                    }
+                }
             )
         }
     }
