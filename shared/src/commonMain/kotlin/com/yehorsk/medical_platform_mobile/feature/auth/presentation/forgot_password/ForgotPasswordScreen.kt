@@ -116,20 +116,20 @@ fun ForgotPasswordScreenRoot(
                     when (step) {
                         PasswordResetStep.Email -> ForgotPwdFirstStep(
                             email = state.form.email,
-                            isEntryValid = state.isEntryValid,
+                            isEntryValid = state.isEntryValid && !state.isLoading,
                             onEmailChanged = { onAction(ForgotPasswordAction.UpdateEmail(it)) },
                             onButtonClicked = { onAction(ForgotPasswordAction.OnSendResetTokenClicked) }
                         )
                         PasswordResetStep.Code -> ForgotPwdSecondStep(
                             code = state.form.code,
-                            isEntryValid = state.isEntryValid,
+                            isEntryValid = state.isEntryValid && !state.isLoading,
                             onCodeChanged = { onAction(ForgotPasswordAction.UpdateCode(it)) },
                             onButtonClicked = { onAction(ForgotPasswordAction.OnSendCodeClicked) }
                         )
                         PasswordResetStep.Password -> ForgotPwdThirdStep(
                             pwd = state.form.password,
                             pwdConfirm = state.form.passwordConfirm,
-                            isEntryValid = state.isEntryValid,
+                            isEntryValid = state.isEntryValid && !state.isLoading,
                             isVisible = state.isPwdVisible,
                             onPwdChanged = { onAction(ForgotPasswordAction.UpdatePassword(it)) },
                             onPwdConfirmChanged = { onAction(ForgotPasswordAction.UpdatePasswordConfirm(it)) },

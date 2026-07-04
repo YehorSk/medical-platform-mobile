@@ -63,12 +63,14 @@ fun NavGraphBuilder.authGraph(
 private fun navigateToMain(navController: NavController, role: UserRole){
     when(role){
         UserRole.PATIENT -> navController.navigate(Graph.Patient){
-            restoreState = true
-            launchSingleTop = true
+            popUpTo(Graph.Authentication){
+                inclusive = true
+            }
         }
         UserRole.DOCTOR -> navController.navigate(Graph.Doctor){
-            restoreState = true
-            launchSingleTop = true
+            popUpTo(Graph.Authentication){
+                inclusive = true
+            }
         }
         UserRole.ADMIN -> {}
     }

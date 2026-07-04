@@ -97,16 +97,6 @@ fun LoginScreenRoot(
         modifier = modifier
             .fillMaxSize(),
     ) { paddingValues ->
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -182,7 +172,7 @@ fun LoginScreenRoot(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
-                    enabled = state.isEntryValid,
+                    enabled = state.isEntryValid && !state.isLoading,
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
@@ -206,7 +196,16 @@ fun LoginScreenRoot(
                     }
                 }
             }
-
+        }
+        if (state.isLoading) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
 }

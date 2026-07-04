@@ -3,7 +3,7 @@ package com.yehorsk.medical_platform_mobile.feature.auth.data.mappers
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.UserDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.models.AuthData
-import com.yehorsk.medical_platform_mobile.feature.auth.domain.models.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.User
 
 fun AuthDataDto.toAuthData() = AuthData(
     user = user.toUser(),

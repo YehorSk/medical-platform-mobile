@@ -29,11 +29,13 @@ class SessionDataStore(
     override fun observeAuthData(): Flow<AuthData?> {
         return dataStore.data.map { preferences ->
             val base64 = preferences[authInfoKey]
-            base64?.let { decode(it) }
+            Logger.withTag("SessionDataStore observeAuthData").i { "${base64?.let { decode(it) }}" }
+            base64?.let { decode(it) }?.toAuthData()
         }
     }
 
     override suspend fun setAuthData(authData: AuthDataDto) {
+        Logger.i { "Original Refresh Token ${authData.refreshToken}" }
         val serialized = json.encodeToString(authData)
         val encryptedBytes = Crypto.encrypt(serialized.encodeToByteArray())
         val base64 = Base64.encode(encryptedBytes)
@@ -51,13 +53,22 @@ class SessionDataStore(
         return observeAuthData().firstOrNull()?.refreshToken
     }
 
-    private fun decode(base64: String): AuthData? {
+    private fun decode(base64: String): AuthDataDto? {
         return try {
+            Logger.i { "Base64 length = ${base64.length}" }
+
             val encryptedBytes = Base64.decode(base64)
+            Logger.i { "Encrypted bytes = ${encryptedBytes.size}" }
+
             val decryptedBytes = Crypto.decrypt(encryptedBytes)
+            Logger.i { "Decrypted bytes = ${decryptedBytes.size}" }
+
             val jsonString = decryptedBytes.decodeToString()
-            json.decodeFromString<AuthData>(jsonString)
+            Logger.i { "JSON = $jsonString" }
+
+            json.decodeFromString<AuthDataDto>(jsonString)
         } catch (e: Exception) {
+            Logger.e(e) { "Decode failed" }
             null
         }
     }

@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.core.network
 
+import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.data.network.models.RefreshRequestDto
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.network.post
@@ -16,7 +17,6 @@ import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.request.header
@@ -24,6 +24,7 @@ import io.ktor.client.request.post
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
@@ -46,6 +47,14 @@ class HttpClientFactory(
                 socketTimeoutMillis = 20_000L
                 requestTimeoutMillis = 20_000L
             }
+            install(Logging) {
+                logger = object : io.ktor.client.plugins.logging.Logger {
+                    override fun log(message: String) {
+                        Logger.d(message)
+                    }
+                }
+                level = LogLevel.ALL
+            }
             defaultRequest {
                 contentType(ContentType.Application.Json)
             }
@@ -61,6 +70,9 @@ class HttpClientFactory(
                                     refreshToken = it.refreshToken
                                 )
                             }
+                    }
+                    sendWithoutRequest { request ->
+                        !request.url.encodedPath.contains("auth/")
                     }
                     refreshTokens {
                         if(response.request.url.encodedPath.contains("auth/")) {

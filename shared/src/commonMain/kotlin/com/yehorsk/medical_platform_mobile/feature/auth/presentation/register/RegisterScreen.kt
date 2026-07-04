@@ -98,16 +98,6 @@ fun RegisterScreenRoot(
         modifier = modifier
             .fillMaxSize(),
     ) { paddingValues ->
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -213,6 +203,16 @@ fun RegisterScreenRoot(
                         Text(stringResource(UiRes.string.sign_in), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     }
                 }
+            }
+        }
+        if (state.isLoading) {
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
     }

@@ -55,11 +55,11 @@ fun PatientDashboardScreenRoot(
         DashboardTopBar(
             state = AppState(
                 user = User(
-                    id = 0,
+                    id = "0",
                     email = "test@gmail.com",
                     firstName = "John",
                     lastName = "Doe",
-                    role = UserRole.PATIENT,
+                    role = "Patient",
                     title = "Bc.",
                     createdAt = Clock.System.now()
                 ),

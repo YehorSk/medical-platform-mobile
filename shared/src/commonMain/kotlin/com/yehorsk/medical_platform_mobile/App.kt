@@ -1,11 +1,19 @@
 package com.yehorsk.medical_platform_mobile
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
@@ -14,18 +22,34 @@ import com.yehorsk.medical_platform_mobile.navigation.Graph
 import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
 import com.yehorsk.theme.AppTheme
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-fun App() {
+fun App(
+    viewModel: MainViewModel = koinViewModel()
+) {
 
     val navController = rememberNavController()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
 
     val scope = rememberCoroutineScope()
+
+//    ObserveAsEvents(viewModel.events){event ->
+//        when(event) {
+//            is MainEvent.OnSessionExpired -> {
+//                navController.navigate(Graph.Authentication) {
+//                    popUpTo(Graph.Authentication) {
+//                        inclusive = false
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
         scope.launch{
@@ -45,10 +69,21 @@ fun App() {
 
     AppTheme {
         CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-            NavigationRoot(
-                navController = navController,
-                startDestination = Graph.Authentication
-            )
+            if(!state.isCheckingAuth) {
+                NavigationRoot(
+                    navController = navController,
+                    startDestination = if(state.isLoggedIn){
+                        when(state.userRole){
+                            UserRole.PATIENT -> Graph.Patient
+                            UserRole.DOCTOR -> Graph.Doctor
+                            UserRole.ADMIN -> Graph.Authentication
+                            null -> Graph.Authentication
+                        }
+                    }else{
+                        Graph.Authentication
+                    }
+                )
+            }
         }
     }
 }
