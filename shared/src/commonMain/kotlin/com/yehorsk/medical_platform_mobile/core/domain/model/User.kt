@@ -9,7 +9,12 @@ data class User(
     val firstName: String,
     val lastName: String,
     val role: String,
-    val title: String ? = null,
+    val title: String = "",
+    val phone: String = "",
+    val address: String = "",
+    val emergencyContact: String = "",
+    val emergencyContactName: String = "",
+    val emergencyContactPhone: String = "",
     val createdAt: Instant ? = null,
     val patient: Patient? = null,
     val doctor: Doctor? = null

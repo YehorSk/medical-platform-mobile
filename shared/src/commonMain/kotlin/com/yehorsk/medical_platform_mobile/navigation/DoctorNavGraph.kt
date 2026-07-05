@@ -11,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.DoctorDashboardScreen
-import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
 
 fun NavGraphBuilder.doctorNavGraph(
     modifier: Modifier = Modifier,
@@ -44,7 +43,7 @@ fun NavGraphBuilder.doctorNavGraph(
                 },
             )
         }
-        composable<Screen.Profile> {
+        composable<Screen.Settings> {
             Box(
                 modifier = modifier
                     .fillMaxSize(),

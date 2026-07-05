@@ -42,11 +42,22 @@
     <string name="yesterday">Yesterday</string>
     <string name="today_x">Today, %1$s</string>
     <string name="yesterday_x">Yesterday, %1$s</string>
+    <string name="go_back">Go Back</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="calendar">Calendar</string>
     <string name="messages">Messages</string>
-    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+
+    <!-- Profile Form -->
+    <string name="first_name_input">First Name</string>
+    <string name="last_name_input">Second Name</string>
+    <string name="phone_input">Phone</string>
+    <string name="title_input">Title</string>
+    <string name="address_input">Address</string>
+    <string name="emergency_contact_name_input">Emergency Contact Name</string>
+    <string name="emergency_contact_phone_input">Emergency Contact Phone</string>
+    <string name="save_btn">Save Changes</string>
 
     <string name="error_disk_full">Oops, it looks like your storage is full!</string>
     <string name="error_not_found">Couldn't find the requested item</string>

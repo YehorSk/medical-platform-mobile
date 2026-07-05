@@ -1,15 +1,9 @@
 package com.yehorsk.medical_platform_mobile
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
@@ -39,17 +33,17 @@ fun App(
 
     val scope = rememberCoroutineScope()
 
-//    ObserveAsEvents(viewModel.events){event ->
-//        when(event) {
-//            is MainEvent.OnSessionExpired -> {
-//                navController.navigate(Graph.Authentication) {
-//                    popUpTo(Graph.Authentication) {
-//                        inclusive = false
-//                    }
-//                }
-//            }
-//        }
-//    }
+    ObserveAsEvents(viewModel.events){event ->
+        when(event) {
+            is MainEvent.OnSessionExpired -> {
+                navController.navigate(Graph.Authentication) {
+                    popUpTo(Graph.Authentication) {
+                        inclusive = false
+                    }
+                }
+            }
+        }
+    }
 
     ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
         scope.launch{

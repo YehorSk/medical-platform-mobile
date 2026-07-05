@@ -10,8 +10,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
-import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListState
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
 
 fun NavGraphBuilder.patientNavGraph(
     modifier: Modifier = Modifier,
@@ -44,16 +45,23 @@ fun NavGraphBuilder.patientNavGraph(
                 },
             )
         }
-        composable<Screen.Profile> {
-            Box(
+        composable<Screen.Settings> {
+            SettingsScreen(
                 modifier = modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "Profile"
-                )
-            }
+                navigateToProfilePage = {
+                    navController.navigate(Screen.Profile)
+                }
+            )
+        }
+        composable<Screen.Profile>{
+            ProfileScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

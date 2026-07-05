@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
+import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -51,7 +52,6 @@ class MainViewModel(
         )
 
     fun authenticate() {
-        Logger.withTag("MainViewModel").i { "authenticate" }
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -62,7 +62,6 @@ class MainViewModel(
             authService
                 .me()
                 .onSuccess { data, _ ->
-                    Logger.withTag("MainViewModel").i { "onSuccess" }
                     _uiState.update {
                         it.copy(
                             isCheckingAuth = false,
@@ -73,21 +72,38 @@ class MainViewModel(
                     }
                 }
                 .onFailure { dataErrorRemote ->
-                    Logger.withTag("MainViewModel").i { "onFailure - $dataErrorRemote" }
-                    _uiState.update {
-                        sessionStorage.clearAuthData()
-                        it.copy(
-                            isCheckingAuth = false,
-                            isLoggedIn = false,
-                            isLoading = false
-                        )
+                    when(dataErrorRemote){
+                        DataError.Remote.Status.UNAUTHORIZED -> {
+                            sessionStorage.clearAuthData()
+                            _uiState.update {
+                                it.copy(
+                                    isCheckingAuth = false,
+                                    isLoggedIn = false,
+                                    isLoading = false
+                                )
+                            }
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = dataErrorRemote
+                                )
+                            )
+                            eventChannel.send(MainEvent.OnSessionExpired)
+                        }
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = dataErrorRemote
+                                )
+                            )
+                            _uiState.update {
+                                it.copy(
+                                    isCheckingAuth = false,
+                                    isLoggedIn = false,
+                                    isLoading = false
+                                )
+                            }
+                        }
                     }
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = dataErrorRemote
-                        )
-                    )
-                    eventChannel.send(MainEvent.OnSessionExpired)
                 }
         }
     }

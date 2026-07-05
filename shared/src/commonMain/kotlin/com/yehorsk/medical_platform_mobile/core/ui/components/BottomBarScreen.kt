@@ -1,16 +1,15 @@
 package com.yehorsk.medical_platform_mobile.core.ui.components
 
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.yehorsk.medical_platform_mobile.navigation.Screen
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.account_circle_24px
 import medicalplatformmobile.shared.generated.resources.calendar
 import medicalplatformmobile.shared.generated.resources.calendar_today_24px
 import medicalplatformmobile.shared.generated.resources.chat_24px
 import medicalplatformmobile.shared.generated.resources.dashboard
 import medicalplatformmobile.shared.generated.resources.home_24px
 import medicalplatformmobile.shared.generated.resources.messages
-import medicalplatformmobile.shared.generated.resources.profile
+import medicalplatformmobile.shared.generated.resources.settings
+import medicalplatformmobile.shared.generated.resources.settings_24px
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
@@ -39,8 +38,8 @@ sealed class BottomBarScreen(
     )
 
     object Profile : BottomBarScreen(
-        screen = Screen.Profile,
-        title = UiRes.string.profile,
-        icon = UiRes.drawable.account_circle_24px
+        screen = Screen.Settings,
+        title = UiRes.string.settings,
+        icon = UiRes.drawable.settings_24px
     )
 }

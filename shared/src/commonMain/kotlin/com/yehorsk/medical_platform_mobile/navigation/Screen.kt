@@ -11,6 +11,7 @@ sealed interface Screen {
     @Serializable data object Dashboard : Screen
     @Serializable data object Calendar : Screen
     @Serializable data object Messages : Screen
+    @Serializable data object Settings : Screen
     @Serializable data object Profile : Screen
 
 }
