@@ -61,13 +61,13 @@ class MainViewModel(
             }
             authService
                 .me()
-                .onSuccess { data, _ ->
+                .onSuccess { response ->
                     _uiState.update {
                         it.copy(
                             isCheckingAuth = false,
                             isLoggedIn = true,
                             isLoading = false,
-                            userRole = data.getUserRole()
+                            userRole = response.data.getUserRole()
                         )
                     }
                 }

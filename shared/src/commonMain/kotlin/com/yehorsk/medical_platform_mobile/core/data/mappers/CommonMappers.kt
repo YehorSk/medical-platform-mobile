@@ -1,6 +1,6 @@
 package com.yehorsk.medical_platform_mobile.core.data.mappers
 
-import com.yehorsk.medical_platform_mobile.core.data.network.models.MessageResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.MessageResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.MessageResponse
 import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterFormErrors

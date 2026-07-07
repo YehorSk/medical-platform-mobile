@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.core.network
+package com.yehorsk.medical_platform_mobile.core.data.network
 
 import kotlinx.coroutines.flow.Flow
 

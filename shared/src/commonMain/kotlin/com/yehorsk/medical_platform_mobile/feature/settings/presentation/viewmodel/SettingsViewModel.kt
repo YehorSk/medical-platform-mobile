@@ -115,22 +115,20 @@ class SettingsViewModel(
             ) }
             settingsService
                 .updateUserData(_uiState.value.form)
-                .onSuccess { data, message ->
+                .onSuccess { response ->
                     current?.let { authData ->
                         val updated = authData.copy(
-                            user = data
+                            user = response.data
                         )
                         sessionStorage.setAuthData(authData = updated.toAuthDataDto())
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
-                        message?.let {
-                            SnackbarController.sendEvent(
-                                event = SnackbarEvent(
-                                    message = message
-                                )
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = response.message
                             )
-                        }
+                        )
                     }
                 }.onFailure { dataErrorRemote ->
                     _uiState.update { it.copy(

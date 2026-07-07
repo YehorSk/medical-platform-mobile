@@ -59,13 +59,17 @@ class LoginScreenViewModel(
                     .login(
                         form = _uiState.value.loginForm
                     )
-                    .onSuccess { data, message ->
-                        sessionStorage.setAuthData(authData = data.toAuthDataDto())
+                    .onSuccess { response ->
+                        sessionStorage.setAuthData(authData = response.data.toAuthDataDto())
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
-                        eventChannel.send(LoginEvent.Success(getRole(data.user.role)))
-                        Logger.withTag("LoginScreenViewModel").i { message ?: "Test" }
+                        eventChannel.send(LoginEvent.Success(getRole(response.data.user.role)))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = response.message
+                            )
+                        )
                     }.onFailure { dataErrorRemote ->
                         _uiState.update { it.copy(
                             isLoading = false

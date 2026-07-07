@@ -1,13 +1,11 @@
-package com.yehorsk.medical_platform_mobile.core.network
+package com.yehorsk.medical_platform_mobile.core.data.network
 
 import co.touchlab.kermit.Logger
-import com.yehorsk.medical_platform_mobile.core.data.network.models.RefreshRequestDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.RefreshRequestDto
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
-import com.yehorsk.medical_platform_mobile.core.network.post
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
-import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthData
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
@@ -18,9 +16,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.request.header
-import io.ktor.client.request.post
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -92,7 +87,7 @@ class HttpClientFactory(
                             builder = {
                                 markAsRefreshTokenRequest()
                             }
-                        ).onSuccess { dto, _ ->
+                        ).onSuccess { dto ->
                             sessionStorage.setAuthData(dto)
                             bearerTokens = BearerTokens(
                                 accessToken = dto.accessToken,

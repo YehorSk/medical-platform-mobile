@@ -1,8 +1,7 @@
-package com.yehorsk.medical_platform_mobile.core.network
+package com.yehorsk.medical_platform_mobile.core.data.network
 
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
-import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.JsonConvertException
@@ -11,6 +10,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import java.io.IOException
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 actual suspend fun <T> platformSafeCall(
@@ -24,7 +24,7 @@ actual suspend fun <T> platformSafeCall(
         Result.Failure(DataError.Remote.Status.NO_INTERNET)
     } catch (e: ConnectException) {
         Result.Failure(DataError.Remote.Status.NO_INTERNET)
-    } catch (e: java.net.SocketTimeoutException) {
+    } catch (e: SocketTimeoutException) {
         Result.Failure(DataError.Remote.Status.REQUEST_TIMEOUT)
     } catch (e: HttpRequestTimeoutException) {
         Result.Failure(DataError.Remote.Status.REQUEST_TIMEOUT)

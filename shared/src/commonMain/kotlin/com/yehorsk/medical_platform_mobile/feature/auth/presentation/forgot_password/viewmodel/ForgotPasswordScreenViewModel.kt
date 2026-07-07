@@ -57,7 +57,7 @@ class ForgotPasswordScreenViewModel(
                     .resetPassword(
                         form = _uiState.value.form
                     )
-                    .onSuccess { response, _ ->
+                    .onSuccess { response ->
                         SnackbarController.sendEvent(
                             event = SnackbarEvent(
                                 message = response.message
@@ -93,7 +93,7 @@ class ForgotPasswordScreenViewModel(
                     .verifyResetCode(
                         form = _uiState.value.form
                     )
-                    .onSuccess { response, _ ->
+                    .onSuccess { response ->
                         SnackbarController.sendEvent(
                             event = SnackbarEvent(
                                 message = response.message
@@ -130,7 +130,7 @@ class ForgotPasswordScreenViewModel(
                     .forgotPassword(
                         form = _uiState.value.form
                     )
-                    .onSuccess { response, _ ->
+                    .onSuccess { response ->
                         SnackbarController.sendEvent(
                             event = SnackbarEvent(
                                 message = response.message

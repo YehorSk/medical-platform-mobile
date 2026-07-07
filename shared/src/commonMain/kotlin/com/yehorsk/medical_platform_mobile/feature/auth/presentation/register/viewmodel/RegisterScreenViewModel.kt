@@ -151,7 +151,7 @@ class RegisterScreenViewModel(
                     .register(
                         form = _uiState.value.registerForm
                     )
-                    .onSuccess { response, _ ->
+                    .onSuccess { response ->
                         eventChannel.send(RegisterEvent.Success)
                         SnackbarController.sendEvent(
                             event = SnackbarEvent(

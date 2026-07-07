@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.domain
 
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponse
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.domain.model.MessageResponse
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.util.DataError
@@ -12,19 +14,19 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.vi
 
 interface AuthService {
 
-    suspend fun login(form: LoginForm): Result<AuthData, DataError.Remote>
+    suspend fun login(form: LoginForm): Result<ApiResponseWithData<AuthData>, DataError.Remote>
 
-    suspend fun register(form: RegisterForm): Result<MessageResponse, DataError.Remote>
+    suspend fun register(form: RegisterForm): Result<ApiResponse, DataError.Remote>
 
-    suspend fun refresh(token: RefreshTokenDto): Result<AuthData, DataError.Remote>
+    suspend fun refresh(token: RefreshTokenDto): Result<ApiResponseWithData<AuthData>, DataError.Remote>
 
-    suspend fun me(): Result<User, DataError.Remote>
+    suspend fun me(): Result<ApiResponseWithData<User>, DataError.Remote>
 
-    suspend fun logout(): Result<MessageResponse, DataError.Remote>
+    suspend fun logout(): Result<ApiResponse, DataError.Remote>
 
-    suspend fun forgotPassword(form: ForgotPasswordForm): Result<MessageResponse, DataError.Remote>
+    suspend fun forgotPassword(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote>
 
-    suspend fun verifyResetCode(form: ForgotPasswordForm): Result<MessageResponse, DataError.Remote>
+    suspend fun verifyResetCode(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote>
 
-    suspend fun resetPassword(form: ForgotPasswordForm): Result<MessageResponse, DataError.Remote>
+    suspend fun resetPassword(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote>
 }

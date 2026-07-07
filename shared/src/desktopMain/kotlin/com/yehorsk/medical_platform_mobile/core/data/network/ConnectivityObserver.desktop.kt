@@ -1,11 +1,9 @@
-package com.yehorsk.medical_platform_mobile.core.network
+package com.yehorsk.medical_platform_mobile.core.data.network
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import java.net.InetSocketAddress
 import java.net.NetworkInterface
