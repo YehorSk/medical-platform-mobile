@@ -102,7 +102,7 @@ fun SettingsMainHeader(
                                 )
                         ) {
                             Text(
-                                text = "${user.firstName} ${user.lastName}",
+                                text = "${user.title} ${user.firstName} ${user.lastName}",
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
                                 fontSize = 18.sp

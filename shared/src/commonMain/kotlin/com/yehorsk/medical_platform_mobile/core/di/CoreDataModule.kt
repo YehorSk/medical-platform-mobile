@@ -2,6 +2,8 @@ package com.yehorsk.medical_platform_mobile.core.di
 
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SessionDataStore
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SettingsDataStore
+import com.yehorsk.medical_platform_mobile.core.data.logger.KermitLogger
+import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SettingsStorage
 import org.koin.core.module.Module
@@ -15,4 +17,5 @@ val coreDataModule = module {
     includes(platformCoreDataModule)
     singleOf(::SessionDataStore) bind SessionStorage::class
     singleOf(::SettingsDataStore) bind SettingsStorage::class
+    single<MainLogger> { KermitLogger }
 }

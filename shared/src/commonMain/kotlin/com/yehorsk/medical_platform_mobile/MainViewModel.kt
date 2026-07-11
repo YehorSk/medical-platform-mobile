@@ -2,24 +2,16 @@ package com.yehorsk.medical_platform_mobile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
-import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.RefreshTokenDto
-import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
-import com.yehorsk.medical_platform_mobile.util.getRole
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.WhileSubscribed
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -53,58 +45,63 @@ class MainViewModel(
 
     fun authenticate() {
         viewModelScope.launch {
+            val user = sessionStorage.observeAuthData().firstOrNull()
             _uiState.update {
                 it.copy(
                     isCheckingAuth = true,
                     isLoading = true
                 )
             }
-            authService
-                .me()
-                .onSuccess { response ->
-                    _uiState.update {
-                        it.copy(
-                            isCheckingAuth = false,
-                            isLoggedIn = true,
-                            isLoading = false,
-                            userRole = response.data.getUserRole()
-                        )
-                    }
-                }
-                .onFailure { dataErrorRemote ->
-                    when(dataErrorRemote){
-                        DataError.Remote.Status.UNAUTHORIZED -> {
-                            sessionStorage.clearAuthData()
-                            _uiState.update {
-                                it.copy(
-                                    isCheckingAuth = false,
-                                    isLoggedIn = false,
-                                    isLoading = false
-                                )
-                            }
-                            SnackbarController.sendEvent(
-                                event = SnackbarEvent(
-                                    error = dataErrorRemote
-                                )
+            if(user != null){
+                authService
+                    .me()
+                    .onSuccess { response ->
+                        _uiState.update {
+                            it.copy(
+                                isCheckingAuth = false,
+                                isLoggedIn = true,
+                                isLoading = false,
+                                userRole = response.data.getUserRole()
                             )
-                            eventChannel.send(MainEvent.OnSessionExpired)
-                        }
-                        else -> {
-                            SnackbarController.sendEvent(
-                                event = SnackbarEvent(
-                                    error = dataErrorRemote
-                                )
-                            )
-                            _uiState.update {
-                                it.copy(
-                                    isCheckingAuth = false,
-                                    isLoggedIn = false,
-                                    isLoading = false
-                                )
-                            }
                         }
                     }
+                    .onFailure { dataErrorRemote ->
+                        when(dataErrorRemote){
+                            DataError.Remote.Status.UNAUTHORIZED -> {
+                                sessionStorage.clearAuthData()
+                                _uiState.update {
+                                    it.copy(
+                                        isCheckingAuth = false,
+                                        isLoggedIn = false,
+                                        isLoading = false
+                                    )
+                                }
+                                SnackbarController.sendEvent(
+                                    event = SnackbarEvent(
+                                        error = dataErrorRemote
+                                    )
+                                )
+                                eventChannel.send(MainEvent.OnSessionExpired)
+                            }
+                            DataError.Remote.Status.NO_INTERNET -> {
+                                _uiState.update { it.copy(isCheckingAuth = false, isLoggedIn = true) }
+                            }
+                            else -> {
+                                _uiState.update { it.copy(isCheckingAuth = false, isLoggedIn = false) }
+                                SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                            }
+
+                        }
+                    }
+            }else{
+                _uiState.update {
+                    it.copy(
+                        isCheckingAuth = false,
+                        isLoggedIn = false,
+                        isLoading = false
+                    )
                 }
+            }
         }
     }
 
