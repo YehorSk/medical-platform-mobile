@@ -37,7 +37,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun SettingsMainHeader(
     modifier: Modifier = Modifier,
-    state: SettingsState,
+    state: SettingsState ?= null,
     showGoBackButton: Boolean = false,
     showUserData: Boolean = true,
     navigateToProfilePage: () -> Unit= {},
@@ -49,37 +49,35 @@ fun SettingsMainHeader(
             .background(MaterialTheme.colorScheme.primary)
             .padding(16.dp)
     ){
-        state.user?.let{ user ->
-            Column {
-                if(showGoBackButton){
-                    Row(
+        Column {
+            if(showGoBackButton){
+                Row(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clickable(
+                            indication = null,
+                            onClick = {
+                                onGoBackButtonClicked()
+                            },
+                            interactionSource = remember { MutableInteractionSource() }
+                        )
+                ) {
+                    Icon(
+                        painter = painterResource(UiRes.drawable.arrow_back_24px),
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+                    Text(
                         modifier = Modifier
-                            .padding(
-                                bottom = 8.dp
-                            )
-                            .clickable(
-                                indication = null,
-                                onClick = {
-                                    onGoBackButtonClicked()
-                                },
-                                interactionSource = remember { MutableInteractionSource() }
-                            )
-                    ) {
-                        Icon(
-                            painter = painterResource(UiRes.drawable.arrow_back_24px),
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(start = 8.dp),
-                            text = stringResource(UiRes.string.go_back),
-                            fontSize = 18.sp,
-                            color = Color.White,
-                        )
-                    }
+                            .padding(start = 8.dp),
+                        text = stringResource(UiRes.string.go_back),
+                        fontSize = 18.sp,
+                        color = Color.White,
+                    )
                 }
-                if(showUserData){
+            }
+            if(showUserData){
+                state?.user?.let { user ->
                     Row {
                         Box(
                             modifier = Modifier
@@ -116,19 +114,19 @@ fun SettingsMainHeader(
                     }
                 }
             }
-            if(!showGoBackButton){
-                IconButton(
-                    modifier = Modifier.align(Alignment.TopEnd),
-                    onClick = {
-                        navigateToProfilePage()
-                    }
-                ){
-                    Icon(
-                        painter = painterResource(UiRes.drawable.edit_24px),
-                        contentDescription = null,
-                        tint = Color.White
-                    )
+        }
+        if(!showGoBackButton){
+            IconButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = {
+                    navigateToProfilePage()
                 }
+            ){
+                Icon(
+                    painter = painterResource(UiRes.drawable.edit_24px),
+                    contentDescription = null,
+                    tint = Color.White
+                )
             }
         }
     }

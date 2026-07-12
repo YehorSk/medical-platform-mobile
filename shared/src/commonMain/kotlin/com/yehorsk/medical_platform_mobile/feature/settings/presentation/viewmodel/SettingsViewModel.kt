@@ -2,17 +2,13 @@ package com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
-import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toUserDto
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.medical_platform_mobile.feature.settings.domain.SettingsService
-import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
@@ -50,6 +46,7 @@ class SettingsViewModel(
             is SettingsAction.UpdateSecondName -> { updateSecondName(action.value) }
             is SettingsAction.UpdateTitle -> { updateTitle(action.value) }
             SettingsAction.GoToProfileScreen -> {}
+            SettingsAction.GoToUpdatePwdScreen -> {}
             SettingsAction.OnGoBackClicked -> {}
         }
     }

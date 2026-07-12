@@ -76,4 +76,26 @@
     <string name="error_unable_to_send_message">An error happened while sending the message</string>
     <string name="validation_error">Please check your input</string>
 
+    <!-- Settings List -->
+    <string name="settings_account_header">Account</string>
+
+    <string name="settings_change_password">Change Password</string>
+    <string name="settings_change_password_descr">Update your password</string>
+
+    <string name="settings_access_control">Access Control</string>
+    <string name="settings_access_control_descr">Manage who can view your records</string>
+
+    <string name="settings_sign_out">Sign Out</string>
+
+    <string name="input_current_password_header">Current Password</string>
+    <string name="input_current_password_placeloder">Enter current password</string>
+
+    <string name="input_new_password_header">New Password</string>
+    <string name="input_new_password_placeloder">Enter new password</string>
+
+    <string name="input_confirm_password_header">New Password</string>
+    <string name="input_confirm_password_placeloder">Re-enter new password</string>
+
+    <string name="button_update_password">Update Password</string>
+
 </resources>

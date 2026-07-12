@@ -13,6 +13,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.C
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.UpdatePasswordScreen
 
 fun NavGraphBuilder.patientNavGraph(
     modifier: Modifier = Modifier,
@@ -51,11 +52,23 @@ fun NavGraphBuilder.patientNavGraph(
                     .fillMaxSize(),
                 navigateToProfilePage = {
                     navController.navigate(Screen.Profile)
+                },
+                navigateToUpdatePwdPage = {
+                    navController.navigate(Screen.UpdatePwd)
                 }
             )
         }
         composable<Screen.Profile>{
             ProfileScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<Screen.UpdatePwd>{
+            UpdatePasswordScreen(
                 modifier = modifier
                     .fillMaxSize(),
                 onGoBackClicked = {

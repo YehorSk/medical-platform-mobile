@@ -13,5 +13,6 @@ sealed interface Screen {
     @Serializable data object Messages : Screen
     @Serializable data object Settings : Screen
     @Serializable data object Profile : Screen
+    @Serializable data object UpdatePwd : Screen
 
 }

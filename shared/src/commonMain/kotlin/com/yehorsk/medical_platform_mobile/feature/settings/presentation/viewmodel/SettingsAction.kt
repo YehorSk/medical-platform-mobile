@@ -22,4 +22,6 @@ sealed interface SettingsAction {
 
     data object GoToProfileScreen: SettingsAction
 
+    data object GoToUpdatePwdScreen: SettingsAction
+
 }
