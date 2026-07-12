@@ -54,6 +54,18 @@ class UpdatePasswordViewModel(
             UpdatePasswordAction.OnGoBackClicked -> {
 
             }
+
+            UpdatePasswordAction.ChangeCurrentPwdVisibility -> {
+                _uiState.update { it.copy(currentPwdVisible = !it.currentPwdVisible) }
+            }
+
+            UpdatePasswordAction.ChangePwdConfirmVisibility -> {
+                _uiState.update { it.copy(pwdConfirmVisible = !it.pwdConfirmVisible) }
+            }
+
+            UpdatePasswordAction.ChangePwdVisibility -> {
+                _uiState.update { it.copy(pwdVisible = !it.pwdVisible) }
+            }
         }
     }
 

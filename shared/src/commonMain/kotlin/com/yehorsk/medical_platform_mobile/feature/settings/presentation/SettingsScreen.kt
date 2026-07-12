@@ -58,8 +58,7 @@ fun SettingsScreenRoot(
             .verticalScroll(rememberScrollState())
     ) {
         SettingsMainHeader(
-            state = state,
-            navigateToProfilePage = { onAction(SettingsAction.GoToProfileScreen) }
+            state = state
         )
         SettingsList(
             modifier = Modifier.weight(1f),

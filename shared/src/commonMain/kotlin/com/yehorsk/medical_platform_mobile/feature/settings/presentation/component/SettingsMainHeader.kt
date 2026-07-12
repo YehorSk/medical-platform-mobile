@@ -40,7 +40,6 @@ fun SettingsMainHeader(
     state: SettingsState ?= null,
     showGoBackButton: Boolean = false,
     showUserData: Boolean = true,
-    navigateToProfilePage: () -> Unit= {},
     onGoBackButtonClicked: () -> Unit= {}
 ){
     Box(
@@ -115,20 +114,6 @@ fun SettingsMainHeader(
                 }
             }
         }
-        if(!showGoBackButton){
-            IconButton(
-                modifier = Modifier.align(Alignment.TopEnd),
-                onClick = {
-                    navigateToProfilePage()
-                }
-            ){
-                Icon(
-                    painter = painterResource(UiRes.drawable.edit_24px),
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            }
-        }
     }
 }
 
@@ -146,8 +131,7 @@ fun SettingsMainHeaderPreview(){
                     lastName = "Doe",
                     role = "PATIENT"
                 )
-            ),
-            navigateToProfilePage = {}
+            )
         )
     }
 }

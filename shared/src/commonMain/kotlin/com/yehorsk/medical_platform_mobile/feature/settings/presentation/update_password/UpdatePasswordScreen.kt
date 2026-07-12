@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.settings.presentation
+package com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsMainHeader
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePasswordAction
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePasswordState
@@ -95,25 +95,31 @@ fun ChangePwdForm(
             .fillMaxSize()
             .padding(horizontal = 24.dp, vertical = 32.dp)
     ) {
-        DefaultTextField(
+        PwdTextField(
             value = state.form.currentPassword,
             header = stringResource(UiRes.string.input_current_password_header),
             placeholder = stringResource(UiRes.string.input_current_password_placeloder),
-            onValueChange = { onAction(UpdatePasswordAction.OnCurrentPasswordChanged(it)) }
+            onValueChange = { onAction(UpdatePasswordAction.OnCurrentPasswordChanged(it)) },
+            passwordVisible = state.currentPwdVisible,
+            onPasswordVisibleChange = { onAction(UpdatePasswordAction.ChangeCurrentPwdVisibility) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DefaultTextField(
+        PwdTextField(
             value = state.form.password,
             header = stringResource(UiRes.string.input_new_password_header),
             placeholder = stringResource(UiRes.string.input_new_password_placeloder),
-            onValueChange = { onAction(UpdatePasswordAction.OnNewPasswordChanged(it)) }
+            onValueChange = { onAction(UpdatePasswordAction.OnNewPasswordChanged(it)) },
+            passwordVisible = state.pwdVisible,
+            onPasswordVisibleChange = { onAction(UpdatePasswordAction.ChangePwdVisibility) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        DefaultTextField(
+        PwdTextField(
             value = state.form.passwordConfirm,
             header = stringResource(UiRes.string.input_confirm_password_header),
             placeholder = stringResource(UiRes.string.input_confirm_password_placeloder),
-            onValueChange = { onAction(UpdatePasswordAction.OnNewPasswordConfirmChanged(it)) }
+            onValueChange = { onAction(UpdatePasswordAction.OnNewPasswordConfirmChanged(it)) },
+            passwordVisible = state.pwdConfirmVisible,
+            onPasswordVisibleChange = { onAction(UpdatePasswordAction.ChangePwdConfirmVisibility) }
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(

@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 data class UpdatePasswordState(
     val isLoading: Boolean = false,
     val isValid: Boolean = false,
+    val currentPwdVisible: Boolean = false,
+    val pwdVisible: Boolean = false,
+    val pwdConfirmVisible: Boolean = false,
     val form: UpdatePwdForm = UpdatePwdForm()
 )
 

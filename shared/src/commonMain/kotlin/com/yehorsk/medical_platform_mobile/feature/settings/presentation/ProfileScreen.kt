@@ -1,9 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.settings.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,33 +13,26 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsAction
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsMainHeader
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsState
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.address_input
-import medicalplatformmobile.shared.generated.resources.email_input
-import medicalplatformmobile.shared.generated.resources.email_input_placeholder
 import medicalplatformmobile.shared.generated.resources.emergency_contact_name_input
 import medicalplatformmobile.shared.generated.resources.emergency_contact_phone_input
 import medicalplatformmobile.shared.generated.resources.first_name_input
 import medicalplatformmobile.shared.generated.resources.last_name_input
 import medicalplatformmobile.shared.generated.resources.phone_input
 import medicalplatformmobile.shared.generated.resources.save_btn
-import medicalplatformmobile.shared.generated.resources.sign_in
-import medicalplatformmobile.shared.generated.resources.sign_up
 import medicalplatformmobile.shared.generated.resources.title_input
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -88,10 +78,12 @@ fun ProfileScreenRoot(
                 onAction(SettingsAction.OnGoBackClicked)
             }
         )
-        ProfileForm(
-            state = state,
-            onAction = { onAction(it) }
-        )
+        if(!state.isLoading){
+            ProfileForm(
+                state = state,
+                onAction = { onAction(it) }
+            )
+        }
     }
 }
 

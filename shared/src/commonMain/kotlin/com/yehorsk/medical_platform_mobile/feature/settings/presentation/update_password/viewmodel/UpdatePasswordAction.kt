@@ -6,4 +6,7 @@ sealed interface UpdatePasswordAction {
     data class OnNewPasswordConfirmChanged(val value: String) : UpdatePasswordAction
     data object OnSubmit : UpdatePasswordAction
     data object OnGoBackClicked : UpdatePasswordAction
+    data object ChangeCurrentPwdVisibility : UpdatePasswordAction
+    data object ChangePwdVisibility : UpdatePasswordAction
+    data object ChangePwdConfirmVisibility : UpdatePasswordAction
 }
