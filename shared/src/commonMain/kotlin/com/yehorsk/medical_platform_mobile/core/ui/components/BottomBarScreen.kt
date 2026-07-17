@@ -7,7 +7,9 @@ import medicalplatformmobile.shared.generated.resources.calendar_today_24px
 import medicalplatformmobile.shared.generated.resources.chat_24px
 import medicalplatformmobile.shared.generated.resources.dashboard
 import medicalplatformmobile.shared.generated.resources.home_24px
-import medicalplatformmobile.shared.generated.resources.messages
+import medicalplatformmobile.shared.generated.resources.chat
+import medicalplatformmobile.shared.generated.resources.history_24px
+import medicalplatformmobile.shared.generated.resources.records
 import medicalplatformmobile.shared.generated.resources.settings
 import medicalplatformmobile.shared.generated.resources.settings_24px
 import org.jetbrains.compose.resources.DrawableResource
@@ -25,16 +27,22 @@ sealed class BottomBarScreen(
        icon = UiRes.drawable.home_24px
    )
 
+    object Chat : BottomBarScreen(
+        screen = Screen.Chat,
+        title = UiRes.string.chat,
+        icon = UiRes.drawable.chat_24px
+    )
+
+    object Records : BottomBarScreen(
+        screen = Screen.Records,
+        title = UiRes.string.records,
+        icon = UiRes.drawable.history_24px
+    )
+
     object Calendar : BottomBarScreen(
         screen = Screen.Calendar,
         title = UiRes.string.calendar,
         icon = UiRes.drawable.calendar_today_24px
-    )
-
-    object Messages : BottomBarScreen(
-        screen = Screen.Messages,
-        title = UiRes.string.messages,
-        icon = UiRes.drawable.chat_24px
     )
 
     object Profile : BottomBarScreen(

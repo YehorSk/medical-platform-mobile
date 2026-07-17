@@ -10,7 +10,8 @@ sealed interface Screen {
 
     @Serializable data object Dashboard : Screen
     @Serializable data object Calendar : Screen
-    @Serializable data object Messages : Screen
+    @Serializable data object Records : Screen
+    @Serializable data object Chat : Screen
     @Serializable data object Settings : Screen
     @Serializable data object Profile : Screen
     @Serializable data object UpdatePwd : Screen

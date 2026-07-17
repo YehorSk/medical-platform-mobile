@@ -35,7 +35,18 @@ fun NavGraphBuilder.doctorNavGraph(
                 )
             }
         }
-        composable<Screen.Messages> {
+        composable<Screen.Records> {
+            Box(
+                modifier = modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = "Records"
+                )
+            }
+        }
+        composable<Screen.Chat> {
             ChatListScreen(
                 modifier = modifier,
                 onConversationClick = {

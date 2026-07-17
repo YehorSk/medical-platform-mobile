@@ -6,6 +6,7 @@ import com.yehorsk.medical_platform_mobile.core.data.logger.KermitLogger
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SettingsStorage
+import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -18,4 +19,5 @@ val coreDataModule = module {
     singleOf(::SessionDataStore) bind SessionStorage::class
     singleOf(::SettingsDataStore) bind SettingsStorage::class
     single<MainLogger> { KermitLogger }
+    single { AuthEventManager }
 }

@@ -8,6 +8,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.util.AuthEvent
+import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
@@ -16,12 +18,14 @@ import com.yehorsk.medical_platform_mobile.navigation.Graph
 import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
 import com.yehorsk.theme.AppTheme
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
 fun App(
-    viewModel: MainViewModel = koinViewModel()
+    viewModel: MainViewModel = koinViewModel(),
+    authEventManager: AuthEventManager = koinInject()
 ) {
 
     val navController = rememberNavController()
@@ -32,6 +36,18 @@ fun App(
     }
 
     val scope = rememberCoroutineScope()
+
+    ObserveAsEvents(authEventManager.authEvents){event ->
+        when(event) {
+            AuthEvent.NavigateToLogin -> {
+                navController.navigate(Graph.Authentication) {
+                    popUpTo(Graph.Authentication) {
+                        inclusive = false
+                    }
+                }
+            }
+        }
+    }
 
     ObserveAsEvents(viewModel.events){event ->
         when(event) {

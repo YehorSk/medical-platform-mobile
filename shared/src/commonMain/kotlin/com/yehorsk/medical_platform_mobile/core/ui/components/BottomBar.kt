@@ -1,16 +1,12 @@
 package com.yehorsk.medical_platform_mobile.core.ui.components
 
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -26,8 +22,9 @@ fun BottomBar(
 ){
     val screens = listOf(
         BottomBarScreen.Dashboard,
+        BottomBarScreen.Chat,
+        BottomBarScreen.Records,
         BottomBarScreen.Calendar,
-        BottomBarScreen.Messages,
         BottomBarScreen.Profile,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()

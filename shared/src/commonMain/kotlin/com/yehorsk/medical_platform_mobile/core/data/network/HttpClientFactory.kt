@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.core.data.network
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.RefreshRequestDto
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
+import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
@@ -25,7 +26,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.serialization.json.Json
 
 class HttpClientFactory(
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val authEventManager: AuthEventManager
 ) {
 
     fun create(engine: HttpClientEngine): HttpClient {
@@ -95,6 +97,7 @@ class HttpClientFactory(
                             )
                         }.onFailure { _ ->
                             sessionStorage.clearAuthData()
+                            authEventManager.triggerLogout()
                         }
                         bearerTokens
                     }

@@ -1,25 +1,20 @@
 package com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
@@ -28,7 +23,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.v
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListState
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.messages
+import medicalplatformmobile.shared.generated.resources.chat
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -59,7 +54,7 @@ fun ChatListScreenRoot(
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(UiRes.string.messages),
+            title = stringResource(UiRes.string.chat),
             onGoBackClicked = {}
         )
         Box(modifier = Modifier.fillMaxSize()) {

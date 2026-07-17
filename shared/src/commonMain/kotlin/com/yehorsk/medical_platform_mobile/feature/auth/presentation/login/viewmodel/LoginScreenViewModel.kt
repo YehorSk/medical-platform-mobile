@@ -13,9 +13,12 @@ import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -28,7 +31,15 @@ class LoginScreenViewModel(
     val events = eventChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(LoginState())
-    val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
+    val uiState: StateFlow<LoginState> = _uiState
+        .onStart {
+            validateForm()
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = LoginState()
+        )
 
     fun onAction(action: LoginAction){
         when(action){

@@ -2,13 +2,10 @@ package com.yehorsk.medical_platform_mobile.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_back_24px
-import medicalplatformmobile.shared.generated.resources.messages
+import medicalplatformmobile.shared.generated.resources.chat
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -67,7 +64,7 @@ fun AppTopBar(
 fun AppTopBarPreview(){
     AppTheme {
         AppTopBar(
-            title = stringResource(UiRes.string.messages),
+            title = stringResource(UiRes.string.chat),
             onGoBackClicked = {},
             showGoBackButton = true
         )

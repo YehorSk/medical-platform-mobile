@@ -16,6 +16,6 @@ data class LoginState(
 
 @Serializable
 data class LoginForm(
-    val email: String = "",
-    val password: String = "",
+    val email: String = "john.doe@example.com",
+    val password: String = "12345678",
 )
