@@ -44,8 +44,8 @@
     <string name="yesterday_x">Yesterday, %1$s</string>
     <string name="go_back">Go Back</string>
 
-    <string name="dashboard">Dashboard</string>
-    <string name="calendar">Calendar</string>
+    <string name="home">Home</string>
+    <string name="connect">Connect</string>
     <string name="records">Records</string>
     <string name="chat">Chat</string>
     <string name="settings">Settings</string>
@@ -98,5 +98,12 @@
     <string name="input_confirm_password_placeloder">Re-enter new password</string>
 
     <string name="button_update_password">Update Password</string>
+
+    <!-- Connections Main Screen -->
+    <string name="find_a_doctor">Find a Doctor</string>
+    <string name="my_doctors">My Doctors</string>
+    <string name="pending_requests">Pending Request</string>
+    <string name="data_access">Data Access (GDPR)</string>
+    <string name="my_appointments">My Appointments</string>
 
 </resources>

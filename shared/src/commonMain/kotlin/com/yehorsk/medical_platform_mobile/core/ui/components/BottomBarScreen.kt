@@ -2,12 +2,12 @@ package com.yehorsk.medical_platform_mobile.core.ui.components
 
 import com.yehorsk.medical_platform_mobile.navigation.Screen
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.calendar
-import medicalplatformmobile.shared.generated.resources.calendar_today_24px
+import medicalplatformmobile.shared.generated.resources.connect
 import medicalplatformmobile.shared.generated.resources.chat_24px
-import medicalplatformmobile.shared.generated.resources.dashboard
+import medicalplatformmobile.shared.generated.resources.home
 import medicalplatformmobile.shared.generated.resources.home_24px
 import medicalplatformmobile.shared.generated.resources.chat
+import medicalplatformmobile.shared.generated.resources.group_24px
 import medicalplatformmobile.shared.generated.resources.history_24px
 import medicalplatformmobile.shared.generated.resources.records
 import medicalplatformmobile.shared.generated.resources.settings
@@ -21,9 +21,9 @@ sealed class BottomBarScreen(
     val title: StringResource,
     val icon: DrawableResource
 ) {
-   object Dashboard : BottomBarScreen(
-       screen = Screen.Dashboard,
-       title = UiRes.string.dashboard,
+   object Home : BottomBarScreen(
+       screen = Screen.Home,
+       title = UiRes.string.home,
        icon = UiRes.drawable.home_24px
    )
 
@@ -39,10 +39,10 @@ sealed class BottomBarScreen(
         icon = UiRes.drawable.history_24px
     )
 
-    object Calendar : BottomBarScreen(
-        screen = Screen.Calendar,
-        title = UiRes.string.calendar,
-        icon = UiRes.drawable.calendar_today_24px
+    object Connect : BottomBarScreen(
+        screen = Screen.Connect,
+        title = UiRes.string.connect,
+        icon = UiRes.drawable.group_24px
     )
 
     object Profile : BottomBarScreen(

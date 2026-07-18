@@ -8,8 +8,8 @@ sealed interface Screen {
     @Serializable data object SignUp : Screen
     @Serializable data object ForgotPwd : Screen
 
-    @Serializable data object Dashboard : Screen
-    @Serializable data object Calendar : Screen
+    @Serializable data object Home : Screen
+    @Serializable data object Connect : Screen
     @Serializable data object Records : Screen
     @Serializable data object Chat : Screen
     @Serializable data object Settings : Screen

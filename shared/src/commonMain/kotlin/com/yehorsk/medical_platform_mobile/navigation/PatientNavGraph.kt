@@ -9,7 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.viewmodel.ConnectionsMainAction
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
@@ -20,23 +24,28 @@ fun NavGraphBuilder.patientNavGraph(
     navController: NavController
 ){
     navigation<Graph.Patient>(
-        startDestination = Screen.Dashboard
+        startDestination = Screen.Home
     ){
-        composable<Screen.Dashboard> {
+        composable<Screen.Home> {
             PatientDashboardScreen(
                 modifier = modifier
             )
         }
-        composable<Screen.Calendar> {
-            Box(
-                modifier = modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "Calendar"
-                )
-            }
+        composable<Screen.Connect> {
+            ConnectionsMainScreen(
+                modifier = modifier,
+                role = UserRole.PATIENT,
+                navigateTo = { destination ->
+                    when(destination){
+                        ConnectionsMainDestination.Back -> navController.popBackStack()
+                        ConnectionsMainDestination.Appointments -> {}
+                        ConnectionsMainDestination.DataAccess -> {}
+                        ConnectionsMainDestination.FindDoctor -> {}
+                        ConnectionsMainDestination.MyDoctors -> {}
+                        ConnectionsMainDestination.PendingRequests -> {}
+                    }
+                }
+            )
         }
         composable<Screen.Records> {
             Box(
