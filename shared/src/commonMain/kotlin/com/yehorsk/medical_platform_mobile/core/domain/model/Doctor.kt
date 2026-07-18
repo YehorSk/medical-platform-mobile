@@ -11,7 +11,7 @@ data class Doctor(
 )
 
 data class Specialization(
-    val id: Int,
+    val id: String,
     val name: String
 )
 

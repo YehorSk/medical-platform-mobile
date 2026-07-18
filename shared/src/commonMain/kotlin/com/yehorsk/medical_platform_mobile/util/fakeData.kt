@@ -137,7 +137,7 @@ val appointments = listOf(
         createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
         specialization = Specialization(
-            id = 1,
+            id = "1",
             name = "Cardiology"
         ),
         doctor = User(
@@ -158,7 +158,7 @@ val appointments = listOf(
         createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
         specialization = Specialization(
-            id = 1,
+            id = "1",
             name = "Dentist"
         ),
         doctor = User(

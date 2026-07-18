@@ -64,13 +64,15 @@ fun ConnectionsMainScreenRoot(
                         onClick = { navigateTo(ConnectionsMainDestination.Appointments) }
                     )
                 }
-                item {
-                    ConnectionListCard(
-                        title = stringResource(UiRes.string.find_a_doctor),
-                        subtitle = "",
-                        icon = painterResource(UiRes.drawable.search_24px),
-                        onClick = { navigateTo(ConnectionsMainDestination.FindDoctor) }
-                    )
+                if(role == UserRole.PATIENT){
+                    item {
+                        ConnectionListCard(
+                            title = stringResource(UiRes.string.find_a_doctor),
+                            subtitle = "",
+                            icon = painterResource(UiRes.drawable.search_24px),
+                            onClick = { navigateTo(ConnectionsMainDestination.FindDoctor) }
+                        )
+                    }
                 }
                 item {
                     ConnectionListCard(
@@ -88,13 +90,15 @@ fun ConnectionsMainScreenRoot(
                         onClick = { navigateTo(ConnectionsMainDestination.PendingRequests) }
                     )
                 }
-                item {
-                    ConnectionListCard(
-                        title = stringResource(UiRes.string.data_access),
-                        subtitle = "",
-                        icon = painterResource(UiRes.drawable.shield_24px),
-                        onClick = { navigateTo(ConnectionsMainDestination.DataAccess) }
-                    )
+                if(role == UserRole.PATIENT){
+                    item {
+                        ConnectionListCard(
+                            title = stringResource(UiRes.string.data_access),
+                            subtitle = "",
+                            icon = painterResource(UiRes.drawable.shield_24px),
+                            onClick = { navigateTo(ConnectionsMainDestination.DataAccess) }
+                        )
+                    }
                 }
             }
         }

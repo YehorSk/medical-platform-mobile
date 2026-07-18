@@ -101,9 +101,14 @@
 
     <!-- Connections Main Screen -->
     <string name="find_a_doctor">Find a Doctor</string>
+    <string name="filter_doctors">Filter Doctors</string>
+    <string name="city">City</string>
+    <string name="search_city">City</string>
+    <string name="apply_filters">Apply Filters</string>
     <string name="my_doctors">My Doctors</string>
     <string name="pending_requests">Pending Request</string>
     <string name="data_access">Data Access (GDPR)</string>
     <string name="my_appointments">My Appointments</string>
+    <string name="search_doctors">Search doctors</string>
 
 </resources>

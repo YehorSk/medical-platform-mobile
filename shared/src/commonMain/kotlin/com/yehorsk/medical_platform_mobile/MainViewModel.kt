@@ -68,7 +68,7 @@ class MainViewModel(
                     .onFailure { dataErrorRemote ->
                         when(dataErrorRemote){
                             DataError.Remote.Status.UNAUTHORIZED -> {
-                                sessionStorage.clearAuthData()
+//                                sessionStorage.clearAuthData()
                                 _uiState.update {
                                     it.copy(
                                         isCheckingAuth = false,

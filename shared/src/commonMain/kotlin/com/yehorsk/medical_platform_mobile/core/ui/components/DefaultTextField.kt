@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -12,11 +13,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.theme.AppTheme
+import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.search_24px
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun DefaultTextField(
@@ -24,6 +29,8 @@ fun DefaultTextField(
     value: String = "",
     header: String? = null,
     placeholder: String = "",
+    leadingIcon: Painter? = null,
+    leadingIconDescr: String = "",
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     error: String= ""
@@ -36,6 +43,14 @@ fun DefaultTextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = { onValueChange(it) },
+        leadingIcon = leadingIcon?.let { painter ->
+            {
+                Icon(
+                    painter = painter,
+                    contentDescription = leadingIconDescr
+                )
+            }
+        },
         placeholder = {
             Text(
                 text = placeholder

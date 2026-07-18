@@ -2,6 +2,8 @@ package com.yehorsk.medical_platform_mobile.core.data.network
 
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.RefreshRequestDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
+import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -27,7 +29,8 @@ import kotlinx.serialization.json.Json
 
 class HttpClientFactory(
     private val sessionStorage: SessionStorage,
-    private val authEventManager: AuthEventManager
+    private val authEventManager: AuthEventManager,
+    private val logger: MainLogger
 ) {
 
     fun create(engine: HttpClientEngine): HttpClient {
@@ -76,12 +79,13 @@ class HttpClientFactory(
                             return@refreshTokens null
                         }
                         val authInfo = sessionStorage.observeAuthData().firstOrNull()
+                        logger.debug("HttpClientFactory refresh, user data -> ${authInfo?.user ?: "Empty data"}, refresh token -> ${ authInfo?.refreshToken ?: "Empty data"}")
                         if(authInfo?.refreshToken.isNullOrBlank()) {
                             sessionStorage.clearAuthData()
                             return@refreshTokens null
                         }
                         var bearerTokens: BearerTokens? = null
-                        client.post<RefreshRequestDto, AuthDataDto>(
+                        client.post<RefreshRequestDto, ApiResponseWithData<AuthDataDto>>(
                             route = "/auth/refresh",
                             body = RefreshRequestDto(
                                 refreshToken = authInfo.refreshToken
@@ -89,11 +93,11 @@ class HttpClientFactory(
                             builder = {
                                 markAsRefreshTokenRequest()
                             }
-                        ).onSuccess { dto ->
-                            sessionStorage.setAuthData(dto)
+                        ).onSuccess { response ->
+                            sessionStorage.setAuthData(response.data)
                             bearerTokens = BearerTokens(
-                                accessToken = dto.accessToken,
-                                refreshToken = dto.refreshToken
+                                accessToken = response.data.accessToken,
+                                refreshToken = response.data.refreshToken
                             )
                         }.onFailure { _ ->
                             sessionStorage.clearAuthData()

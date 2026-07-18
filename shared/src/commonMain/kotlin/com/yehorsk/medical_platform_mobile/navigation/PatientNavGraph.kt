@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.viewmodel.ConnectionsMainAction
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.FindDoctorScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
@@ -40,7 +40,7 @@ fun NavGraphBuilder.patientNavGraph(
                         ConnectionsMainDestination.Back -> navController.popBackStack()
                         ConnectionsMainDestination.Appointments -> {}
                         ConnectionsMainDestination.DataAccess -> {}
-                        ConnectionsMainDestination.FindDoctor -> {}
+                        ConnectionsMainDestination.FindDoctor -> navController.navigate(Screen.FindDoctor)
                         ConnectionsMainDestination.MyDoctors -> {}
                         ConnectionsMainDestination.PendingRequests -> {}
                     }
@@ -75,6 +75,15 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 navigateToUpdatePwdPage = {
                     navController.navigate(Screen.UpdatePwd)
+                }
+            )
+        }
+        composable<Screen.FindDoctor>{
+            FindDoctorScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                goBack = {
+                    navController.popBackStack()
                 }
             )
         }
