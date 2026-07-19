@@ -37,6 +37,8 @@ sealed interface DataError : Error {
     }
 }
 
+class DataErrorException(val error: DataError.Remote) : Exception()
+
 @Serializable
 data class ValidationErrorsDto(
     val message: String,

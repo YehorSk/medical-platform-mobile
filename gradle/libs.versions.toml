@@ -22,6 +22,7 @@ datastore = "1.2.1"
 ktor = "3.5.0"
 datastoreCore = "1.2.1"
 kermit = "2.0.6"
+paging = "3.5.0"
 
 
 [libraries]
@@ -74,8 +75,12 @@ ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 androidx-datastore-core = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastoreCore" }
 
-#Logging
+# Logging
 touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# Paging
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

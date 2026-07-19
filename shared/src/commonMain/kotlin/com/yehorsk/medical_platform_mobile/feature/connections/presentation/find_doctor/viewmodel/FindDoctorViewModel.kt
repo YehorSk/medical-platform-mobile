@@ -2,15 +2,32 @@ package com.yehorsk.medical_platform_mobile.feature.connections.presentation.fin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.domain.repository.SpecializationService
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class FindDoctorViewModel: ViewModel() {
+class FindDoctorViewModel(
+    private val specializationService: SpecializationService
+): ViewModel() {
+
+    private var hasLoadedInitialData = false
 
     private val _uiState = MutableStateFlow(FindDoctorState())
     val uiState = _uiState
+        .onStart {
+            if(!hasLoadedInitialData){
+                getAllSpecializations()
+                hasLoadedInitialData = true
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
@@ -45,6 +62,30 @@ class FindDoctorViewModel: ViewModel() {
                 }
             }
             FindDoctorAction.OnApplyFiltersClicked -> {}
+        }
+    }
+
+    private fun getAllSpecializations(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoadingSpecialization = true
+                )
+            }
+            specializationService
+                .getAll()
+                .onSuccess { response ->
+                    _uiState.update {
+                        it.copy(
+                            specializations = response.data,
+                            isLoadingSpecialization = false
+                        )
+                    }
+                }
+                .onFailure { dataErrorRemote ->
+                    _uiState.update { it.copy(isLoadingSpecialization = false) }
+                    SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                }
         }
     }
 

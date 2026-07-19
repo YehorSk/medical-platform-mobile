@@ -32,6 +32,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.Workplace
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_forward_24px
+import medicalplatformmobile.shared.generated.resources.arrow_forward_ios_24px
 import medicalplatformmobile.shared.generated.resources.star_rate_24px
 import org.jetbrains.compose.resources.painterResource
 
@@ -43,9 +44,6 @@ fun DoctorCard(
     reviewsCount: Int = 128,
     onClick: () -> Unit
 ) {
-    require(user.getUserRole() == UserRole.DOCTOR) {
-        "DoctorCard can only display users with DOCTOR role."
-    }
 
     val doctor = user.doctor
 
@@ -134,7 +132,7 @@ fun DoctorCard(
             }
 
             Icon(
-                painter = painterResource(UiRes.drawable.arrow_forward_24px),
+                painter = painterResource(UiRes.drawable.arrow_forward_ios_24px),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.outline
             )

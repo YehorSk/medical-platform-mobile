@@ -9,16 +9,3 @@ data class Doctor(
     val workplace: Workplace? = null,
     val specialization: Specialization? = null
 )
-
-data class Specialization(
-    val id: String,
-    val name: String
-)
-
-data class Workplace(
-    val id: Int,
-    val name: String,
-    val address: String,
-    val phone: String,
-    val city: String
-)

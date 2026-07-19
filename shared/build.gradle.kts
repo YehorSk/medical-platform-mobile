@@ -67,6 +67,9 @@ kotlin {
             implementation(libs.bundles.ktor.common)
 
             implementation(libs.touchlab.kermit)
+
+            implementation(libs.androidx.paging.runtime)
+            implementation(libs.androidx.paging.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

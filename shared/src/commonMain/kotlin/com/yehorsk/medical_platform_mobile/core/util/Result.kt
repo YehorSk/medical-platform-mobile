@@ -33,6 +33,16 @@ inline fun <T, E: Error> Result<T, E>.onFailure(action: (E) -> Unit): Result<T, 
     }
 }
 
+inline fun <T, E: Error, R> Result<T, E>.fold(
+    onSuccess: (T) -> R,
+    onFailure: (E) -> R
+): R {
+    return when (this) {
+        is Result.Success -> onSuccess(this.data)
+        is Result.Failure -> onFailure(this.error)
+    }
+}
+
 fun <T, E: Error> Result<T, E>.asEmptyResult(): EmptyResult<E> {
     return map {  }
 }

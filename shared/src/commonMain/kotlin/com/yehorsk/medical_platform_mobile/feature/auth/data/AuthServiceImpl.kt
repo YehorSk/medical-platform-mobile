@@ -1,10 +1,7 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.data
 
-import com.yehorsk.medical_platform_mobile.core.data.mappers.toMessageResponse
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponse
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.MessageResponseDto
-import com.yehorsk.medical_platform_mobile.core.domain.model.MessageResponse
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.data.network.get
 import com.yehorsk.medical_platform_mobile.core.data.network.post
