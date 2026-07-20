@@ -104,7 +104,7 @@ fun FilterBottomSheetContent(
                 Spacer(modifier = Modifier.height(8.dp))
                 SpecializationFlowRow(
                     items = state.specializations,
-                    selectedItems = state.form.selectedSpecializations,
+                    selectedItems = state.form.specializations,
                     onItemClick = { onSpecializationClicked(it) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))

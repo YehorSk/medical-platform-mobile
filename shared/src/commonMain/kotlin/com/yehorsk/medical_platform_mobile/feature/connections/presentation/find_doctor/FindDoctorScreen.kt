@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.FilterBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
@@ -69,43 +72,57 @@ fun FindDoctorScreenRoot(
             onGoBackClicked = { goBack() }
         )
         Box(modifier = Modifier.fillMaxSize()) {
-            Row(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                DefaultTextField(
-                    modifier = Modifier.weight(1f),
-                    leadingIcon = painterResource(UiRes.drawable.search_24px),
-                    leadingIconDescr = "",
-                    onValueChange = { onAction(FindDoctorAction.OnSearchTextChanged(it)) },
-                    value = state.form.search,
-                    placeholder = stringResource(UiRes.string.search_doctors)
-                )
-                Spacer(Modifier.width(8.dp))
-                Box(
+            Column {
+                Row(
                     modifier = Modifier
-                        .background(
-                            color = Color.LightGray.copy(alpha = 0.4f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
                         .padding(10.dp)
-                        .clickable{
-                            onAction(FindDoctorAction.ShowFilterBottomSheet)
-                        },
-                    contentAlignment = Alignment.Center
-                ){
-                    Icon(
-                        painter = painterResource(UiRes.drawable.filter_list_24px),
-                        contentDescription = null
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DefaultTextField(
+                        modifier = Modifier.weight(1f),
+                        leadingIcon = painterResource(UiRes.drawable.search_24px),
+                        leadingIconDescr = "",
+                        onValueChange = { onAction(FindDoctorAction.OnSearchTextChanged(it)) },
+                        value = state.form.search,
+                        placeholder = stringResource(UiRes.string.search_doctors)
                     )
+                    Spacer(Modifier.width(8.dp))
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Color.LightGray.copy(alpha = 0.4f),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(10.dp)
+                            .clickable{
+                                onAction(FindDoctorAction.ShowFilterBottomSheet)
+                            },
+                        contentAlignment = Alignment.Center
+                    ){
+                        Icon(
+                            painter = painterResource(UiRes.drawable.filter_list_24px),
+                            contentDescription = null
+                        )
+                    }
+                }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(state.doctors, key = { it.id }){ doctor ->
+                        DoctorCard(
+                            doctor = doctor,
+                            rating = 10f,
+                            reviewsCount = 10,
+                            onClick = {},
+                        )
+                    }
                 }
             }
         }
     }
-    if (state.isLoading) {
+    if (state.isLoadingDoctors) {
         Box(
             modifier = modifier
                 .fillMaxSize()

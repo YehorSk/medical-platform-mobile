@@ -1,6 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.data
 
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponse
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.data.network.get
@@ -10,7 +10,7 @@ import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.core.util.map
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.RefreshTokenDto
-import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.UserDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.UserResponseDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthData
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toUser
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
@@ -36,8 +36,8 @@ class AuthServiceImpl(
         }
     }
 
-    override suspend fun register(form: RegisterForm): Result<ApiResponse, DataError.Remote> {
-        return httpClient.post<RegisterForm, ApiResponse>(
+    override suspend fun register(form: RegisterForm): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post<RegisterForm, ApiResponseDto>(
             route = "/auth/register",
             body = form
         )
@@ -56,7 +56,7 @@ class AuthServiceImpl(
     }
 
     override suspend fun me(): Result<ApiResponseWithData<User>, DataError.Remote> {
-        return httpClient.get<ApiResponseWithData<UserDto>>(
+        return httpClient.get<ApiResponseWithData<UserResponseDto>>(
             route = "/user/me"
         ).map { response ->
             ApiResponseWithData(
@@ -66,29 +66,29 @@ class AuthServiceImpl(
         }
     }
 
-    override suspend fun logout(): Result<ApiResponse, DataError.Remote> {
-        return httpClient.post<Unit, ApiResponse>(
+    override suspend fun logout(): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post<Unit, ApiResponseDto>(
             route = "/auth/logout",
             body = Unit
         )
     }
 
-    override suspend fun forgotPassword(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote> {
-        return httpClient.post<ForgotPasswordForm, ApiResponse>(
+    override suspend fun forgotPassword(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post<ForgotPasswordForm, ApiResponseDto>(
             route = "/auth/forgot-password",
             body = form
         )
     }
 
-    override suspend fun verifyResetCode(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote> {
-        return httpClient.post<ForgotPasswordForm, ApiResponse>(
+    override suspend fun verifyResetCode(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post<ForgotPasswordForm, ApiResponseDto>(
             route = "/auth/verify-reset-code",
             body = form
         )
     }
 
-    override suspend fun resetPassword(form: ForgotPasswordForm): Result<ApiResponse, DataError.Remote> {
-        return httpClient.post<ForgotPasswordForm, ApiResponse>(
+    override suspend fun resetPassword(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post<ForgotPasswordForm, ApiResponseDto>(
             route = "/auth/reset-password",
             body = form
         )

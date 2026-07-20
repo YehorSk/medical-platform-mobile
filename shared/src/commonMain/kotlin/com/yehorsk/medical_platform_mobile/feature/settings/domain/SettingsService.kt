@@ -1,6 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.settings.domain
 
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponse
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.util.DataError
@@ -12,6 +12,6 @@ interface SettingsService {
 
     suspend fun updateUserData(form: ProfileForm): Result<ApiResponseWithData<User>, DataError.Remote>
 
-    suspend fun updatePassword(form: UpdatePwdForm): Result<ApiResponse, DataError.Remote>
+    suspend fun updatePassword(form: UpdatePwdForm): Result<ApiResponseDto, DataError.Remote>
 
 }

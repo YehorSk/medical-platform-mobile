@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.core.domain.repository
+package com.yehorsk.medical_platform_mobile.core.domain.service
 
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization

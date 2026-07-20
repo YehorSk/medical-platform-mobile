@@ -2,9 +2,9 @@ package com.yehorsk.medical_platform_mobile.core.data.network
 
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toSpecialization
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
-import com.yehorsk.medical_platform_mobile.core.domain.repository.SpecializationService
+import com.yehorsk.medical_platform_mobile.core.domain.service.SpecializationService
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.core.util.map
@@ -15,7 +15,7 @@ class SpecializationServiceImpl(
 ): SpecializationService {
 
     override suspend fun getAll(): Result<ApiResponseWithData<List<Specialization>>, DataError.Remote> {
-        return httpClient.get<ApiResponseWithData<List<SpecializationDto>>>(
+        return httpClient.get<ApiResponseWithData<List<SpecializationResponseDto>>>(
             route = "/specializations"
         ).map { response ->
             ApiResponseWithData(

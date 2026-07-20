@@ -1,7 +1,8 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.data.mappers
 
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PagedResponseDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
-import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.UserDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.UserResponseDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.models.AuthData
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 
@@ -17,7 +18,7 @@ fun AuthData.toAuthDataDto() = AuthDataDto(
     refreshToken = refreshToken
 )
 
-fun UserDto.toUser() = User(
+fun UserResponseDto.toUser() = User(
     id = id,
     email = email,
     firstName = firstName,
@@ -30,7 +31,7 @@ fun UserDto.toUser() = User(
     emergencyContactPhone = emergencyContactPhone
 )
 
-fun User.toUserDto() = UserDto(
+fun User.toUserDto() = UserResponseDto(
     id = id,
     email = email,
     firstName = firstName,
