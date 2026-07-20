@@ -85,7 +85,10 @@ class FindDoctorViewModel(
                     )
                 }
             }
-            FindDoctorAction.OnApplyFiltersClicked -> {}
+            FindDoctorAction.OnApplyFiltersClicked -> {
+                _uiState.update { it.copy(showFilterBottomSheet = false) }
+                getAllDoctors()
+            }
         }
     }
 

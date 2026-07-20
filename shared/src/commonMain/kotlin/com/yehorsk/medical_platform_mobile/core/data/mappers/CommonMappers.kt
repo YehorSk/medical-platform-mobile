@@ -68,6 +68,6 @@ fun DoctorResponseDto.toDoctor() = Doctor(
 
 fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(
     search = search,
-    specializations = specializations.map { it.id.toInt() },
+    specializations = specializations.map { it.id },
     city = city
 )
