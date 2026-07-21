@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.connections.presentation.fin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.service.DoctorService
 import com.yehorsk.medical_platform_mobile.core.domain.service.SpecializationService
@@ -28,10 +29,15 @@ import kotlin.time.Duration.Companion.seconds
 class FindDoctorViewModel(
     private val specializationService: SpecializationService,
     private val doctorService: DoctorService,
-    private val mainLogger: MainLogger
+    private val mainLogger: MainLogger,
+    private val connectivityObserver: ConnectivityObserver
 ): ViewModel() {
 
     private var hasLoadedInitialData = false
+
+    init {
+        observeConnectivity()
+    }
 
     private val _uiState = MutableStateFlow(FindDoctorState())
     val uiState = _uiState
@@ -39,6 +45,7 @@ class FindDoctorViewModel(
             if(!hasLoadedInitialData){
                 searchFlow.launchIn(viewModelScope)
                 getAllSpecializations()
+                mainLogger.debug("Get Doctors: start")
                 getAllDoctors()
                 hasLoadedInitialData = true
             }
@@ -90,6 +97,22 @@ class FindDoctorViewModel(
                 getAllDoctors()
             }
         }
+    }
+
+    private fun observeConnectivity() {
+        connectivityObserver.isConnected
+            .debounce(1.seconds)
+            .distinctUntilChanged()
+            .drop(1)
+            .onEach { connected ->
+                mainLogger.debug("Connectivity = $connected")
+                _uiState.update { it.copy(isConnected = connected) }
+                if(connected) {
+                    mainLogger.debug("Get Doctors: wifi")
+                    getAllDoctors()
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun getAllSpecializations(){
