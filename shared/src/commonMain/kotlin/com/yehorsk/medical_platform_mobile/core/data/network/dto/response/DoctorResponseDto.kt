@@ -15,4 +15,5 @@ data class DoctorResponseDto(
     val createdAt: String,
     val updatedAt: String,
     val approvedAt: String,
+    val currentPatientHasDoctor: Boolean
 )

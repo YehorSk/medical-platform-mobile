@@ -96,6 +96,7 @@ class FindDoctorViewModel(
                 _uiState.update { it.copy(showFilterBottomSheet = false) }
                 getAllDoctors()
             }
+            is FindDoctorAction.OnDoctorClicked -> {}
         }
     }
 

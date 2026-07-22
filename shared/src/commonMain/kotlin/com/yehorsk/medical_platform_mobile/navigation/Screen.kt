@@ -17,5 +17,9 @@ sealed interface Screen {
     @Serializable data object UpdatePwd : Screen
 
     @Serializable data object FindDoctor: Screen
+    
+    @Serializable data class DoctorDetails(
+        val doctorId: String
+    ): Screen
 
 }

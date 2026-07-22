@@ -37,4 +37,13 @@ class DoctorServiceImpl(
         }
     }
 
+    override suspend fun getDoctorById(id: String): Result<Doctor, DataError.Remote> {
+        return httpClient.get<DoctorResponseDto>(
+            route = "/doctors/get-doctor",
+            queryParams = mapOf(
+                "doctorId" to id
+            )
+        ).map { it.toDoctor() }
+    }
+
 }

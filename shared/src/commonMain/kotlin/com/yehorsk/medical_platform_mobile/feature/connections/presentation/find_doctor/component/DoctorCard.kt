@@ -30,6 +30,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.Workplace
+import com.yehorsk.medical_platform_mobile.util.fakeDoctor
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_forward_ios_24px
 import medicalplatformmobile.shared.generated.resources.star_rate_24px
@@ -139,43 +140,7 @@ fun DoctorCard(
 fun DoctorCardPreview() {
     MaterialTheme {
         DoctorCard(
-            doctor = Doctor(
-                id = "cc75b982-0f3e-45f0-a601-23278c2e128b",
-                licenseNumber = "LIC-001-1784566413864",
-                user = User(
-                    id = "160eccf4-ed8d-4970-bea4-45678e87d7d6",
-                    email = "doctor1@example.com",
-                    firstName = "James",
-                    lastName = "Smith",
-                    role = "DOCTOR",
-                    title = "Dr.",
-                    phone = "+1-555-0123",
-                    address = "123 Main Street",
-                    emergencyContactName = "Anna Smith",
-                    emergencyContactPhone = "+1-555-0456"
-                ),
-                approvedBy = null,
-                approved = true,
-                description = "Experienced cardiologist providing quality patient care.",
-                specialization = Specialization(
-                    id = "92dac9ca-ae7f-4b82-b292-af565ddc2a04",
-                    name = "Cardiology"
-                ),
-                workplace = Workplace(
-                    id = "2b375d92-1d47-4655-afeb-f4388d900ff1",
-                    roomNumber = "Room 100",
-                    clinic = Clinic(
-                        id = "6c807210-d093-4506-9c6c-d63c5b71950d",
-                        name = "Central Medical Clinic",
-                        address = "123 Main Street",
-                        phone = "+1-555-0123",
-                        city = "New York"
-                    )
-                ),
-                createdAt = "2026-07-20T16:53:33.883072Z",
-                updatedAt = "2026-07-20T16:53:33.883072Z",
-                approvedAt = "2026-07-20T16:53:33.868806Z"
-            ),
+            doctor = fakeDoctor,
             onClick = {},
             rating = 10f,
             reviewsCount = 10

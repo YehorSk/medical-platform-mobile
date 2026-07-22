@@ -63,7 +63,8 @@ fun DoctorResponseDto.toDoctor() = Doctor(
     user = user?.toUser(),
     approvedBy = approvedBy?.toUser(),
     workplace = workplace?.toWorkplace(),
-    specialization = specialization?.toSpecialization()
+    specialization = specialization?.toSpecialization(),
+    currentPatientHasDoctor = currentPatientHasDoctor
 )
 
 fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(

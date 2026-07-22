@@ -113,4 +113,6 @@
 
     <string name="no_internet">No internet connection</string>
 
+    <string name="about">About</string>
+
 </resources>

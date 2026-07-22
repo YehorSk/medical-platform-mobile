@@ -10,4 +10,6 @@ interface DoctorService {
 
     suspend fun getDoctors(request: GetDoctorsWithFilter, page: Int, size: Int): Result<PagedResponseDto<Doctor>, DataError.Remote>
 
+    suspend fun getDoctorById(id: String): Result<Doctor, DataError.Remote>
+
 }

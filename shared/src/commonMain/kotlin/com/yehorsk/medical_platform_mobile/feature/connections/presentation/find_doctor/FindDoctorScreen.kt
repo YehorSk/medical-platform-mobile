@@ -45,7 +45,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun FindDoctorScreen(
     modifier: Modifier = Modifier,
     viewModel: FindDoctorViewModel = koinViewModel(),
-    goBack: () -> Unit
+    goBack: () -> Unit,
+    onDoctorClicked: (String) -> Unit
 ){
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,7 +55,12 @@ fun FindDoctorScreen(
         modifier = modifier,
         goBack = { goBack() },
         state = state,
-        onAction = { viewModel.onAction(it) }
+        onAction = { action ->
+            when(action){
+                is FindDoctorAction.OnDoctorClicked -> onDoctorClicked(action.id)
+                else -> viewModel.onAction(action)
+            }
+        }
     )
 
 }
@@ -131,7 +137,7 @@ fun FindDoctorScreenRoot(
                                 doctor = doctor,
                                 rating = 10f,
                                 reviewsCount = 10,
-                                onClick = {},
+                                onClick = { onAction(FindDoctorAction.OnDoctorClicked(doctor.id)) },
                             )
                         }
                     }

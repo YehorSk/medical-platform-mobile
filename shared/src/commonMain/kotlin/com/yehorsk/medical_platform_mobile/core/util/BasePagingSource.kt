@@ -8,7 +8,8 @@ class BasePagingSource<T : Any>(
     private val fetch: suspend (
         page: Int,
         pageSize: Int
-    ) -> Result<PagedResponseDto<T>, DataError.Remote>
+    ) -> Result<PagedResponseDto<T>, DataError.Remote>,
+    private val onError: suspend (Throwable?) -> Unit,
 ) : PagingSource<Int, T>() {
 
     override suspend fun load(

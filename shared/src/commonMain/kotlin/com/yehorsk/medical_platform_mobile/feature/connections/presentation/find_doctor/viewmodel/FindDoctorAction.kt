@@ -10,6 +10,8 @@ sealed interface FindDoctorAction {
 
     data class OnSpecializationClicked(val item: Specialization): FindDoctorAction
 
+    data class OnDoctorClicked(val id: String): FindDoctorAction
+
     data object ShowFilterBottomSheet: FindDoctorAction
 
     data object OnApplyFiltersClicked: FindDoctorAction
