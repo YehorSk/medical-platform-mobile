@@ -6,4 +6,18 @@ sealed interface DoctorDetailsAction {
 
     data object GoBackClicked: DoctorDetailsAction
 
+    data object OnGrantAccessClicked: DoctorDetailsAction
+
+    data object OnOpenChatClicked: DoctorDetailsAction
+
+    data object OnRevokeAccessClicked: DoctorDetailsAction
+
+    data object OnApproveAccessClicked: DoctorDetailsAction
+
+    data object OnDeclineAccessClicked: DoctorDetailsAction
+
+    data object OnBookAppointmentClicked: DoctorDetailsAction
+
+
+
 }

@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.util
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.theme.LocalExtendedColors
@@ -26,6 +27,11 @@ import java.time.format.DateTimeFormatter
 fun getRole(role: String): UserRole {
     return UserRole.entries.find { it.name.equals(role, ignoreCase = true) } ?: UserRole.PATIENT
 }
+
+fun getAccessStatus(status: String): AccessStatus {
+    return AccessStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AccessStatus.UNKNOWN
+}
+
 
 @Composable
 fun AppointmentStatus.toColor(): Color {

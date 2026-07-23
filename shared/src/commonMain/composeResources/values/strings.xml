@@ -115,4 +115,12 @@
 
     <string name="about">About</string>
 
+    <!-- Access Buttons -->
+    <string name="grant_access">Grant Access</string>
+    <string name="revoke_access">Revoke Access</string>
+    <string name="open_chat_with_doctor">Open Chat</string>
+    <string name="book_appointment">Book Appointment</string>
+    <string name="approve_access">Approve Access</string>
+    <string name="decline_access">Decline Access</string>
+
 </resources>

@@ -99,7 +99,7 @@ fun FindDoctorScreenRoot(
                         modifier = Modifier
                             .padding(10.dp)
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                        horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         DefaultTextField(

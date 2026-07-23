@@ -7,22 +7,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorHeaderCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorInfoCard
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.about
-import medicalplatformmobile.shared.generated.resources.find_a_doctor
+import medicalplatformmobile.shared.generated.resources.approve_access
+import medicalplatformmobile.shared.generated.resources.book_appointment
+import medicalplatformmobile.shared.generated.resources.decline_access
+import medicalplatformmobile.shared.generated.resources.find_doctors
+import medicalplatformmobile.shared.generated.resources.grant_access
+import medicalplatformmobile.shared.generated.resources.open_chat_with_doctor
+import medicalplatformmobile.shared.generated.resources.revoke_access
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -36,7 +44,16 @@ fun DoctorDetailsScreen(
     DoctorDetailsScreenRoot(
         modifier = modifier,
         state = state,
-        goBack = { goBack() }
+       onAction = { action ->
+           when(action){
+               is DoctorDetailsAction.GoBackClicked -> {
+                   goBack()
+               }
+               else -> {
+                   viewModel.onAction(action)
+               }
+           }
+       }
     )
 }
 
@@ -44,13 +61,13 @@ fun DoctorDetailsScreen(
 fun DoctorDetailsScreenRoot(
     modifier: Modifier = Modifier,
     state: DoctorDetailsState,
-    goBack: () -> Unit
+    onAction: (DoctorDetailsAction) -> Unit
 ){
     Column(modifier = modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(UiRes.string.find_a_doctor),
+            title = stringResource(UiRes.string.find_doctors),
             showGoBackButton = true,
-            onGoBackClicked = { goBack() }
+            onGoBackClicked = { onAction(DoctorDetailsAction.GoBackClicked) }
         )
         Box(modifier = Modifier
             .fillMaxSize()
@@ -66,18 +83,66 @@ fun DoctorDetailsScreenRoot(
                     CircularProgressIndicator()
                 }
             }
-            if(state.doctor != null && state.doctor.user != null){
+            if(state.doctorDetails != null){
                 Column {
                     DoctorHeaderCard(
-                        firstName = state.doctor.user.firstName,
-                        lastName = state.doctor.user.firstName,
-                        specialization = state.doctor.specialization?.name ?: "----"
+                        firstName = state.doctorDetails.user?.firstName ?: "",
+                        lastName = state.doctorDetails.user?.lastName ?: "",
+                        specialization = state.doctorDetails.specialization?.name ?: "----"
                     )
                     DoctorInfoCard(
                         modifier = Modifier
                             .padding(vertical = 12.dp),
                         title = stringResource(UiRes.string.about),
-                        content = state.doctor.description
+                        content = state.doctorDetails.description
+                    )
+                    val accessStatus = state.patientAccess?.status
+                    val initiatedBy = state.patientAccess?.initiatedBy
+                    val showGiveAccess = accessStatus == null ||
+                            listOf(AccessStatus.UNKNOWN, AccessStatus.REVOKED, AccessStatus.REJECTED).contains(accessStatus)
+                    val showPendingStatusByDoctor = accessStatus == AccessStatus.PENDING && initiatedBy == UserRole.DOCTOR
+                    val showApprovedAccess = accessStatus == AccessStatus.APPROVED
+                    if(showGiveAccess){
+                        DefaultButton(
+                            modifier = Modifier
+                                .padding(vertical = 12.dp),
+                            onClick = { onAction(DoctorDetailsAction.OnGrantAccessClicked) },
+                            text = stringResource(UiRes.string.grant_access)
+                        )
+                    }
+                    if(showApprovedAccess){
+                        DefaultButton(
+                            modifier = Modifier
+                                .padding(vertical = 12.dp),
+                            onClick = {},
+                            text = stringResource(UiRes.string.open_chat_with_doctor)
+                        )
+                        DefaultButton(
+                            modifier = Modifier
+                                .padding(vertical = 12.dp),
+                            onClick = {},
+                            text = stringResource(UiRes.string.revoke_access)
+                        )
+                    }
+                    if(showPendingStatusByDoctor){
+                        DefaultButton(
+                            modifier = Modifier
+                                .padding(vertical = 12.dp),
+                            onClick = {},
+                            text = stringResource(UiRes.string.approve_access)
+                        )
+                        DefaultButton(
+                            modifier = Modifier
+                                .padding(vertical = 12.dp),
+                            onClick = {},
+                            text = stringResource(UiRes.string.decline_access)
+                        )
+                    }
+                    DefaultButton(
+                        modifier = Modifier
+                            .padding(vertical = 12.dp),
+                        onClick = {},
+                        text = stringResource(UiRes.string.book_appointment)
                     )
                 }
             }

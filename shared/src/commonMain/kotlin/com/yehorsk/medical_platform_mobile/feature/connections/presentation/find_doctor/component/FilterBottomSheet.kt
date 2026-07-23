@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -122,21 +123,10 @@ fun FilterBottomSheetContent(
                     placeholder = stringResource(UiRes.string.search_city)
                 )
                 Spacer(modifier = Modifier.height(24.dp))
-                Button(
+                DefaultButton(
                     onClick = { onApplyFiltersClicked() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    enabled = true,
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(
-                        text = stringResource(UiRes.string.apply_filters),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
+                    text = stringResource(UiRes.string.apply_filters)
+                )
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

@@ -2,19 +2,23 @@ package com.yehorsk.medical_platform_mobile.core.data.mappers
 
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.GetDoctorsWithFilterDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ClinicResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorDetailsResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.MessageResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PatientHasDoctorDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.WorkplaceResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.Clinic
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
-import com.yehorsk.medical_platform_mobile.core.domain.model.MessageResponse
+import com.yehorsk.medical_platform_mobile.core.domain.model.DoctorDetailsResponse
+import com.yehorsk.medical_platform_mobile.core.domain.model.PatientHasDoctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.Workplace
 import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toUser
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterFormErrors
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.GetDoctorsWithFilter
+import com.yehorsk.medical_platform_mobile.util.getAccessStatus
+import com.yehorsk.medical_platform_mobile.util.getRole
 
 fun ValidationErrorsDto.toRegisterFormErrors(): RegisterFormErrors {
     val errorMap = errors.associate { it.field to it.message }
@@ -71,4 +75,17 @@ fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(
     search = search,
     specializations = specializations.map { it.id },
     city = city
+)
+
+fun PatientHasDoctorDto.toPatientHasDoctor() = PatientHasDoctor(
+    id = id,
+    status = getAccessStatus(status),
+    initiatedBy = getRole(initiatedBy),
+    createdAt = createdAt,
+    updatedAt = updatedAt
+)
+
+fun DoctorDetailsResponseDto.toDoctorDetailsResponse() = DoctorDetailsResponse(
+    doctor = doctor.toDoctor(),
+    access = access?.toPatientHasDoctor()
 )

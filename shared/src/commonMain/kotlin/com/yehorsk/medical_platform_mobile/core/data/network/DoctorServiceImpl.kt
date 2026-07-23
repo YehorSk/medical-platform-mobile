@@ -1,11 +1,16 @@
 package com.yehorsk.medical_platform_mobile.core.data.network
 
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toDoctor
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toDoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toGetDoctorsWithFilterDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.GetDoctorsWithFilterDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorDetailsResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PagedResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
+import com.yehorsk.medical_platform_mobile.core.domain.model.DoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.domain.service.DoctorService
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
@@ -37,13 +42,18 @@ class DoctorServiceImpl(
         }
     }
 
-    override suspend fun getDoctorById(id: String): Result<Doctor, DataError.Remote> {
-        return httpClient.get<DoctorResponseDto>(
+    override suspend fun getDoctorById(id: String): Result<ApiResponseWithData<DoctorDetailsResponse>, DataError.Remote> {
+        return httpClient.get<ApiResponseWithData<DoctorDetailsResponseDto>>(
             route = "/doctors/get-doctor",
             queryParams = mapOf(
                 "doctorId" to id
             )
-        ).map { it.toDoctor() }
+        ).map { response ->
+            ApiResponseWithData(
+                data = response.data.toDoctorDetailsResponse(),
+                message = response.message
+            )
+        }
     }
 
 }

@@ -9,6 +9,8 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.request.UserIdRequest
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.PatientHasDoctorService
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,6 +27,7 @@ import kotlin.time.Duration.Companion.seconds
 @OptIn(FlowPreview::class)
 class DoctorDetailsViewModel(
     private val doctorService: DoctorService,
+    private val patientHasDoctorService: PatientHasDoctorService,
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver
 ): ViewModel() {
@@ -46,7 +49,13 @@ class DoctorDetailsViewModel(
             is DoctorDetailsAction.OnGetDoctorById -> {
                 getDoctor(action.id)
             }
+            DoctorDetailsAction.OnGrantAccessClicked -> { approveAccess() }
             DoctorDetailsAction.GoBackClicked -> {}
+            DoctorDetailsAction.OnApproveAccessClicked -> {  }
+            DoctorDetailsAction.OnBookAppointmentClicked -> {}
+            DoctorDetailsAction.OnDeclineAccessClicked -> {}
+            DoctorDetailsAction.OnOpenChatClicked -> {}
+            DoctorDetailsAction.OnRevokeAccessClicked -> {}
         }
     }
 
@@ -62,6 +71,28 @@ class DoctorDetailsViewModel(
             .launchIn(viewModelScope)
     }
 
+    private fun approveAccess(){
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoadingDoctor = true) }
+            _uiState.value.doctorDetails?.user.let { user ->
+                patientHasDoctorService
+                    .patientGiveAccessToDoctor(UserIdRequest(user!!.id))
+                    .onSuccess { response ->
+                        _uiState.update {
+                            it.copy(
+                                isLoadingDoctor = false,
+                                patientAccess = response.data
+                            )
+                        }
+                    }
+                    .onFailure { dataErrorRemote ->
+                        _uiState.update { it.copy(isLoadingDoctor = false) }
+                        SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                    }
+            }
+        }
+    }
+
     private fun getDoctor(id: String) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoadingDoctor = true) }
@@ -71,7 +102,8 @@ class DoctorDetailsViewModel(
                     _uiState.update {
                         it.copy(
                             isLoadingDoctor = false,
-                            doctor = response
+                            doctorDetails = response.data.doctor,
+                            patientAccess = response.data.access
                         )
                     }
                 }
