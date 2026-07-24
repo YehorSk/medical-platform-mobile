@@ -3,6 +3,6 @@ package com.yehorsk.medical_platform_mobile.feature.connections.domain.models.re
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserIdRequest(
-    val userId: String
+data class UserOrResIdRequest(
+    val id: String
 )

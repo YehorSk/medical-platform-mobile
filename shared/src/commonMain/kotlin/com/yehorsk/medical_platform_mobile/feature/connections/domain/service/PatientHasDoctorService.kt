@@ -4,10 +4,18 @@ import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiRes
 import com.yehorsk.medical_platform_mobile.core.domain.model.PatientHasDoctor
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.request.UserIdRequest
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.request.UserOrResIdRequest
 
 interface PatientHasDoctorService{
 
-    suspend fun patientGiveAccessToDoctor(request: UserIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
+    suspend fun patientGiveAccessToDoctor(request: UserOrResIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
+
+    suspend fun doctorRequestPatient(request: UserOrResIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
+
+    suspend fun approveAccess(request: UserOrResIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
+
+    suspend fun rejectAccess(request: UserOrResIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
+
+    suspend fun revokeAccess(request: UserOrResIdRequest): Result<ApiResponseWithData<PatientHasDoctor>, DataError.Remote>
 
 }

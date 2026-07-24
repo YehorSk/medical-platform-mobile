@@ -9,7 +9,7 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.request.UserIdRequest
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.request.UserOrResIdRequest
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.PatientHasDoctorService
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,13 +49,13 @@ class DoctorDetailsViewModel(
             is DoctorDetailsAction.OnGetDoctorById -> {
                 getDoctor(action.id)
             }
-            DoctorDetailsAction.OnGrantAccessClicked -> { approveAccess() }
-            DoctorDetailsAction.GoBackClicked -> {}
-            DoctorDetailsAction.OnApproveAccessClicked -> {  }
+            DoctorDetailsAction.OnGrantAccessClicked -> { grantAccess() }
+            DoctorDetailsAction.OnApproveAccessClicked -> { approveAccess() }
+            DoctorDetailsAction.OnRejectAccessClicked -> { rejectAccess() }
+            DoctorDetailsAction.OnRevokeAccessClicked -> { revokeAccess() }
             DoctorDetailsAction.OnBookAppointmentClicked -> {}
-            DoctorDetailsAction.OnDeclineAccessClicked -> {}
             DoctorDetailsAction.OnOpenChatClicked -> {}
-            DoctorDetailsAction.OnRevokeAccessClicked -> {}
+            DoctorDetailsAction.GoBackClicked -> {}
         }
     }
 
@@ -71,12 +71,12 @@ class DoctorDetailsViewModel(
             .launchIn(viewModelScope)
     }
 
-    private fun approveAccess(){
+    private fun grantAccess(){
         viewModelScope.launch {
             _uiState.update { it.copy(isLoadingDoctor = true) }
             _uiState.value.doctorDetails?.user.let { user ->
                 patientHasDoctorService
-                    .patientGiveAccessToDoctor(UserIdRequest(user!!.id))
+                    .patientGiveAccessToDoctor(UserOrResIdRequest(user!!.id))
                     .onSuccess { response ->
                         _uiState.update {
                             it.copy(
@@ -92,6 +92,73 @@ class DoctorDetailsViewModel(
             }
         }
     }
+
+    private fun revokeAccess() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoadingDoctor = true) }
+            _uiState.value.patientAccess?.let { access ->
+                patientHasDoctorService
+                    .revokeAccess(UserOrResIdRequest(access.id))
+                    .onSuccess { response ->
+                        _uiState.update {
+                            it.copy(
+                                isLoadingDoctor = false,
+                                patientAccess = response.data
+                            )
+                        }
+                    }
+                    .onFailure { dataErrorRemote ->
+                        _uiState.update { it.copy(isLoadingDoctor = false) }
+                        SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                    }
+            }
+        }
+    }
+
+    private fun approveAccess() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoadingDoctor = true) }
+            _uiState.value.patientAccess?.let { access ->
+                patientHasDoctorService
+                    .approveAccess(UserOrResIdRequest(access.id))
+                    .onSuccess { response ->
+                        _uiState.update {
+                            it.copy(
+                                isLoadingDoctor = false,
+                                patientAccess = response.data
+                            )
+                        }
+                    }
+                    .onFailure { dataErrorRemote ->
+                        _uiState.update { it.copy(isLoadingDoctor = false) }
+                        SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                    }
+            }
+        }
+    }
+
+    private fun rejectAccess() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoadingDoctor = true) }
+            _uiState.value.patientAccess?.let { access ->
+                patientHasDoctorService
+                    .rejectAccess(UserOrResIdRequest(access.id))
+                    .onSuccess { response ->
+                        _uiState.update {
+                            it.copy(
+                                isLoadingDoctor = false,
+                                patientAccess = response.data
+                            )
+                        }
+                    }
+                    .onFailure { dataErrorRemote ->
+                        _uiState.update { it.copy(isLoadingDoctor = false) }
+                        SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+                    }
+            }
+        }
+    }
+
 
     private fun getDoctor(id: String) {
         viewModelScope.launch {

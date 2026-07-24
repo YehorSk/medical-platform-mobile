@@ -106,6 +106,7 @@ fun DoctorDetailsScreenRoot(
                         DefaultButton(
                             modifier = Modifier
                                 .padding(vertical = 12.dp),
+                            isEnabled = state.isConnected,
                             onClick = { onAction(DoctorDetailsAction.OnGrantAccessClicked) },
                             text = stringResource(UiRes.string.grant_access)
                         )
@@ -114,13 +115,15 @@ fun DoctorDetailsScreenRoot(
                         DefaultButton(
                             modifier = Modifier
                                 .padding(vertical = 12.dp),
-                            onClick = {},
+                            isEnabled = state.isConnected,
+                            onClick = { onAction(DoctorDetailsAction.OnOpenChatClicked) },
                             text = stringResource(UiRes.string.open_chat_with_doctor)
                         )
                         DefaultButton(
                             modifier = Modifier
                                 .padding(vertical = 12.dp),
-                            onClick = {},
+                            isEnabled = state.isConnected,
+                            onClick = { onAction(DoctorDetailsAction.OnRevokeAccessClicked) },
                             text = stringResource(UiRes.string.revoke_access)
                         )
                     }
@@ -128,20 +131,23 @@ fun DoctorDetailsScreenRoot(
                         DefaultButton(
                             modifier = Modifier
                                 .padding(vertical = 12.dp),
-                            onClick = {},
+                            isEnabled = state.isConnected,
+                            onClick = { onAction(DoctorDetailsAction.OnApproveAccessClicked) },
                             text = stringResource(UiRes.string.approve_access)
                         )
                         DefaultButton(
                             modifier = Modifier
                                 .padding(vertical = 12.dp),
-                            onClick = {},
+                            isEnabled = state.isConnected,
+                            onClick = { onAction(DoctorDetailsAction.OnRejectAccessClicked) },
                             text = stringResource(UiRes.string.decline_access)
                         )
                     }
                     DefaultButton(
                         modifier = Modifier
                             .padding(vertical = 12.dp),
-                        onClick = {},
+                        isEnabled = state.isConnected,
+                        onClick = { onAction(DoctorDetailsAction.OnBookAppointmentClicked) },
                         text = stringResource(UiRes.string.book_appointment)
                     )
                 }

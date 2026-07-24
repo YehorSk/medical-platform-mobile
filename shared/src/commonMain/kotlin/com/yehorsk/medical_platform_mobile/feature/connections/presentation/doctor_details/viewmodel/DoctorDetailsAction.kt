@@ -14,7 +14,7 @@ sealed interface DoctorDetailsAction {
 
     data object OnApproveAccessClicked: DoctorDetailsAction
 
-    data object OnDeclineAccessClicked: DoctorDetailsAction
+    data object OnRejectAccessClicked: DoctorDetailsAction
 
     data object OnBookAppointmentClicked: DoctorDetailsAction
 
