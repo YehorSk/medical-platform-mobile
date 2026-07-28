@@ -28,4 +28,7 @@ interface AuthService {
     suspend fun verifyResetCode(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote>
 
     suspend fun resetPassword(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote>
+
+    suspend fun verifyUsersEmail(token: String): Result<ApiResponseDto, DataError.Remote>
+
 }

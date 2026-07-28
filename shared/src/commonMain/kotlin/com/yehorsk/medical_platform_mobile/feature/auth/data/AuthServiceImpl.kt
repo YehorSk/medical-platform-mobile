@@ -94,4 +94,11 @@ class AuthServiceImpl(
         )
     }
 
+    override suspend fun verifyUsersEmail(token: String): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post(
+            route = "/auth/verify",
+            body = mapOf("token" to token)
+        )
+    }
+
 }

@@ -43,7 +43,7 @@ inline fun <T, E: Error, R> Result<T, E>.fold(
     }
 }
 
-fun <T, E: Error> Result<T, E>.asEmptyResult(): EmptyResult<E> {
+fun <T, E: Error> Result<T, E>.asEmptyResult(message: String): EmptyResult<E> {
     return map {  }
 }
 

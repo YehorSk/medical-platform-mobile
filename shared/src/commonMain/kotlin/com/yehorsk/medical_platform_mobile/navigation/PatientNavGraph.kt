@@ -17,6 +17,7 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doct
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.FindDoctorScreen
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
@@ -85,9 +86,11 @@ fun NavGraphBuilder.patientNavGraph(
             )
         }
         composable<Screen.FindDoctor>{
+            val viewModel: FindDoctorViewModel = koinViewModel()
             FindDoctorScreen(
                 modifier = modifier
                     .fillMaxSize(),
+                viewModel = viewModel,
                 goBack = {
                     navController.popBackStack()
                 },

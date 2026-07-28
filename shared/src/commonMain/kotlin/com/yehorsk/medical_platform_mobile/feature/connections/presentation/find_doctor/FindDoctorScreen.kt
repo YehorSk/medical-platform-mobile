@@ -44,7 +44,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun FindDoctorScreen(
     modifier: Modifier = Modifier,
-    viewModel: FindDoctorViewModel = koinViewModel(),
+    viewModel: FindDoctorViewModel,
     goBack: () -> Unit,
     onDoctorClicked: (String) -> Unit
 ){

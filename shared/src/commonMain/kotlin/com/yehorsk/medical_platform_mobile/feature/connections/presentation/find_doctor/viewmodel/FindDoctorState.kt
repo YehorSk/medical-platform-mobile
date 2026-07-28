@@ -7,6 +7,7 @@ data class FindDoctorState(
     val isLoading: Boolean = false,
     val isLoadingSpecialization: Boolean = false,
     val isConnected: Boolean = true,
+    val findPatientDoctors: Boolean = false,
     val isLoadingDoctors: Boolean = false,
     val showFilterBottomSheet: Boolean = false,
     val specializations: List<Specialization> = listOf(),

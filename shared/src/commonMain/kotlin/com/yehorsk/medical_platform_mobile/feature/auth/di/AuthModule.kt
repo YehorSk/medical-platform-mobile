@@ -4,6 +4,7 @@ import com.yehorsk.medical_platform_mobile.MainViewModel
 import com.yehorsk.medical_platform_mobile.core.data.network.HttpClientFactory
 import com.yehorsk.medical_platform_mobile.feature.auth.data.AuthServiceImpl
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterScreenViewModel
@@ -16,6 +17,7 @@ val authModule = module {
     viewModelOf(::LoginScreenViewModel)
     viewModelOf(::RegisterScreenViewModel)
     viewModelOf(::ForgotPasswordScreenViewModel)
+    viewModelOf(::EmailVerificationViewModel)
     viewModelOf(::MainViewModel)
     single {
         HttpClientFactory(get(), get(), get()).create(get())
