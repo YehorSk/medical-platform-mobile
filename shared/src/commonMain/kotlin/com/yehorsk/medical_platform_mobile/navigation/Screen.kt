@@ -19,6 +19,8 @@ sealed interface Screen {
     @Serializable data object Profile : Screen
     @Serializable data object UpdatePwd : Screen
 
+    @Serializable data object MyAppointments: Screen
+
     @Serializable data object FindDoctor: Screen
 
     @Serializable data object PatientDoctors: Screen

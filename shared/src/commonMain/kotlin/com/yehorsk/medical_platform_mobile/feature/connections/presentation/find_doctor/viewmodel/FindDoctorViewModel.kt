@@ -97,6 +97,10 @@ class FindDoctorViewModel(
                 getAllDoctors()
             }
             is FindDoctorAction.OnDoctorClicked -> {}
+            FindDoctorAction.ShowMyDoctors -> {
+                _uiState.update { it.copy(form = it.form.copy(showMyDoctors = true)) }
+            }
+            FindDoctorAction.OnLoadNextPage -> {}
         }
     }
 

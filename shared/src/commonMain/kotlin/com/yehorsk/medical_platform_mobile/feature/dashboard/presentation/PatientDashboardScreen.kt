@@ -10,13 +10,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
-import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
 import com.yehorsk.medical_platform_mobile.util.appointments
@@ -25,6 +26,9 @@ import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.compon
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashAppointmentItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardAction
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardState
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardViewModel
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.no_appointments
@@ -32,20 +36,38 @@ import medicalplatformmobile.shared.generated.resources.no_recent_messages
 import medicalplatformmobile.shared.generated.resources.recent_messages
 import medicalplatformmobile.shared.generated.resources.upcoming_appointments
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 
 @Composable
 fun PatientDashboardScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: DashboardViewModel = koinViewModel(),
+    navigateToDoctorsScreen: () -> Unit,
+    navigateToChatScreen: () -> Unit,
+    navigateToAppointmentsScreen: () -> Unit
 ){
+
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
     PatientDashboardScreenRoot(
-        modifier = modifier
+        modifier = modifier,
+        state = state,
+        onAction = { action ->
+            when(action){
+                DashboardAction.OnNavigateToAppointmentsScreen -> { navigateToAppointmentsScreen() }
+                DashboardAction.OnNavigateToChatScreen -> { navigateToChatScreen() }
+                DashboardAction.OnNavigateToDoctorsScreen -> { navigateToDoctorsScreen() }
+            }
+        }
     )
 }
 
 @Composable
 fun PatientDashboardScreenRoot(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit
 ){
     Column(
         modifier = modifier
@@ -54,15 +76,7 @@ fun PatientDashboardScreenRoot(
     ) {
         DashboardTopBar(
             state = AppState(
-                user = User(
-                    id = "0",
-                    email = "test@gmail.com",
-                    firstName = "John",
-                    lastName = "Doe",
-                    role = "Patient",
-                    title = "Bc.",
-                    createdAt = Clock.System.now()
-                ),
+                user = state.user,
                 notificationCount = 23
             ),
             navigateToNotifications = {}
@@ -71,7 +85,7 @@ fun PatientDashboardScreenRoot(
             modifier = Modifier
                 .padding(top = 12.dp, start = 12.dp, end = 12.dp),
             navigateToDoctorsScreen = {
-
+                onAction(DashboardAction.OnNavigateToDoctorsScreen)
             }
         )
 //        ContentBlock(
@@ -87,7 +101,9 @@ fun PatientDashboardScreenRoot(
             modifier = Modifier
                 .padding(horizontal = 12.dp),
             title = stringResource(UiRes.string.recent_messages),
-            seeAllButtonClicked = {},
+            seeAllButtonClicked = {
+                onAction(DashboardAction.OnNavigateToChatScreen)
+            },
             content = {
                 if (conversations.isEmpty()) {
                     Text(
@@ -113,7 +129,9 @@ fun PatientDashboardScreenRoot(
             modifier = Modifier
                 .padding(horizontal = 12.dp),
             title = stringResource(UiRes.string.upcoming_appointments),
-            seeAllButtonClicked = {},
+            seeAllButtonClicked = {
+                onAction(DashboardAction.OnNavigateToAppointmentsScreen)
+            },
             content = {
                 if (appointments.isEmpty()) {
                     Text(
@@ -144,6 +162,19 @@ fun PatientDashboardScreenRoot(
 @Composable
 fun PatientDashboardScreenPreview(){
     AppTheme {
-        PatientDashboardScreenRoot()
+        PatientDashboardScreenRoot(
+            state = DashboardState(
+                user = User(
+                    id = "0",
+                    email = "test@gmail.com",
+                    firstName = "John",
+                    lastName = "Doe",
+                    role = "Patient",
+                    title = "Bc.",
+                    createdAt = Clock.System.now()
+                )
+            ),
+            onAction = {}
+        )
     }
 }

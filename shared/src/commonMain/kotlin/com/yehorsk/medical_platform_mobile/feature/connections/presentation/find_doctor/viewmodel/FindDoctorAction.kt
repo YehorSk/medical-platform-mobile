@@ -16,4 +16,8 @@ sealed interface FindDoctorAction {
 
     data object OnApplyFiltersClicked: FindDoctorAction
 
+    data object OnLoadNextPage: FindDoctorAction
+
+    data object ShowMyDoctors: FindDoctorAction
+
 }

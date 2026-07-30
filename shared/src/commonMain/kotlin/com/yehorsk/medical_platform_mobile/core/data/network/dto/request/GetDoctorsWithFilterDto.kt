@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class GetDoctorsWithFilterDto(
     val search: String = "",
     val city: String = "",
-    val specializations: List<String> = listOf()
+    val specializations: List<String> = listOf(),
+    val getPatientDoctors: Boolean = false
 )

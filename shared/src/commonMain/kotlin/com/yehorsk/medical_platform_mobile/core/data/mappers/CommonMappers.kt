@@ -74,7 +74,8 @@ fun DoctorResponseDto.toDoctor() = Doctor(
 fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(
     search = search,
     specializations = specializations.map { it.id },
-    city = city
+    city = city,
+    getPatientDoctors = showMyDoctors
 )
 
 fun PatientHasDoctorDto.toPatientHasDoctor() = PatientHasDoctor(

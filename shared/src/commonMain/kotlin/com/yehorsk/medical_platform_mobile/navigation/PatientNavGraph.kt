@@ -17,6 +17,7 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doct
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.FindDoctorScreen
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
@@ -35,7 +36,10 @@ fun NavGraphBuilder.patientNavGraph(
     ){
         composable<Screen.Home> {
             PatientDashboardScreen(
-                modifier = modifier
+                modifier = modifier,
+                navigateToDoctorsScreen = { navController.navigate(Screen.FindDoctor) },
+                navigateToChatScreen = { navController.navigate(Screen.Chat) },
+                navigateToAppointmentsScreen = { navController.navigate(Screen.MyAppointments) },
             )
         }
         composable<Screen.Connect> {
@@ -45,10 +49,10 @@ fun NavGraphBuilder.patientNavGraph(
                 navigateTo = { destination ->
                     when(destination){
                         ConnectionsMainDestination.Back -> navController.popBackStack()
-                        ConnectionsMainDestination.Appointments -> {}
+                        ConnectionsMainDestination.Appointments -> navController.navigate(Screen.MyAppointments)
                         ConnectionsMainDestination.DataAccess -> {}
                         ConnectionsMainDestination.FindDoctor -> navController.navigate(Screen.FindDoctor)
-                        ConnectionsMainDestination.MyDoctors -> {}
+                        ConnectionsMainDestination.MyDoctors -> navController.navigate(Screen.PatientDoctors)
                         ConnectionsMainDestination.PendingRequests -> {}
                     }
                 }
@@ -62,6 +66,17 @@ fun NavGraphBuilder.patientNavGraph(
             ){
                 Text(
                     text = "Records"
+                )
+            }
+        }
+        composable<Screen.MyAppointments> {
+            Box(
+                modifier = modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = "Appointments"
                 )
             }
         }
@@ -87,6 +102,21 @@ fun NavGraphBuilder.patientNavGraph(
         }
         composable<Screen.FindDoctor>{
             val viewModel: FindDoctorViewModel = koinViewModel()
+            FindDoctorScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                viewModel = viewModel,
+                goBack = {
+                    navController.popBackStack()
+                },
+                onDoctorClicked = {
+                    navController.navigate(Screen.DoctorDetails(it))
+                }
+            )
+        }
+        composable<Screen.PatientDoctors>{
+            val viewModel: FindDoctorViewModel = koinViewModel()
+            viewModel.onAction(FindDoctorAction.ShowMyDoctors)
             FindDoctorScreen(
                 modifier = modifier
                     .fillMaxSize(),

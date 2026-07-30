@@ -18,5 +18,6 @@ data class FindDoctorState(
 data class GetDoctorsWithFilter(
     val search: String = "",
     val specializations: Set<Specialization> = setOf(),
-    val city: String = ""
+    val city: String = "",
+    val showMyDoctors: Boolean = false
 )
