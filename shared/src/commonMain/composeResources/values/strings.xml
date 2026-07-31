@@ -139,4 +139,6 @@
 
     <string name="close">Close</string>
 
+    <string name="logout">Logout</string>
+
 </resources>

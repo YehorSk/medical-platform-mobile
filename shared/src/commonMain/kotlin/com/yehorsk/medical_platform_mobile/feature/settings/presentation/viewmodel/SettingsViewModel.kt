@@ -8,21 +8,28 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
+import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import com.yehorsk.medical_platform_mobile.feature.settings.domain.SettingsService
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val sessionStorage: SessionStorage,
+    private val authService: AuthService,
     private val settingsService: SettingsService
 ): ViewModel() {
+
+    private val eventChannel = Channel<SettingsScreenEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState = _uiState
@@ -48,6 +55,7 @@ class SettingsViewModel(
             SettingsAction.GoToProfileScreen -> {}
             SettingsAction.GoToUpdatePwdScreen -> {}
             SettingsAction.OnGoBackClicked -> {}
+            SettingsAction.OnLogoutClicked -> { logout() }
         }
     }
 
@@ -102,6 +110,36 @@ class SettingsViewModel(
 
     private fun updateAddress(value: String) {
         _uiState.update { it.copy(form = it.form.copy(address = value)) }
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(
+                isLoading = true
+            ) }
+            authService
+                .logout()
+                .onSuccess { response ->
+                    sessionStorage.clearAuthData()
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = response.message
+                        )
+                    )
+                    eventChannel.send(SettingsScreenEvent.OnLogoutSuccess)
+                }
+                .onFailure {  dataErrorRemote ->
+                    _uiState.update { it.copy(
+                        isLoading = false
+                    ) }
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = dataErrorRemote
+                        )
+                    )
+
+                }
+        }
     }
 
     private fun saveData() {

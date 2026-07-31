@@ -97,6 +97,13 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 navigateToUpdatePwdPage = {
                     navController.navigate(Screen.UpdatePwd)
+                },
+                onLogoutClicked = {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Authentication) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

@@ -24,4 +24,6 @@ sealed interface SettingsAction {
 
     data object GoToUpdatePwdScreen: SettingsAction
 
+    data object OnLogoutClicked: SettingsAction
+
 }
