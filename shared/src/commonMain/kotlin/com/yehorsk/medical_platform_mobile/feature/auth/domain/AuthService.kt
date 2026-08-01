@@ -31,4 +31,6 @@ interface AuthService {
 
     suspend fun verifyUsersEmail(token: String): Result<ApiResponseDto, DataError.Remote>
 
+    suspend fun resendEmailVerification(email: String): Result<ApiResponseDto, DataError.Remote>
+
 }

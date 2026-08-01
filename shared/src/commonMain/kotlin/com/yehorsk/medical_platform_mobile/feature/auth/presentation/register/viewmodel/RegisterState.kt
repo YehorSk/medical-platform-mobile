@@ -26,12 +26,12 @@ data class RegisterFormErrors(
 
 @Serializable
 data class RegisterForm(
-    val firstName: String = "",
-    val lastName: String = "",
-    val licenseNumber: String = "",
-    val email: String = "",
-    val phone: String = "",
-    val password: String = "",
-    val passwordConfirm: String = "",
+    val firstName: String = "test",
+    val lastName: String = "test",
+    val licenseNumber: String = "12312321323",
+    val email: String = "test@gmail.com",
+    val phone: String = "12312312312132",
+    val password: String = "12345678",
+    val passwordConfirm: String = "12345678",
     val role: String = "Patient",
 )

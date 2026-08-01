@@ -1,21 +1,18 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.EmailVerificationScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.ForgotPasswordScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.LoginScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.RegisterScreen
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.RegisterSuccessScreen
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessScreenViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.authGraph(
     navController: NavController
@@ -26,7 +23,7 @@ fun NavGraphBuilder.authGraph(
         composable<Screen.Login> {
             LoginScreen(
                 onSignUpClicked = {
-                    navController.navigate(Screen.SignUp){
+                    navController.navigate(Screen.Register){
                         restoreState = true
                         launchSingleTop = true
                     }
@@ -42,16 +39,20 @@ fun NavGraphBuilder.authGraph(
                 }
             )
         }
-        composable<Screen.SignUp> {
+        composable<Screen.Register> {
             RegisterScreen(
                 onSignInClicked = {
                     navController.navigate(Screen.Login){
+                        popUpTo(Screen.Register) {
+                            inclusive = true
+                            saveState = true
+                        }
                         restoreState = true
                         launchSingleTop = true
                     }
                 },
-                onSignUpClicked = { role ->
-                    navigateToMain(navController, role)
+                onRegisterSuccess = {
+                    navController.navigate(Screen.RegisterSuccess(it))
                 }
             )
         }
@@ -61,6 +62,17 @@ fun NavGraphBuilder.authGraph(
                     navController.navigate(Screen.Login){
                         restoreState = true
                         launchSingleTop = true
+                    }
+                }
+            )
+        }
+        composable<Screen.RegisterSuccess> {
+            RegisterSuccessScreen(
+                onLoginClick = {
+                    navController.navigate(Screen.Login){
+                        popUpTo<Screen.RegisterSuccess> {
+                            inclusive = true
+                        }
                     }
                 }
             )
@@ -75,7 +87,9 @@ fun NavGraphBuilder.authGraph(
             EmailVerificationScreen(
                 goToLoginPage = {
                     navController.navigate(Screen.Login){
-                        restoreState = true
+                        popUpTo<Screen.VerifyEmail> {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                     }
                 }

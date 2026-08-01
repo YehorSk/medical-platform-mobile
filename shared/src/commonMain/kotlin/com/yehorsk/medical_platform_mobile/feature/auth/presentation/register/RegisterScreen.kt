@@ -39,12 +39,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.RoleToggle
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.DoctorRegisterForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.PatientRegisterForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
 import com.yehorsk.medical_platform_mobile.util.getRole
@@ -65,9 +66,15 @@ fun RegisterScreen(
     modifier: Modifier = Modifier,
     viewModel: RegisterScreenViewModel= koinViewModel(),
     onSignInClicked: () -> Unit,
-    onSignUpClicked: (UserRole) -> Unit,
+    onRegisterSuccess: (String) -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.events){ event ->
+        when(event){
+            is RegisterEvent.Success -> onRegisterSuccess(event.email)
+        }
+    }
 
     RegisterScreenRoot(
         modifier = modifier,

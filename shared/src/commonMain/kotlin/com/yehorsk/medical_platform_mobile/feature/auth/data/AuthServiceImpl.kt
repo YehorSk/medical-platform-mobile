@@ -101,4 +101,11 @@ class AuthServiceImpl(
         )
     }
 
+    override suspend fun resendEmailVerification(email: String): Result<ApiResponseDto, DataError.Remote> {
+        return httpClient.post(
+            route = "/auth/resend",
+            body = mapOf("email" to email)
+        )
+    }
+
 }

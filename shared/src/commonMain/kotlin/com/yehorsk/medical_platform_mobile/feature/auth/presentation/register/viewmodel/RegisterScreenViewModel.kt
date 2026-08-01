@@ -152,16 +152,16 @@ class RegisterScreenViewModel(
                         form = _uiState.value.registerForm
                     )
                     .onSuccess { response ->
-                        eventChannel.send(RegisterEvent.Success)
+                        _uiState.update { it.copy(
+                            isLoading = false
+                        ) }
+                        eventChannel.send(RegisterEvent.Success(_uiState.value.registerForm.email))
                         SnackbarController.sendEvent(
                             event = SnackbarEvent(
                                 message = response.message
                             )
                         )
                         Logger.withTag("RegisterScreenViewModel").i { response.message }
-                        _uiState.update { it.copy(
-                            isLoading = false
-                        ) }
                     }.onFailure { dataErrorRemote ->
                         when(dataErrorRemote) {
                             is DataError.Remote.ValidationError -> {

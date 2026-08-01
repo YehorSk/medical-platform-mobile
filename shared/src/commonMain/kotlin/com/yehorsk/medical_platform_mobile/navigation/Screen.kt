@@ -5,7 +5,10 @@ import kotlinx.serialization.Serializable
 sealed interface Screen {
 
     @Serializable data object Login : Screen
-    @Serializable data object SignUp : Screen
+    @Serializable data object Register : Screen
+    @Serializable data class RegisterSuccess(
+        val email: String
+    ) : Screen
     @Serializable data object ForgotPwd : Screen
     @Serializable data class VerifyEmail(
         val token: String

@@ -8,6 +8,7 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verif
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterScreenViewModel
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessScreenViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -18,6 +19,7 @@ val authModule = module {
     viewModelOf(::RegisterScreenViewModel)
     viewModelOf(::ForgotPasswordScreenViewModel)
     viewModelOf(::EmailVerificationViewModel)
+    viewModelOf(::RegisterSuccessScreenViewModel)
     viewModelOf(::MainViewModel)
     single {
         HttpClientFactory(get(), get(), get()).create(get())
