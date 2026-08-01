@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.core.util
 
+import com.yehorsk.medical_platform_mobile.util.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 

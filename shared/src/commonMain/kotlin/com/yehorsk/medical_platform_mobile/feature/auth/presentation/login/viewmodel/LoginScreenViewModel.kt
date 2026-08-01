@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
+import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.core.util.toUiText
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
+import com.yehorsk.medical_platform_mobile.util.UiText
 import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +24,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.error_email_not_verified
+import medicalplatformmobile.shared.generated.resources.error_invalid_credentials
 
 class LoginScreenViewModel(
     private val authService: AuthService,
@@ -82,14 +88,19 @@ class LoginScreenViewModel(
                             )
                         )
                     }.onFailure { dataErrorRemote ->
+                        val errorMessage = when(dataErrorRemote) {
+                            DataError.Remote.Status.UNAUTHORIZED -> UiText.Resource(UiRes.string.error_invalid_credentials)
+                            DataError.Remote.Status.FORBIDDEN -> UiText.Resource(UiRes.string.error_email_not_verified)
+                            else -> dataErrorRemote.toUiText()
+                        }
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                message = errorMessage.asStringAsync()
+                            )
+                        )
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(
-                                error = dataErrorRemote
-                            )
-                        )
                     }
             }
         }

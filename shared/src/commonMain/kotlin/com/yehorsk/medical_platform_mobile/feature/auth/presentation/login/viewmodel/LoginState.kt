@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel
 
+import com.yehorsk.medical_platform_mobile.util.UiText
 import kotlinx.serialization.Serializable
 import javax.management.relation.Role
 
@@ -10,7 +11,7 @@ data class LoginState(
     val isLoading: Boolean = false,
     val passwordVisible: Boolean = false,
     val isAuthenticating: Boolean = true,
-    val error: String = "",
+    val error: UiText? = null,
     val role: Role? = null,
 )
 
