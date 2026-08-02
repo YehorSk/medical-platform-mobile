@@ -209,8 +209,8 @@ val fakeDoctor = Doctor(
             city = "New York"
         )
     ),
-    createdAt = "2026-07-20T16:53:33.883072Z",
-    updatedAt = "2026-07-20T16:53:33.883072Z",
-    approvedAt = "2026-07-20T16:53:33.868806Z",
+    createdAt = Instant.parse("2026-07-20T16:53:33.883072Z"),
+    updatedAt = Instant.parse("2026-07-20T16:53:33.883072Z"),
+    approvedAt = Instant.parse("2026-07-20T16:53:33.883072Z"),
     currentPatientHasDoctor = false
 )

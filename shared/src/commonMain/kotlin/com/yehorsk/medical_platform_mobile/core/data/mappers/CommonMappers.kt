@@ -2,12 +2,14 @@ package com.yehorsk.medical_platform_mobile.core.data.mappers
 
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.GetDoctorsWithFilterDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ClinicResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ScheduleResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorDetailsResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PatientHasDoctorDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.WorkplaceResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.Clinic
+import com.yehorsk.medical_platform_mobile.core.domain.model.Schedule
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.DoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.domain.model.PatientHasDoctor
@@ -19,6 +21,9 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.vi
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.GetDoctorsWithFilter
 import com.yehorsk.medical_platform_mobile.util.getAccessStatus
 import com.yehorsk.medical_platform_mobile.util.getRole
+import com.yehorsk.medical_platform_mobile.util.getWeekDay
+import com.yehorsk.medical_platform_mobile.util.toDisplayTime
+import kotlin.time.Instant
 
 fun ValidationErrorsDto.toRegisterFormErrors(): RegisterFormErrors {
     val errorMap = errors.associate { it.field to it.message }
@@ -61,14 +66,15 @@ fun DoctorResponseDto.toDoctor() = Doctor(
     licenseNumber = licenseNumber,
     approved = approved,
     description = description,
-    createdAt = createdAt,
-    updatedAt = updatedAt,
-    approvedAt = approvedAt,
+    createdAt = Instant.parse(createdAt),
+    updatedAt = Instant.parse(updatedAt),
+    approvedAt = Instant.parse(approvedAt),
     user = user?.toUser(),
     approvedBy = approvedBy?.toUser(),
     workplace = workplace?.toWorkplace(),
     specialization = specialization?.toSpecialization(),
-    currentPatientHasDoctor = currentPatientHasDoctor
+    currentPatientHasDoctor = currentPatientHasDoctor,
+    schedules = schedules.map { it.toSchedule() }
 )
 
 fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(
@@ -89,4 +95,15 @@ fun PatientHasDoctorDto.toPatientHasDoctor() = PatientHasDoctor(
 fun DoctorDetailsResponseDto.toDoctorDetailsResponse() = DoctorDetailsResponse(
     doctor = doctor.toDoctor(),
     access = access?.toPatientHasDoctor()
+)
+
+fun ScheduleResponseDto.toSchedule() = Schedule(
+    weekday = getWeekDay(weekday),
+    startTime = startTime.toDisplayTime(),
+    endTime = endTime.toDisplayTime(),
+    lunchStart = lunchStart?.toDisplayTime(),
+    lunchEnd = lunchEnd?.toDisplayTime(),
+    isWorkingDay = isWorkingDay,
+    slotDurationMinutes = slotDurationMinutes,
+    breakBetweenMinutes = breakBetweenMinutes
 )

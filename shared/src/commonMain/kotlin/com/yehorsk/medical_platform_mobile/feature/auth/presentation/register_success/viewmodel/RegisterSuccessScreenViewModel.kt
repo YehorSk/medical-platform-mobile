@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_s
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -73,6 +74,9 @@ class RegisterSuccessScreenViewModel(
                     eventChannel.send(RegisterSuccessEvent.ResendVerificationEmailSuccess)
                 }
                 .onFailure { error ->
+//                    val errorMessage = when(error){
+//                        DataError.Remote.Status.TOO_MANY_REQUESTS ->
+//                    }
                     _uiState.update { it.copy(
                         isLoading = false,
                         resendVerificationError = error.toUiText()

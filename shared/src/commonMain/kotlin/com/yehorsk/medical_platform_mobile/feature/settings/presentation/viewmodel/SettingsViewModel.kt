@@ -132,12 +132,8 @@ class SettingsViewModel(
                     _uiState.update { it.copy(
                         isLoading = false
                     ) }
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = dataErrorRemote
-                        )
-                    )
-
+                    sessionStorage.clearAuthData()
+                    eventChannel.send(SettingsScreenEvent.OnLogoutSuccess)
                 }
         }
     }

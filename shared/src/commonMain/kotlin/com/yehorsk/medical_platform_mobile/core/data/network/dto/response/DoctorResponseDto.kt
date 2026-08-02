@@ -12,6 +12,7 @@ data class DoctorResponseDto(
     val description: String = "",
     val specialization: SpecializationResponseDto? = null,
     val workplace: WorkplaceResponseDto? = null,
+    val schedules: List<ScheduleResponseDto> = emptyList(),
     val createdAt: String,
     val updatedAt: String,
     val approvedAt: String,

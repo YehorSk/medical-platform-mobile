@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.core.domain.model
 
+import kotlin.time.Instant
+
 data class Doctor(
     val id: String,
     val licenseNumber: String,
@@ -8,9 +10,10 @@ data class Doctor(
     val approved: Boolean = false,
     val description: String = "",
     val specialization: Specialization? = null,
+    val schedules: List<Schedule> = emptyList(),
     val workplace: Workplace? = null,
-    val createdAt: String,
-    val updatedAt: String,
-    val approvedAt: String,
+    val createdAt: Instant,
+    val updatedAt: Instant,
+    val approvedAt: Instant,
     val currentPatientHasDoctor: Boolean
 )

@@ -42,6 +42,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.androidx.navigation)
             implementation(libs.koin.androidx.compose)
+
+            implementation(libs.androidx.paging.runtime)
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -68,8 +70,11 @@ kotlin {
 
             implementation(libs.touchlab.kermit)
 
-            implementation(libs.androidx.paging.runtime)
+            implementation(libs.androidx.paging.common)
             implementation(libs.androidx.paging.compose)
+
+            implementation(libs.material3.adaptive)
+            implementation(libs.material3.adaptive.navigation.suite)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

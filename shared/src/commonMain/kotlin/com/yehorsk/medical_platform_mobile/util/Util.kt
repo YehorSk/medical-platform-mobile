@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.theme.LocalExtendedColors
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -15,12 +16,20 @@ import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.d_ago
+import medicalplatformmobile.shared.generated.resources.friday_short
 import medicalplatformmobile.shared.generated.resources.h_ago
 import medicalplatformmobile.shared.generated.resources.just_now
 import medicalplatformmobile.shared.generated.resources.m_ago
+import medicalplatformmobile.shared.generated.resources.monday_short
+import medicalplatformmobile.shared.generated.resources.saturday_short
+import medicalplatformmobile.shared.generated.resources.sunday_short
+import medicalplatformmobile.shared.generated.resources.thursday_short
+import medicalplatformmobile.shared.generated.resources.tuesday_short
+import medicalplatformmobile.shared.generated.resources.wednesday_short
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -32,6 +41,15 @@ fun getAccessStatus(status: String): AccessStatus {
     return AccessStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AccessStatus.UNKNOWN
 }
 
+fun getWeekDay(status: String): WeekDay {
+    return WeekDay.entries.find { it.name.equals(status, ignoreCase = true) } ?: WeekDay.UNKNOWN
+}
+
+private val apiFormatter = DateTimeFormatter.ISO_LOCAL_TIME
+private val uiFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+fun String.toDisplayTime(): String =
+    LocalTime.parse(this, apiFormatter).format(uiFormatter)
 
 @Composable
 fun AppointmentStatus.toColor(): Color {
@@ -82,6 +100,18 @@ fun TimeAgo.toText(): String {
         is TimeAgo.Days -> stringResource(UiRes.string.d_ago, value)
         is TimeAgo.Date -> value
     }
+}
+
+@Composable
+fun WeekDay.shortName(): String = when (this) {
+    WeekDay.MONDAY -> stringResource(UiRes.string.monday_short)
+    WeekDay.TUESDAY -> stringResource(UiRes.string.tuesday_short)
+    WeekDay.WEDNESDAY -> stringResource(UiRes.string.wednesday_short)
+    WeekDay.THURSDAY -> stringResource(UiRes.string.thursday_short)
+    WeekDay.FRIDAY -> stringResource(UiRes.string.friday_short)
+    WeekDay.SATURDAY -> stringResource(UiRes.string.saturday_short)
+    WeekDay.SUNDAY -> stringResource(UiRes.string.sunday_short)
+    WeekDay.UNKNOWN -> "-"
 }
 
 fun extractDate(datetime: String): String {

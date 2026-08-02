@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorHeaderCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorInfoCard
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.WeeklyScheduleCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
@@ -63,7 +66,11 @@ fun DoctorDetailsScreenRoot(
     state: DoctorDetailsState,
     onAction: (DoctorDetailsAction) -> Unit
 ){
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         AppTopBar(
             title = stringResource(UiRes.string.find_doctors),
             showGoBackButton = true,
@@ -95,6 +102,12 @@ fun DoctorDetailsScreenRoot(
                             .padding(vertical = 12.dp),
                         title = stringResource(UiRes.string.about),
                         content = state.doctorDetails.description
+                    )
+                    WeeklyScheduleCard(
+                        modifier = Modifier
+                            .padding(vertical = 12.dp),
+                        schedule = state.doctorDetails.schedules,
+                        onBookClicked = {onAction(DoctorDetailsAction.OnBookAppointmentClicked)}
                     )
                     val accessStatus = state.patientAccess?.status
                     val initiatedBy = state.patientAccess?.initiatedBy
@@ -143,13 +156,6 @@ fun DoctorDetailsScreenRoot(
                             text = stringResource(UiRes.string.decline_access)
                         )
                     }
-                    DefaultButton(
-                        modifier = Modifier
-                            .padding(vertical = 12.dp),
-                        isEnabled = state.isConnected,
-                        onClick = { onAction(DoctorDetailsAction.OnBookAppointmentClicked) },
-                        text = stringResource(UiRes.string.book_appointment)
-                    )
                 }
             }
         }
