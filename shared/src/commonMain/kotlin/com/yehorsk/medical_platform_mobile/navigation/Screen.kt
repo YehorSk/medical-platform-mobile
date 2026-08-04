@@ -28,6 +28,8 @@ sealed interface Screen {
 
     @Serializable data object PatientDoctors: Screen
 
+    @Serializable data object BookAppointment: Screen
+
     @Serializable data object PendingRequests: Screen
 
     @Serializable data object DataAccessGDPR: Screen
@@ -35,5 +37,7 @@ sealed interface Screen {
     @Serializable data class DoctorDetails(
         val doctorId: String
     ): Screen
+
+    @Serializable data object MySchedule: Screen
 
 }

@@ -40,7 +40,8 @@ import org.jetbrains.compose.resources.stringResource
 fun DoctorDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: DoctorDetailsViewModel,
-    goBack: () -> Unit
+    goBack: () -> Unit,
+    onBookAppointmentClicked: () -> Unit
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -51,6 +52,9 @@ fun DoctorDetailsScreen(
            when(action){
                is DoctorDetailsAction.GoBackClicked -> {
                    goBack()
+               }
+               is DoctorDetailsAction.OnBookAppointmentClicked -> {
+                   onBookAppointmentClicked()
                }
                else -> {
                    viewModel.onAction(action)

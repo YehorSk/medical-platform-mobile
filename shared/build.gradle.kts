@@ -70,6 +70,8 @@ kotlin {
 
             implementation(libs.touchlab.kermit)
 
+            implementation(libs.kizitonwose.calendar)
+
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.paging.compose)
 

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsListItem
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsAction
@@ -16,8 +17,10 @@ import com.yehorsk.medical_platform_mobile.feature.settings.presentation.compone
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsScreenEvent
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsState
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsViewModel
+import com.yehorsk.medical_platform_mobile.util.getRole
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.logout
+import medicalplatformmobile.shared.generated.resources.my_schedule
 import medicalplatformmobile.shared.generated.resources.settings_account_header
 import medicalplatformmobile.shared.generated.resources.settings_change_password
 import org.jetbrains.compose.resources.stringResource
@@ -29,7 +32,8 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     navigateToProfilePage: () -> Unit,
     navigateToUpdatePwdPage: () -> Unit,
-    onLogoutClicked: () -> Unit
+    navigateToMySchedulePage: () -> Unit = {},
+    onLogoutClicked: () -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -50,6 +54,9 @@ fun SettingsScreen(
                 is SettingsAction.GoToUpdatePwdScreen -> {
                     navigateToUpdatePwdPage()
                 }
+                is SettingsAction.GoToMyScheduleClicked -> {
+                    navigateToMySchedulePage()
+                }
                 else -> viewModel.onAction(action)
             }
         }
@@ -67,19 +74,23 @@ fun SettingsScreenRoot(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SettingsMainHeader(
-            state = state
-        )
-        SettingsList(
-            modifier = Modifier.weight(1f),
-            onAction = onAction
-        )
+        state.user?.let {
+            SettingsMainHeader(
+                state = state
+            )
+            SettingsList(
+                modifier = Modifier.weight(1f),
+                onAction = onAction,
+                userRole = getRole(state.user.role)
+            )
+        }
     }
 }
 
 @Composable
 fun SettingsList(
     modifier: Modifier = Modifier,
+    userRole: UserRole,
     onAction: (SettingsAction) -> Unit
 ) {
     LazyColumn(
@@ -97,6 +108,14 @@ fun SettingsList(
                 text = stringResource(UiRes.string.settings_change_password),
                 onClick = { onAction(SettingsAction.GoToUpdatePwdScreen) }
             )
+        }
+        if(userRole == UserRole.DOCTOR){
+            item {
+                SettingsListItem(
+                    text = stringResource(UiRes.string.my_schedule),
+                    onClick = { onAction(SettingsAction.GoToMyScheduleClicked) }
+                )
+            }
         }
         item {
             SettingsListItem(

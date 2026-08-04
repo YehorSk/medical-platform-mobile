@@ -7,6 +7,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
 import com.yehorsk.theme.LocalExtendedColors
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -15,7 +16,9 @@ import kotlin.time.Instant
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.confirm
 import medicalplatformmobile.shared.generated.resources.d_ago
+import medicalplatformmobile.shared.generated.resources.date
 import medicalplatformmobile.shared.generated.resources.friday_short
 import medicalplatformmobile.shared.generated.resources.h_ago
 import medicalplatformmobile.shared.generated.resources.just_now
@@ -24,6 +27,7 @@ import medicalplatformmobile.shared.generated.resources.monday_short
 import medicalplatformmobile.shared.generated.resources.saturday_short
 import medicalplatformmobile.shared.generated.resources.sunday_short
 import medicalplatformmobile.shared.generated.resources.thursday_short
+import medicalplatformmobile.shared.generated.resources.time
 import medicalplatformmobile.shared.generated.resources.tuesday_short
 import medicalplatformmobile.shared.generated.resources.wednesday_short
 import org.jetbrains.compose.resources.StringResource
@@ -100,6 +104,13 @@ fun TimeAgo.toText(): String {
         is TimeAgo.Days -> stringResource(UiRes.string.d_ago, value)
         is TimeAgo.Date -> value
     }
+}
+
+@Composable
+fun BookingStep.titleRes(): String = when (this) {
+    BookingStep.Date -> stringResource(UiRes.string.date)
+    BookingStep.Time -> stringResource(UiRes.string.time)
+    BookingStep.Confirm -> stringResource(UiRes.string.confirm)
 }
 
 @Composable

@@ -1,6 +1,7 @@
 package com.yehorsk.medical_platform_mobile.di
 
 import com.yehorsk.medical_platform_mobile.core.di.coreDataModule
+import com.yehorsk.medical_platform_mobile.feature.appointments.di.appointmentModule
 import com.yehorsk.medical_platform_mobile.feature.auth.di.authModule
 import com.yehorsk.medical_platform_mobile.feature.chat.di.chatModule
 import com.yehorsk.medical_platform_mobile.feature.connections.di.connectionsModule
@@ -18,7 +19,8 @@ fun initKoin(config: KoinAppDeclaration? = null){
             chatModule,
             dashboardModule,
             coreDataModule,
-            connectionsModule
+            connectionsModule,
+            appointmentModule
         )
     }
 }

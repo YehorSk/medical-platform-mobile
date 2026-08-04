@@ -52,10 +52,8 @@ class SettingsViewModel(
             is SettingsAction.UpdatePhone -> { updatePhone(action.value) }
             is SettingsAction.UpdateSecondName -> { updateSecondName(action.value) }
             is SettingsAction.UpdateTitle -> { updateTitle(action.value) }
-            SettingsAction.GoToProfileScreen -> {}
-            SettingsAction.GoToUpdatePwdScreen -> {}
-            SettingsAction.OnGoBackClicked -> {}
             SettingsAction.OnLogoutClicked -> { logout() }
+            else -> {}
         }
     }
 

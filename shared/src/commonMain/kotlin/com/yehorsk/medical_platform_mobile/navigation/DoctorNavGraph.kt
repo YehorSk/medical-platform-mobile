@@ -14,6 +14,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.C
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.DoctorDashboardScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
 
 fun NavGraphBuilder.doctorNavGraph(
     modifier: Modifier = Modifier,
@@ -63,13 +64,35 @@ fun NavGraphBuilder.doctorNavGraph(
             )
         }
         composable<Screen.Settings> {
+            SettingsScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                navigateToProfilePage = {
+                    navController.navigate(Screen.Profile)
+                },
+                navigateToUpdatePwdPage = {
+                    navController.navigate(Screen.UpdatePwd)
+                },
+                onLogoutClicked = {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Authentication) {
+                            inclusive = true
+                        }
+                    }
+                },
+                navigateToMySchedulePage = {
+                    navController.navigate(Screen.MySchedule)
+                }
+            )
+        }
+        composable<Screen.MySchedule> {
             Box(
                 modifier = modifier
                     .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ){
                 Text(
-                    text = "Profile"
+                    text = "My Schedule"
                 )
             }
         }

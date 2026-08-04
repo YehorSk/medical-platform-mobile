@@ -26,4 +26,6 @@ sealed interface SettingsAction {
 
     data object OnLogoutClicked: SettingsAction
 
+    data object GoToMyScheduleClicked: SettingsAction
+
 }

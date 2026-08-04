@@ -141,6 +141,8 @@
 
     <string name="logout">Logout</string>
 
+    <string name="my_schedule">My Schedule</string>
+
     <string name="error_invalid_credentials">The email or password is incorrect</string>
     <string name="error_email_not_verified">Unable to login because your email isn't verified</string>
 
@@ -155,5 +157,18 @@
     <string name="friday_short">Fri</string>
     <string name="saturday_short">Sat</string>
     <string name="sunday_short">Sun</string>
+
+    <!-- Book Appointment Screen -->
+    <string name="select_date">Select Date</string>
+    <string name="doctor">Doctor</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="confirm">Confirm</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="available">Available</string>
+    <string name="selected">Selected</string>
+    <string name="select_a_date">Select a date</string>
+    <string name="select_a_time_slot">Select a time slot</string>
+    <string name="continue_with_date_time">Continue - %1$s</string>
 
 </resources>

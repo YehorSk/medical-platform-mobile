@@ -25,6 +25,7 @@ kermit = "2.0.6"
 paging = "3.5.0"
 material3WindowSizeClass = "1.9.0"
 material3-adaptive = "1.2.0"
+kizitonwose = "2.10.1"
 
 
 [libraries]
@@ -86,6 +87,8 @@ touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
+
+kizitonwose-calendar = { module = "com.kizitonwose.calendar:compose-multiplatform", version.ref = "kizitonwose"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
