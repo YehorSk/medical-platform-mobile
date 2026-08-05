@@ -1,19 +1,17 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,15 +22,23 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultMultilineTextField
+import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.AppointmentCalendar
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.AppointmentSummaryCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.BookingProgress
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.SelectedDate
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.TimeSlotsFlowRow
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentAction
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentEvent
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentState
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorHeaderCard
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.book_appointment
+import medicalplatformmobile.shared.generated.resources.confirm_appointment
+import medicalplatformmobile.shared.generated.resources.select_a_time_slot
 import medicalplatformmobile.shared.generated.resources.select_date
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -45,10 +51,16 @@ fun BookAppointmentScreen(
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    ObserveAsEvents(viewModel.events){ event ->
+        when(event){
+            is BookAppointmentEvent.NavigateBack -> onGoBackClicked()
+        }
+    }
+
     BookAppointmentScreenRoot(
         modifier = modifier,
         state = state,
-        onGoBackClicked = { onGoBackClicked() }
+        onAction = { viewModel.onAction(it) }
     )
 }
 
@@ -56,7 +68,7 @@ fun BookAppointmentScreen(
 fun BookAppointmentScreenRoot(
     modifier: Modifier = Modifier,
     state: BookAppointmentState,
-    onGoBackClicked: () -> Unit
+    onAction: (BookAppointmentAction) -> Unit
 ){
     Column(
         modifier = modifier
@@ -66,7 +78,7 @@ fun BookAppointmentScreenRoot(
         AppTopBar(
             title = stringResource(UiRes.string.book_appointment),
             showGoBackButton = true,
-            onGoBackClicked = { onGoBackClicked() }
+            onGoBackClicked = { onAction(BookAppointmentAction.OnGoBackClicked) }
         )
         Box(
             modifier = Modifier
@@ -83,36 +95,84 @@ fun BookAppointmentScreenRoot(
                     CircularProgressIndicator()
                 }
             }
-            AnimatedContent(
-                targetState = state.currentStep
-            ){ step ->
-                when(step){
-                    BookingStep.Date -> {
-                        Column(
-                        ) {
-                            BookingProgress(
-                                modifier = Modifier
-                                    .padding(vertical = 12.dp),
-                                currentStep = state.currentStep
-                            )
-                            AppointmentCalendar(
-                                modifier = Modifier
-                                    .padding(vertical = 12.dp),
-                                selectedDate = state.form.selectedDate,
-                                onUpdateSelectedDate = {},
-                                closedDays = emptyArray<String>()
-                            )
-                            DefaultButton(
-                                modifier = Modifier
-                                    .padding(vertical = 12.dp),
-                                text = stringResource(UiRes.string.select_date),
-                                onClick = {},
-                                isEnabled = state.isConnected && !state.isLoading
-                            )
+            Column {
+                BookingProgress(
+                    modifier = Modifier
+                        .padding(vertical = 12.dp),
+                    currentStep = state.currentStep
+                )
+                AnimatedContent(
+                    targetState = state.currentStep
+                ){ step ->
+                    when(step){
+                        BookingStep.Date -> {
+                            Column {
+                                AppointmentCalendar(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    selectedDate = state.form.selectedDate,
+                                    onUpdateSelectedDate = { onAction(BookAppointmentAction.OnDateSelected(it)) },
+                                    closedDays = emptyArray<String>()
+                                )
+                                DefaultButton(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    text = stringResource(UiRes.string.select_date),
+                                    onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Time)) }
+                                )
+                            }
+                        }
+                        BookingStep.Time -> {
+                            Column {
+                                SelectedDate(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    date = state.form.selectedDate
+                                )
+                                TimeSlotsFlowRow(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    selectedTime = state.form.selectedTime,
+                                    times = state.availableTime,
+                                    onTimeSelected = { onAction(BookAppointmentAction.OnTimeSelected(it)) }
+                                )
+                                DefaultButton(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    text = stringResource(UiRes.string.select_a_time_slot),
+                                    onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Confirm)) }
+                                )
+                            }
+                        }
+                        BookingStep.Confirm -> {
+                            Column {
+                                AppointmentSummaryCard(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    doctorName = "Dr. Sarah Chen",
+                                    specialty = "Cardiology",
+                                    date = state.form.selectedDate,
+                                    time = state.form.selectedTime ?: ""
+                                )
+                                DefaultMultilineTextField(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    placeholder = "Describe your symptoms or reason for visit...",
+                                    header = "NOTE FOR DOCTOR (optional)",
+                                    value = state.form.note,
+                                    onValueChange = { 
+                                        onAction(BookAppointmentAction.OnNoteChanged(it))
+                                    }
+                                )
+                                DefaultButton(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp),
+                                    text = stringResource(UiRes.string.confirm_appointment),
+                                    onClick = {}
+                                )
+                            }
                         }
                     }
-                    BookingStep.Time -> {}
-                    BookingStep.Confirm -> {}
                 }
             }
         }
@@ -125,9 +185,9 @@ fun BookAppointmentScreenRootPreview(){
     AppTheme {
         BookAppointmentScreenRoot(
             state = BookAppointmentState(
-
+                currentStep = BookingStep.Confirm
             ),
-            onGoBackClicked = {}
+            onAction = {}
         )
     }
 }

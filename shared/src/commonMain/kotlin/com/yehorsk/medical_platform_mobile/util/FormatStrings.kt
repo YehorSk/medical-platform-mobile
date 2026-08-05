@@ -25,7 +25,14 @@ fun formatTime(input: String): String {
 fun formatDateTime(input: String): String {
     val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val localDate = LocalDate.parse(input, parser)
-    val formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy")
+    val formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d")
+    return localDate.format(formatter)
+}
+
+fun formatShortDateTime(input: String): String {
+    val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val localDate = LocalDate.parse(input, parser)
+    val formatter = DateTimeFormatter.ofPattern("EEE, MMM d")
     return localDate.format(formatter)
 }
 

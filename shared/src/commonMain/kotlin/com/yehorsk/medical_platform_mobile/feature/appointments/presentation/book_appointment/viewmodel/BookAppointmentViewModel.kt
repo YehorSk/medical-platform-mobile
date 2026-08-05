@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
@@ -12,8 +13,11 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
@@ -22,17 +26,95 @@ class BookAppointmentViewModel(
     private val connectivityObserver: ConnectivityObserver
 ): ViewModel() {
 
-    init {
-        observeConnectivity()
-    }
+    private val eventChannel = Channel<BookAppointmentEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private val _uiState = MutableStateFlow(BookAppointmentState())
     val uiState = _uiState
+        .onStart {
+            observeConnectivity()
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = BookAppointmentState()
         )
+
+    fun onAction(action: BookAppointmentAction){
+        when(action){
+            is BookAppointmentAction.OnDateSelected -> {
+                onDateSelected(action.date)
+            }
+            is BookAppointmentAction.OnTimeSelected -> {
+                onTimeSelected(action.time)
+            }
+
+            is BookAppointmentAction.OnNoteChanged -> {
+                onNoteChanged(action.note)
+            }
+
+            is BookAppointmentAction.OnGoToNextStateClicked -> {
+                onGoToNextStateClicked(action.step)
+            }
+
+            BookAppointmentAction.OnGoBackClicked -> {
+                onGoBackClicked()
+            }
+
+        }
+    }
+
+    private fun onNoteChanged(note: String) {
+        _uiState.update { it.copy(
+            form = it.form.copy(
+                note = note
+            )
+        ) }
+    }
+
+    private fun onGoBackClicked() {
+        when (_uiState.value.currentStep) {
+            BookingStep.Date -> {
+                viewModelScope.launch {
+                    eventChannel.send(BookAppointmentEvent.NavigateBack)
+                }
+            }
+
+            BookingStep.Time -> {
+                _uiState.update {
+                    it.copy(currentStep = BookingStep.Date)
+                }
+            }
+
+            BookingStep.Confirm -> {
+                _uiState.update {
+                    it.copy(currentStep = BookingStep.Time)
+                }
+            }
+        }
+    }
+
+    private fun onDateSelected(date: String) {
+        _uiState.update { it.copy(
+            form = it.form.copy(
+                selectedDate = date
+            )
+        ) }
+    }
+
+    private fun onTimeSelected(time: String) {
+        _uiState.update { it.copy(
+            form = it.form.copy(
+                selectedTime = time
+            )
+        ) }
+    }
+
+    private fun onGoToNextStateClicked(step: BookingStep) {
+        _uiState.update { it.copy(
+            currentStep = step
+        ) }
+    }
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected

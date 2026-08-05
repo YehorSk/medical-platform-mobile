@@ -164,6 +164,7 @@
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_appointment">Confirm Appointment</string>
     <string name="unavailable">Unavailable</string>
     <string name="available">Available</string>
     <string name="selected">Selected</string>

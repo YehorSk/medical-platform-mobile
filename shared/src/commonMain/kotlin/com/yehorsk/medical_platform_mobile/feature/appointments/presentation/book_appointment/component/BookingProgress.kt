@@ -42,7 +42,7 @@ fun BookingProgress(
         shape = RoundedCornerShape(20.dp)
     ){
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(
                     start = 20.dp,
