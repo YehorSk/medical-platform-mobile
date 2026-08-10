@@ -1,16 +1,22 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toDayOfWeek
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.ScheduleService
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -18,27 +24,42 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 class BookAppointmentViewModel(
     private val mainLogger: MainLogger,
-    private val connectivityObserver: ConnectivityObserver
+    private val connectivityObserver: ConnectivityObserver,
+    private val appointmentService: AppointmentService,
+    private val scheduleService: ScheduleService,
+    savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val eventChannel = Channel<BookAppointmentEvent>()
-    val events = eventChannel.receiveAsFlow()
+    private var hasLoadedInitialData = false
+
+    private val doctorId = savedStateHandle.get<String>("doctorId")
+        ?: throw IllegalStateException("Doctor id is missing")
 
     private val _uiState = MutableStateFlow(BookAppointmentState())
     val uiState = _uiState
         .onStart {
-            observeConnectivity()
+            if(!hasLoadedInitialData){
+                getWeekSchedule()
+                hasLoadedInitialData = true
+            }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
             initialValue = BookAppointmentState()
         )
+
+
+    private val eventChannel = Channel<BookAppointmentEvent>()
+    val events = eventChannel.receiveAsFlow()
+
+    init {
+        observeConnectivity()
+    }
 
     fun onAction(action: BookAppointmentAction){
         when(action){
@@ -74,7 +95,7 @@ class BookAppointmentViewModel(
 
     private fun onGoBackClicked() {
         when (_uiState.value.currentStep) {
-            BookingStep.Date -> {
+            BookingStep.Date, BookingStep.Doctor -> {
                 viewModelScope.launch {
                     eventChannel.send(BookAppointmentEvent.NavigateBack)
                 }
@@ -118,14 +139,43 @@ class BookAppointmentViewModel(
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected
-            .debounce(1.seconds)
             .distinctUntilChanged()
-            .drop(1)
             .onEach { connected ->
                 mainLogger.debug("Connectivity = $connected")
                 _uiState.update { it.copy(isConnected = connected) }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun getWeekSchedule() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+
+            scheduleService
+                .getSchedule(doctorId)
+                .onSuccess { response ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            doctor = response.data.doctor,
+                            openWeekDays = response.data.daySchedule.map {
+                                it.weekday.toDayOfWeek()
+                            }
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
+        }
     }
 
 }

@@ -1,7 +1,9 @@
 package com.yehorsk.medical_platform_mobile.core.domain.model
 
+import kotlinx.serialization.Serializable
 import kotlin.time.Instant
 
+@Serializable
 data class Doctor(
     val id: String,
     val licenseNumber: String,
@@ -10,7 +12,7 @@ data class Doctor(
     val approved: Boolean = false,
     val description: String = "",
     val specialization: Specialization? = null,
-    val schedules: List<Schedule> = emptyList(),
+    val daySchedules: List<DaySchedule> = emptyList(),
     val workplace: Workplace? = null,
     val createdAt: Instant,
     val updatedAt: Instant,

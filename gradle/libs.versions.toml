@@ -1,17 +1,17 @@
 [versions]
 agp = "9.2.1"
-android-compileSdk = "36"
+android-compileSdk = "37"
 android-minSdk = "26"
 android-targetSdk = "36"
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.19.0"
 androidx-espresso = "3.7.0"
-androidx-lifecycle = "2.9.0"
+androidx-lifecycle = "2.11.0"
 androidx-testExt = "1.3.0"
 composeMultiplatform = "1.11.1"
 junit = "4.13.2"
-kotlin = "2.4.0"
+kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
 material3 = "1.11.0-alpha07"
 koin = "4.2.2"
@@ -19,13 +19,14 @@ navigation-compose = "2.9.2"
 kotlinx-datetime = "0.8.0"
 kotlinx-serialization = "1.11.0"
 datastore = "1.2.1"
-ktor = "3.5.0"
+ktor = "3.5.2"
 datastoreCore = "1.2.1"
-kermit = "2.0.6"
+kermit = "2.1.0"
 paging = "3.5.0"
 material3WindowSizeClass = "1.9.0"
 material3-adaptive = "1.2.0"
 kizitonwose = "2.10.1"
+navigationevent = "1.0.0"
 
 
 [libraries]
@@ -70,6 +71,8 @@ koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-nav
 # Compose
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "composeMultiplatform" }
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
+androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "navigationevent" }
+androidx-navigationevent-compose = { module = "androidx.navigationevent:navigationevent-compose", version.ref = "navigationevent" }
 
 # Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

@@ -82,11 +82,11 @@ class LoginScreenViewModel(
                             isLoading = false
                         ) }
                         eventChannel.send(LoginEvent.Success(getRole(response.data.user.role)))
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(
-                                message = response.message
-                            )
-                        )
+//                        SnackbarController.sendEvent(
+//                            event = SnackbarEvent(
+//                                message = response.message
+//                            )
+//                        )
                     }.onFailure { dataErrorRemote ->
                         val errorMessage = when(dataErrorRemote) {
                             DataError.Remote.Status.UNAUTHORIZED -> UiText.Resource(UiRes.string.error_invalid_credentials)

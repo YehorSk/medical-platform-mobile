@@ -12,7 +12,7 @@ kotlin {
     
     jvm("desktop")
     
-    androidLibrary {
+    android {
        namespace = "com.yehorsk.medical_platform_mobile.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
        minSdk = libs.versions.android.minSdk.get().toInt()
@@ -74,6 +74,9 @@ kotlin {
 
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.paging.compose)
+
+            implementation(libs.androidx.navigationevent)
+            implementation(libs.androidx.navigationevent.compose)
 
             implementation(libs.material3.adaptive)
             implementation(libs.material3.adaptive.navigation.suite)

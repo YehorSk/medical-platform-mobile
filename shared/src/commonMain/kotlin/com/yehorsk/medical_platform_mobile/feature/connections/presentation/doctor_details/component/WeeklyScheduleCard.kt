@@ -7,33 +7,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButtonDefaults.Icon
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Schedule
+import com.yehorsk.medical_platform_mobile.core.domain.model.DaySchedule
 import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
-import com.yehorsk.medical_platform_mobile.util.shortName
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.book_appointment
-import medicalplatformmobile.shared.generated.resources.book_on_available_day
 import medicalplatformmobile.shared.generated.resources.calendar_today_24px
 import medicalplatformmobile.shared.generated.resources.weekly_schedule
 import org.jetbrains.compose.resources.painterResource
@@ -43,7 +33,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun WeeklyScheduleCard(
     modifier: Modifier = Modifier,
-    schedule: List<Schedule>,
+    daySchedule: List<DaySchedule>,
     onBookClicked: () -> Unit= {}
 ) {
     ElevatedCard(
@@ -72,7 +62,7 @@ fun WeeklyScheduleCard(
 
             Spacer(Modifier.height(16.dp))
 
-            schedule.forEach { day ->
+            daySchedule.forEach { day ->
                 ScheduleRow(day)
                 Spacer(Modifier.height(8.dp))
             }
@@ -96,8 +86,8 @@ private fun WeeklyScheduleCardPreview() {
     AppTheme {
         WeeklyScheduleCard(
             modifier = Modifier.padding(16.dp),
-            schedule = listOf(
-                Schedule(
+            daySchedule = listOf(
+                DaySchedule(
                     WeekDay.MONDAY,
                     "09:00",
                     "17:00",
@@ -107,7 +97,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.TUESDAY,
                     "09:00",
                     "17:00",
@@ -117,7 +107,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.WEDNESDAY,
                     "10:00",
                     "18:00",
@@ -127,7 +117,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.THURSDAY,
                     "09:00",
                     "17:00",
@@ -137,7 +127,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.FRIDAY,
                     "09:00",
                     "15:00",
@@ -147,7 +137,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.SATURDAY,
                     "",
                     "",
@@ -157,7 +147,7 @@ private fun WeeklyScheduleCardPreview() {
                     30,
                     10
                 ),
-                Schedule(
+                DaySchedule(
                     WeekDay.SUNDAY,
                     "",
                     "",

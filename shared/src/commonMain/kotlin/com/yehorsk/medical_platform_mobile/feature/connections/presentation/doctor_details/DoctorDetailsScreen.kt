@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
+import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
@@ -28,7 +29,6 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doct
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.about
 import medicalplatformmobile.shared.generated.resources.approve_access
-import medicalplatformmobile.shared.generated.resources.book_appointment
 import medicalplatformmobile.shared.generated.resources.decline_access
 import medicalplatformmobile.shared.generated.resources.find_doctors
 import medicalplatformmobile.shared.generated.resources.grant_access
@@ -41,7 +41,7 @@ fun DoctorDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: DoctorDetailsViewModel,
     goBack: () -> Unit,
-    onBookAppointmentClicked: () -> Unit
+    onBookAppointmentClicked: (Doctor) -> Unit
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -54,7 +54,9 @@ fun DoctorDetailsScreen(
                    goBack()
                }
                is DoctorDetailsAction.OnBookAppointmentClicked -> {
-                   onBookAppointmentClicked()
+                   state.doctorDetails?.let {
+                       onBookAppointmentClicked(it)
+                   }
                }
                else -> {
                    viewModel.onAction(action)
@@ -110,7 +112,7 @@ fun DoctorDetailsScreenRoot(
                     WeeklyScheduleCard(
                         modifier = Modifier
                             .padding(vertical = 12.dp),
-                        schedule = state.doctorDetails.schedules,
+                        daySchedule = state.doctorDetails.daySchedules,
                         onBookClicked = {onAction(DoctorDetailsAction.OnBookAppointmentClicked)}
                     )
                     val accessStatus = state.patientAccess?.status

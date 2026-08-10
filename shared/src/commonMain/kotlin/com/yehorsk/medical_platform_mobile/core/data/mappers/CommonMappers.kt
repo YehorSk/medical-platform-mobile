@@ -2,18 +2,19 @@ package com.yehorsk.medical_platform_mobile.core.data.mappers
 
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.GetDoctorsWithFilterDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ClinicResponseDto
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ScheduleResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DayScheduleResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorDetailsResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PatientHasDoctorDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.WorkplaceResponseDto
 import com.yehorsk.medical_platform_mobile.core.domain.model.Clinic
-import com.yehorsk.medical_platform_mobile.core.domain.model.Schedule
+import com.yehorsk.medical_platform_mobile.core.domain.model.DaySchedule
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.DoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.domain.model.PatientHasDoctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
+import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.medical_platform_mobile.core.domain.model.Workplace
 import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toUser
@@ -23,6 +24,7 @@ import com.yehorsk.medical_platform_mobile.util.getAccessStatus
 import com.yehorsk.medical_platform_mobile.util.getRole
 import com.yehorsk.medical_platform_mobile.util.getWeekDay
 import com.yehorsk.medical_platform_mobile.util.toDisplayTime
+import kotlinx.datetime.DayOfWeek
 import kotlin.time.Instant
 
 fun ValidationErrorsDto.toRegisterFormErrors(): RegisterFormErrors {
@@ -74,7 +76,7 @@ fun DoctorResponseDto.toDoctor() = Doctor(
     workplace = workplace?.toWorkplace(),
     specialization = specialization?.toSpecialization(),
     currentPatientHasDoctor = currentPatientHasDoctor,
-    schedules = schedules.map { it.toSchedule() }
+    daySchedules = schedules.map { it.toSchedule() }
 )
 
 fun GetDoctorsWithFilter.toGetDoctorsWithFilterDto() = GetDoctorsWithFilterDto(
@@ -97,7 +99,7 @@ fun DoctorDetailsResponseDto.toDoctorDetailsResponse() = DoctorDetailsResponse(
     access = access?.toPatientHasDoctor()
 )
 
-fun ScheduleResponseDto.toSchedule() = Schedule(
+fun DayScheduleResponseDto.toSchedule() = DaySchedule(
     weekday = getWeekDay(weekday),
     startTime = startTime.toDisplayTime(),
     endTime = endTime.toDisplayTime(),
@@ -107,3 +109,8 @@ fun ScheduleResponseDto.toSchedule() = Schedule(
     slotDurationMinutes = slotDurationMinutes,
     breakBetweenMinutes = breakBetweenMinutes
 )
+
+fun WeekDay.toDayOfWeek(): DayOfWeek? =
+    runCatching {
+        DayOfWeek.valueOf(name)
+    }.getOrNull()

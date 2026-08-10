@@ -44,7 +44,6 @@ import com.yehorsk.medical_platform_mobile.util.formatMonth
 import com.yehorsk.medical_platform_mobile.util.localizedName
 import com.yehorsk.theme.AppTheme
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.YearMonth
 import kotlinx.datetime.format.*
@@ -54,10 +53,10 @@ import kotlinx.datetime.todayIn
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_back_24px
 import medicalplatformmobile.shared.generated.resources.arrow_forward_24px
-import medicalplatformmobile.shared.generated.resources.date
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import medicalplatformmobile.shared.generated.resources.available
 import medicalplatformmobile.shared.generated.resources.selected
 import medicalplatformmobile.shared.generated.resources.unavailable
@@ -69,7 +68,7 @@ fun AppointmentCalendar(
     modifier: Modifier = Modifier,
     onUpdateSelectedDate: (String) -> Unit,
     selectedDate: String,
-    closedDays: Array<String>
+    closedWeekDays: List<DayOfWeek?>
 ){
     val coroutineScope = rememberCoroutineScope()
     val currentMonth = remember { YearMonth.now() }
@@ -163,7 +162,7 @@ fun AppointmentCalendar(
                             localDate = if (localDate == day.date) localDate else day.date
                             onUpdateSelectedDate(localDate.toString())
                         },
-                        isClosed = false
+                        isClosed = closedWeekDays.contains(day.date.dayOfWeek)
                     )
                 },
                 monthHeader = {
@@ -261,7 +260,7 @@ fun Day(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = day.date.dayOfMonth.toString(),
+            text = day.date.day.toString(),
             color = when {
                 day.position != DayPosition.MonthDate -> Color.Transparent
                 isPastDate -> Color.Gray
@@ -280,7 +279,7 @@ fun CalendarPreview(){
         AppointmentCalendar(
             onUpdateSelectedDate = {},
             selectedDate = "2026-08-04",
-            closedDays = arrayOf()
+            closedWeekDays = listOf(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY)
         )
     }
 }

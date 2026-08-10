@@ -13,6 +13,8 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentAction
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.DoctorDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
@@ -162,7 +164,7 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 viewModel = viewModel,
                 onBookAppointmentClicked = {
-                    navController.navigate(Screen.BookAppointment)
+                    navController.navigate(Screen.BookAppointment(it.id))
                 }
             )
         }

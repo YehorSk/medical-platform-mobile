@@ -2,18 +2,14 @@ package com.yehorsk.medical_platform_mobile.feature.connections.presentation.doc
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Schedule
+import com.yehorsk.medical_platform_mobile.core.domain.model.DaySchedule
 import com.yehorsk.medical_platform_mobile.util.shortName
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.day_off
@@ -22,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleRow(
-    schedule: Schedule
+    daySchedule: DaySchedule
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -30,15 +26,15 @@ fun ScheduleRow(
 
         Text(
             modifier = Modifier.width(48.dp),
-            text = schedule.weekday.shortName(),
+            text = daySchedule.weekday.shortName(),
             style = MaterialTheme.typography.labelLarge,
-            color = if (schedule.isWorkingDay)
+            color = if (daySchedule.isWorkingDay)
                 MaterialTheme.colorScheme.onSurface
             else
                 MaterialTheme.colorScheme.outline
         )
 
-        if (!schedule.isWorkingDay) {
+        if (!daySchedule.isWorkingDay) {
 
             ScheduleChip(
                 text = stringResource(UiRes.string.day_off),
@@ -49,17 +45,17 @@ fun ScheduleRow(
         } else {
 
             ScheduleChip(
-                text = "${schedule.startTime} - ${schedule.endTime}",
+                text = "${daySchedule.startTime} - ${daySchedule.endTime}",
                 background = MaterialTheme.colorScheme.primaryContainer,
                 content = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
-            if (schedule.lunchStart != null && schedule.lunchEnd != null) {
+            if (daySchedule.lunchStart != null && daySchedule.lunchEnd != null) {
 
                 Spacer(Modifier.width(8.dp))
 
                 ScheduleChip(
-                    text = "Break ${schedule.lunchStart}-${schedule.lunchEnd}",
+                    text = "Break ${daySchedule.lunchStart}-${daySchedule.lunchEnd}",
                     background = MaterialTheme.colorScheme.tertiaryContainer,
                     content = MaterialTheme.colorScheme.onTertiaryContainer
                 )

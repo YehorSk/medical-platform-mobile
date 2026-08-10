@@ -1,6 +1,9 @@
 package com.yehorsk.medical_platform_mobile.core.domain.model
 
-data class Schedule(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class DaySchedule(
     val weekday: WeekDay,
     val startTime: String,
     val endTime: String,

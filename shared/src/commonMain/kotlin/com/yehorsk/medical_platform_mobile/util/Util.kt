@@ -19,6 +19,7 @@ import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.confirm
 import medicalplatformmobile.shared.generated.resources.d_ago
 import medicalplatformmobile.shared.generated.resources.date
+import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.friday_short
 import medicalplatformmobile.shared.generated.resources.h_ago
 import medicalplatformmobile.shared.generated.resources.just_now
@@ -108,6 +109,7 @@ fun TimeAgo.toText(): String {
 
 @Composable
 fun BookingStep.titleRes(): String = when (this) {
+    BookingStep.Doctor -> stringResource(UiRes.string.doctor)
     BookingStep.Date -> stringResource(UiRes.string.date)
     BookingStep.Time -> stringResource(UiRes.string.time)
     BookingStep.Confirm -> stringResource(UiRes.string.confirm)

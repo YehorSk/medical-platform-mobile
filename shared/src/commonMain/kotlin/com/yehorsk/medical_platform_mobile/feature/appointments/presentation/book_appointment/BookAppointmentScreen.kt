@@ -5,13 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,6 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationEventHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
+import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultMultilineTextField
@@ -35,6 +36,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.boo
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
 import com.yehorsk.theme.AppTheme
+import kotlinx.datetime.DayOfWeek
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.book_appointment
 import medicalplatformmobile.shared.generated.resources.confirm_appointment
@@ -46,9 +48,19 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun BookAppointmentScreen(
     modifier: Modifier = Modifier,
-    viewModel: BookAppointmentViewModel = koinViewModel(),
+    viewModel: BookAppointmentViewModel= koinViewModel(),
     onGoBackClicked: () -> Unit
 ){
+    val navigationState = rememberNavigationEventState(
+        currentInfo = NavigationEventInfo.None
+    )
+    NavigationEventHandler(
+        state = navigationState,
+        onBackCompleted = {
+            viewModel.onAction(BookAppointmentAction.OnGoBackClicked)
+        }
+    )
+
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events){ event ->
@@ -105,6 +117,9 @@ fun BookAppointmentScreenRoot(
                     targetState = state.currentStep
                 ){ step ->
                     when(step){
+                        BookingStep.Doctor -> {
+
+                        }
                         BookingStep.Date -> {
                             Column {
                                 AppointmentCalendar(
@@ -112,11 +127,12 @@ fun BookAppointmentScreenRoot(
                                         .padding(vertical = 12.dp),
                                     selectedDate = state.form.selectedDate,
                                     onUpdateSelectedDate = { onAction(BookAppointmentAction.OnDateSelected(it)) },
-                                    closedDays = emptyArray<String>()
+                                    closedWeekDays = state.openWeekDays
                                 )
                                 DefaultButton(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
+                                    isEnabled = (state.isConnected),
                                     text = stringResource(UiRes.string.select_date),
                                     onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Time)) }
                                 )
@@ -139,6 +155,7 @@ fun BookAppointmentScreenRoot(
                                 DefaultButton(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
+                                    isEnabled = (state.form.selectedTime != null && state.isConnected),
                                     text = stringResource(UiRes.string.select_a_time_slot),
                                     onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Confirm)) }
                                 )

@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
+import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
+import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import kotlinx.serialization.Serializable
 
 sealed interface Screen {
@@ -28,7 +30,7 @@ sealed interface Screen {
 
     @Serializable data object PatientDoctors: Screen
 
-    @Serializable data object BookAppointment: Screen
+    @Serializable data class BookAppointment(val doctorId: String): Screen
 
     @Serializable data object PendingRequests: Screen
 

@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel
 
+
 sealed interface BookAppointmentAction {
 
     data class OnDateSelected(val date: String): BookAppointmentAction
