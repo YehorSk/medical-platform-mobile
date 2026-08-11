@@ -10,8 +10,10 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.appointments.data.dto.request.CreateAppointmentRequestDto
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.ScheduleService
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.mappers.toDayScheduleUi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,6 +84,9 @@ class BookAppointmentViewModel(
                 onGoBackClicked()
             }
 
+            BookAppointmentAction.OnCreateAppointmentClicked -> {
+                createAppointment()
+            }
         }
     }
 
@@ -131,7 +136,49 @@ class BookAppointmentViewModel(
         ) }
     }
 
+    private fun createAppointment(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+
+            appointmentService
+                .createAppointment(CreateAppointmentRequestDto(
+                    doctorId = uiState.value.form.doctorId!!,
+                    date = uiState.value.form.selectedDate,
+                    time = uiState.value.form.selectedTime!!,
+                    note = uiState.value.form.note
+                ))
+                .onSuccess { response ->
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(message = response.message)
+                    )
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
+                    eventChannel.send(BookAppointmentEvent.Success)
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
+        }
+    }
+
     private fun onGoToNextStateClicked(step: BookingStep) {
+        when(step){
+            BookingStep.Doctor -> {}
+            BookingStep.Date -> {}
+            BookingStep.Time -> { getDateAvailableTimes() }
+            BookingStep.Confirm -> {}
+        }
         _uiState.update { it.copy(
             currentStep = step
         ) }
@@ -150,7 +197,7 @@ class BookAppointmentViewModel(
     private fun getWeekSchedule() {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(isLoading = true)
+                it.copy(isLoadingDates = true)
             }
 
             scheduleService
@@ -158,17 +205,45 @@ class BookAppointmentViewModel(
                 .onSuccess { response ->
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            isLoadingDates = false,
                             doctor = response.data.doctor,
-                            openWeekDays = response.data.daySchedule.map {
-                                it.weekday.toDayOfWeek()
+                            form = it.form.copy(doctorId = response.data.doctor.id),
+                            openWeekDays = response.data.daySchedule.map { data ->
+                                data.toDayScheduleUi()
                             }
                         )
                     }
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(isLoading = false)
+                        it.copy(isLoadingDates = false)
+                    }
+
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
+        }
+    }
+
+    private fun getDateAvailableTimes() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoadingTimes = true)
+            }
+            scheduleService
+                .getScheduleAvailableTimes(doctorId, _uiState.value.form.selectedDate)
+                .onSuccess { response ->
+                    _uiState.update {
+                        it.copy(
+                            isLoadingTimes = false,
+                            availableTime = response.data.availableTimes
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoadingTimes = false)
                     }
 
                     SnackbarController.sendEvent(

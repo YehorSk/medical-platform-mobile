@@ -13,4 +13,6 @@ sealed interface BookAppointmentAction {
 
     data object OnGoBackClicked: BookAppointmentAction
 
+    data object OnCreateAppointmentClicked: BookAppointmentAction
+
 }

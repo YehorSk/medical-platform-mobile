@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +41,7 @@ import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.now
 import com.kizitonwose.calendar.core.plusMonths
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.model.DayScheduleUi
 import com.yehorsk.medical_platform_mobile.util.formatMonth
 import com.yehorsk.medical_platform_mobile.util.localizedName
 import com.yehorsk.theme.AppTheme
@@ -68,7 +70,8 @@ fun AppointmentCalendar(
     modifier: Modifier = Modifier,
     onUpdateSelectedDate: (String) -> Unit,
     selectedDate: String,
-    closedWeekDays: List<DayOfWeek?>
+    closedWeekDays: List<DayScheduleUi>,
+    isLoading: Boolean
 ){
     val coroutineScope = rememberCoroutineScope()
     val currentMonth = remember { YearMonth.now() }
@@ -95,103 +98,115 @@ fun AppointmentCalendar(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp)
     ){
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    top = 10.dp,
-                    bottom = 10.dp
-                )
-        ) {
-            Row(
+        if(isLoading){
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val previousMonth = state.firstVisibleMonth.yearMonth.minusMonth()
-                            if (previousMonth >= startMonth) {
-                                state.scrollToMonth(previousMonth)
-                            }
-                        }
-                    }
-                ) {
-                    Icon(
-                        modifier = Modifier.weight(1f),
-                        painter = painterResource(UiRes.drawable.arrow_back_24px),
-                        contentDescription = ""
-                    )
-                }
-                Text(
-                    modifier = Modifier
-                        .weight(1f),
-                    textAlign = TextAlign.Center,
-                    text = formatMonth(state.lastVisibleMonth.yearMonth.toString()),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                IconButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            val nextMonth = state.firstVisibleMonth.yearMonth.plusMonth()
-                            if (nextMonth <= endMonth) {
-                                state.scrollToMonth(nextMonth)
-                            }
-                        }
-                    }
-                ) {
-                    Icon(
-                        modifier = Modifier.weight(1f),
-                        painter = painterResource(UiRes.drawable.arrow_forward_24px),
-                        contentDescription = ""
-                    )
-                }
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
             }
-            HorizontalCalendar(
-                state = state,
-                dayContent = { day ->
-                    Day(
-                        day,
-                        isSelected = localDate == day.date,
-                        onClick = { day ->
-                            localDate = if (localDate == day.date) localDate else day.date
-                            onUpdateSelectedDate(localDate.toString())
-                        },
-                        isClosed = closedWeekDays.contains(day.date.dayOfWeek)
-                    )
-                },
-                monthHeader = {
-                    DaysOfWeekTitle(
-                        daysOfWeek = daysOfWeek(),
-                    )
-                }
-            )
-            Row(
+        }else{
+            Column(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
-                        top = 20.dp,
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 10.dp,
                         bottom = 10.dp
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    )
             ) {
-                listOf(
-                    stringResource(UiRes.string.available) to Color(0xFFE6F8F6),
-                    stringResource(UiRes.string.selected) to MaterialTheme.colorScheme.primary,
-                    stringResource(UiRes.string.unavailable) to MaterialTheme.colorScheme.surfaceVariant
-                ).forEach { (text, color) ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            Modifier
-                                .size(12.dp)
-                                .background(color, CircleShape)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                val previousMonth = state.firstVisibleMonth.yearMonth.minusMonth()
+                                if (previousMonth >= startMonth) {
+                                    state.scrollToMonth(previousMonth)
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.weight(1f),
+                            painter = painterResource(UiRes.drawable.arrow_back_24px),
+                            contentDescription = ""
                         )
-                        Spacer(Modifier.width(6.dp))
-                        Text(text, style = MaterialTheme.typography.labelSmall)
+                    }
+                    Text(
+                        modifier = Modifier
+                            .weight(1f),
+                        textAlign = TextAlign.Center,
+                        text = formatMonth(state.lastVisibleMonth.yearMonth.toString()),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    IconButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                val nextMonth = state.firstVisibleMonth.yearMonth.plusMonth()
+                                if (nextMonth <= endMonth) {
+                                    state.scrollToMonth(nextMonth)
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.weight(1f),
+                            painter = painterResource(UiRes.drawable.arrow_forward_24px),
+                            contentDescription = ""
+                        )
+                    }
+                }
+                HorizontalCalendar(
+                    state = state,
+                    dayContent = { day ->
+                        val schedule = closedWeekDays.firstOrNull { it.weekday == day.date.dayOfWeek }
+                        Day(
+                            day,
+                            isSelected = localDate == day.date,
+                            onClick = { day ->
+                                localDate = if (localDate == day.date) localDate else day.date
+                                onUpdateSelectedDate(localDate.toString())
+                            },
+                            isClosed = (schedule != null) && (!schedule.isWorkingDay)
+                        )
+                    },
+                    monthHeader = {
+                        DaysOfWeekTitle(
+                            daysOfWeek = daysOfWeek(),
+                        )
+                    }
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(
+                            top = 20.dp,
+                            bottom = 10.dp
+                        ),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    listOf(
+                        stringResource(UiRes.string.available) to Color(0xFFE6F8F6),
+                        stringResource(UiRes.string.selected) to MaterialTheme.colorScheme.primary,
+                        stringResource(UiRes.string.unavailable) to MaterialTheme.colorScheme.surfaceVariant
+                    ).forEach { (text, color) ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                Modifier
+                                    .size(12.dp)
+                                    .background(color, CircleShape)
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            Text(text, style = MaterialTheme.typography.labelSmall)
+                        }
                     }
                 }
             }
@@ -276,10 +291,22 @@ fun Day(
 @Composable
 fun CalendarPreview(){
     AppTheme {
+        val weekPreview = DayOfWeek.entries.map { day ->
+            val isWorkingDay = day !in setOf(
+                DayOfWeek.SATURDAY,
+                DayOfWeek.SUNDAY
+            )
+
+            DayScheduleUi(
+                weekday = day,
+                isWorkingDay = isWorkingDay
+            )
+        }
         AppointmentCalendar(
             onUpdateSelectedDate = {},
             selectedDate = "2026-08-04",
-            closedWeekDays = listOf(DayOfWeek.SUNDAY, DayOfWeek.SATURDAY)
+            closedWeekDays = weekPreview,
+            isLoading = false
         )
     }
 }

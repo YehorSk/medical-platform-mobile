@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.util.toColor
 import com.yehorsk.theme.AppTheme
 import java.util.Locale
 import java.util.Locale.getDefault
 import androidx.compose.ui.platform.LocalLocale
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 
 @Composable
 fun StatusBox(

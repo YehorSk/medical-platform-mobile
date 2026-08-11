@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -31,28 +32,40 @@ fun TimeSlotsFlowRow(
     times: List<String>,
     selectedTime: String?,
     modifier: Modifier = Modifier,
-    onTimeSelected: (String) -> Unit
+    onTimeSelected: (String) -> Unit,
+    isLoading: Boolean
 ) {
     ElevatedCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
     ){
-        FlowRow(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 12.dp,
-                alignment = Alignment.CenterHorizontally
-            ),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            times.forEach { time ->
-                TimeSlotItem(
-                    time = time,
-                    selected = time == selectedTime,
-                    onClick = { onTimeSelected(time) }
-                )
+        if(isLoading){
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
+            }
+        }else{
+            FlowRow(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 12.dp,
+                    alignment = Alignment.CenterHorizontally
+                ),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                times.forEach { time ->
+                    TimeSlotItem(
+                        time = time,
+                        selected = time == selectedTime,
+                        onClick = { onTimeSelected(time) }
+                    )
+                }
             }
         }
     }
@@ -116,7 +129,8 @@ private fun TimeSlotsFlowRowPreview() {
             selectedTime = "10:00",
             onTimeSelected = {
 
-            }
+            },
+            isLoading = false
         )
     }
 }

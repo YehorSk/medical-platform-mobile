@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
-import com.yehorsk.medical_platform_mobile.util.appointments
 import com.yehorsk.medical_platform_mobile.util.conversations
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashAppointmentItem
@@ -133,24 +132,24 @@ fun PatientDashboardScreenRoot(
                 onAction(DashboardAction.OnNavigateToAppointmentsScreen)
             },
             content = {
-                if (appointments.isEmpty()) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(UiRes.string.no_appointments),
-                        fontSize = 14.sp
-                    )
-                }else{
-                    appointments.forEach { appointment ->
-                        DashAppointmentItem(
-                            appointment = appointment,
-                            onClick = {}
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
+//                if (appointments.isEmpty()) {
+//                    Text(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(vertical = 12.dp),
+//                        textAlign = TextAlign.Center,
+//                        text = stringResource(UiRes.string.no_appointments),
+//                        fontSize = 14.sp
+//                    )
+//                }else{
+//                    appointments.forEach { appointment ->
+//                        DashAppointmentItem(
+//                            appointment = appointment,
+//                            onClick = {}
+//                        )
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                    }
+//                }
             }
         )
     }

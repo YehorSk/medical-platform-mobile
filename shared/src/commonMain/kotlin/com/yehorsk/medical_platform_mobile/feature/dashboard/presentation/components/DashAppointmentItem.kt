@@ -21,11 +21,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Appointment
-import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.util.extractDate
 import com.yehorsk.medical_platform_mobile.util.extractTime
 import com.yehorsk.theme.AppTheme
@@ -47,30 +46,30 @@ fun DashAppointmentItem(
             .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = "${appointment.doctor.title} ${appointment.doctor.firstName} ${appointment.doctor.lastName}",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Text(
-                text = appointment.specialization.name,
-                fontSize = 14.sp,
-                color = Color(0xFF717182),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = "${extractDate(appointment.datetime.toString())} ${extractTime(appointment.datetime.toString())}",
-                fontSize = 14.sp,
-                color = Color(0xFF717182),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+//        Column(modifier = Modifier.weight(1f)) {
+//            Text(
+//                text = "${appointment.doctor.title} ${appointment.doctor.firstName} ${appointment.doctor.lastName}",
+//                fontWeight = FontWeight.SemiBold,
+//                fontSize = 16.sp,
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//            Text(
+//                text = appointment.doctor.doctor.specialization,
+//                fontSize = 14.sp,
+//                color = Color(0xFF717182),
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//            Spacer(modifier = Modifier.height(2.dp))
+//            Text(
+//                text = "${extractDate(appointment.datetime.toString())} ${extractTime(appointment.datetime.toString())}",
+//                fontSize = 14.sp,
+//                color = Color(0xFF717182),
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//        }
         StatusBox(
             status = appointment.status
         )

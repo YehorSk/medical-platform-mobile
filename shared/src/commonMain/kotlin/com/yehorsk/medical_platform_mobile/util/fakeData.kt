@@ -1,7 +1,5 @@
 package com.yehorsk.medical_platform_mobile.util
 
-import com.yehorsk.medical_platform_mobile.core.domain.model.Appointment
-import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.Clinic
 import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
@@ -125,53 +123,6 @@ val conversations = listOf(
             content = "Thank you for your help.",
             isRead = true,
             createdAt = Instant.parse("2026-06-03T09:20:00Z")
-        )
-    )
-)
-
-val messagesEmpty = emptyList<Message>()
-
-val appointments = listOf(
-    Appointment(
-        id = 1,
-        datetime = Instant.parse("2026-06-03T10:30:00Z"),
-        status = AppointmentStatus.CONFIRMED,
-        note = "Regular checkup",
-        createdAt = Instant.parse("2026-06-03T10:30:00Z"),
-        updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
-        specialization = Specialization(
-            id = "1",
-            name = "Cardiology"
-        ),
-        doctor = User(
-            id = "1",
-            email = "doctor@example.com",
-            firstName = "John",
-            lastName = "Doe",
-            role = "DOCTOR",
-            title = "MUDr.",
-            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
-        )
-    ),
-    Appointment(
-        id = 2,
-        datetime = Instant.parse("2026-06-03T10:30:00Z"),
-        status = AppointmentStatus.REJECTED,
-        note = "Regular checkup",
-        createdAt = Instant.parse("2026-06-03T10:30:00Z"),
-        updatedAt = Instant.parse("2026-06-03T10:30:00Z"),
-        specialization = Specialization(
-            id = "1",
-            name = "Dentist"
-        ),
-        doctor = User(
-            id = "1",
-            email = "doctor@example.com",
-            firstName = "Sam",
-            lastName = "Smith",
-            role = "DOCTOR",
-            title = "MUDr.",
-            createdAt = Instant.parse("2026-06-03T10:30:00Z"),
         )
     )
 )

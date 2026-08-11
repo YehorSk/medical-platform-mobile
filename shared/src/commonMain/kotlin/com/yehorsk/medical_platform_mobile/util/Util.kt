@@ -4,9 +4,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
-import com.yehorsk.medical_platform_mobile.core.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
 import com.yehorsk.theme.LocalExtendedColors
 import kotlinx.datetime.LocalDateTime
@@ -46,6 +46,10 @@ fun getAccessStatus(status: String): AccessStatus {
     return AccessStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AccessStatus.UNKNOWN
 }
 
+fun getAppointmentStatus(status: String): AppointmentStatus {
+    return AppointmentStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AppointmentStatus.UNKNOWN
+}
+
 fun getWeekDay(status: String): WeekDay {
     return WeekDay.entries.find { it.name.equals(status, ignoreCase = true) } ?: WeekDay.UNKNOWN
 }
@@ -65,6 +69,7 @@ fun AppointmentStatus.toColor(): Color {
         AppointmentStatus.REJECTED -> colors.statusRejected
         AppointmentStatus.CANCELLED -> colors.statusCancelled
         AppointmentStatus.COMPLETED -> colors.statusCompleted
+        else -> colors.statusCancelled
     }
 }
 

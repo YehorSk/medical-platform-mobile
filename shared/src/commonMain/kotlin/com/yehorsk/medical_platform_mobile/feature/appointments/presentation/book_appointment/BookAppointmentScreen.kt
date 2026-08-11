@@ -49,7 +49,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun BookAppointmentScreen(
     modifier: Modifier = Modifier,
     viewModel: BookAppointmentViewModel= koinViewModel(),
-    onGoBackClicked: () -> Unit
+    onGoBackClicked: () -> Unit,
+    goToAppointmentsScreen: () -> Unit
 ){
     val navigationState = rememberNavigationEventState(
         currentInfo = NavigationEventInfo.None
@@ -66,6 +67,7 @@ fun BookAppointmentScreen(
     ObserveAsEvents(viewModel.events){ event ->
         when(event){
             is BookAppointmentEvent.NavigateBack -> onGoBackClicked()
+            BookAppointmentEvent.Success -> goToAppointmentsScreen()
         }
     }
 
@@ -127,7 +129,8 @@ fun BookAppointmentScreenRoot(
                                         .padding(vertical = 12.dp),
                                     selectedDate = state.form.selectedDate,
                                     onUpdateSelectedDate = { onAction(BookAppointmentAction.OnDateSelected(it)) },
-                                    closedWeekDays = state.openWeekDays
+                                    closedWeekDays = state.openWeekDays,
+                                    isLoading = state.isLoadingDates,
                                 )
                                 DefaultButton(
                                     modifier = Modifier
@@ -150,6 +153,7 @@ fun BookAppointmentScreenRoot(
                                         .padding(vertical = 12.dp),
                                     selectedTime = state.form.selectedTime,
                                     times = state.availableTime,
+                                    isLoading = state.isLoadingTimes,
                                     onTimeSelected = { onAction(BookAppointmentAction.OnTimeSelected(it)) }
                                 )
                                 DefaultButton(
@@ -185,7 +189,9 @@ fun BookAppointmentScreenRoot(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
                                     text = stringResource(UiRes.string.confirm_appointment),
-                                    onClick = {}
+                                    onClick = {
+                                        onAction(BookAppointmentAction.OnCreateAppointmentClicked)
+                                    }
                                 )
                             }
                         }

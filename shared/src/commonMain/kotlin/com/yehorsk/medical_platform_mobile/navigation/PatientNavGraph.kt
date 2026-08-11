@@ -89,6 +89,13 @@ fun NavGraphBuilder.patientNavGraph(
                     .fillMaxSize(),
                 onGoBackClicked = {
                     navController.popBackStack()
+                },
+                goToAppointmentsScreen = {
+                    navController.navigate(Screen.MyAppointments){
+                        popUpTo(Screen.BookAppointment) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
