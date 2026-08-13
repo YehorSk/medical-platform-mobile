@@ -172,4 +172,11 @@
     <string name="select_a_time_slot">Select a time slot</string>
     <string name="continue_with_date_time">Continue - %1$s</string>
 
+    <string name="appointment_status_pending">Pending</string>
+    <string name="appointment_status_confirmed">Confirmed</string>
+    <string name="appointment_status_rejected">Rejected</string>
+    <string name="appointment_status_cancelled">Cancelled</string>
+    <string name="appointment_status_completed">Completed</string>
+    <string name="appointment_status_unknown">Unknown</string>
+
 </resources>

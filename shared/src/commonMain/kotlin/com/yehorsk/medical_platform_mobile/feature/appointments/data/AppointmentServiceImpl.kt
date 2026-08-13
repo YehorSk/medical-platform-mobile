@@ -51,7 +51,14 @@ class AppointmentServiceImpl(
     }
 
     override suspend fun getMyAppointments(): Result<ApiResponseWithData<List<Appointment>>, DataError.Remote> {
-        TODO("Not yet implemented")
+        return httpClient.get<ApiResponseWithData<List<AppointmentResponseDto>>>(
+            route = "/appointments/my-appointments"
+        ).map { response ->
+            ApiResponseWithData(
+                data = response.data.map { it.toAppointment() },
+                message = response.message
+            )
+        }
     }
 
     override suspend fun getSchedule(doctorId: String): Result<ApiResponseWithData<DoctorSchedule>, DataError.Remote> {

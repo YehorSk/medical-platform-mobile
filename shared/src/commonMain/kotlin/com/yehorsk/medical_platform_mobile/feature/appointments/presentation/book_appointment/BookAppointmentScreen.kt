@@ -67,7 +67,7 @@ fun BookAppointmentScreen(
     ObserveAsEvents(viewModel.events){ event ->
         when(event){
             is BookAppointmentEvent.NavigateBack -> onGoBackClicked()
-            BookAppointmentEvent.Success -> goToAppointmentsScreen()
+            is BookAppointmentEvent.Success -> goToAppointmentsScreen()
         }
     }
 

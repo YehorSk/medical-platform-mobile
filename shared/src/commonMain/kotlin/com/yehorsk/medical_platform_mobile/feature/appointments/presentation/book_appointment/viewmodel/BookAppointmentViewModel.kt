@@ -150,6 +150,7 @@ class BookAppointmentViewModel(
                     note = uiState.value.form.note
                 ))
                 .onSuccess { response ->
+                    mainLogger.debug("Appointment Created Successfully")
                     SnackbarController.sendEvent(
                         SnackbarEvent(message = response.message)
                     )
