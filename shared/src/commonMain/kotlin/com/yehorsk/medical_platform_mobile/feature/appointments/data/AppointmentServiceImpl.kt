@@ -20,7 +20,6 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.ScheduleS
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.DoctorSchedule
 import io.ktor.client.HttpClient
-import io.ktor.client.request.post
 
 class AppointmentServiceImpl(
     private val httpClient: HttpClient
@@ -43,7 +42,14 @@ class AppointmentServiceImpl(
     }
 
     override suspend fun getAppointmentById(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote> {
-        TODO("Not yet implemented")
+        return httpClient.get<ApiResponseWithData<AppointmentResponseDto>>(
+            route = "appointments/$appointmentId"
+        ).map { response ->
+            ApiResponseWithData(
+                data = response.data.toAppointment(),
+                message = response.message
+            )
+        }
     }
 
     override suspend fun updateAppointmentStatus(request: UpdateAppointmentStatusRequestDto): Result<ApiResponseWithData<Appointment>, DataError.Remote> {

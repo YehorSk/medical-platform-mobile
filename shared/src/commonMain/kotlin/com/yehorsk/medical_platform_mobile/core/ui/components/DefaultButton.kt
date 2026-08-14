@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -28,6 +29,7 @@ fun DefaultButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     color: Color= MaterialTheme.colorScheme.primary,
+    textColor: Color = Color.Unspecified,
     text: String,
     isLoading: Boolean = false,
     isEnabled: Boolean = true
@@ -68,7 +70,8 @@ fun DefaultButton(
             ) {
                 Text(
                     text = text,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleSmall,
+                    color = textColor
                 )
             }
         }

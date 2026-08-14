@@ -14,8 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.text.font.FontStyle
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.StatusBox
+import com.yehorsk.medical_platform_mobile.util.getAppointmentStatus
+import com.yehorsk.medical_platform_mobile.util.toColor
 import com.yehorsk.theme.AppTheme
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
@@ -83,7 +87,9 @@ fun AppointmentCard(
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            StatusLabel(status = appointment.status)
+            StatusBox(
+                status = appointment.status
+            )
         }
     }
 }
@@ -112,24 +118,6 @@ private fun DateBadge(date: LocalDate) {
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
-}
-
-@Composable
-private fun StatusLabel(status: AppointmentStatus) {
-    val (labelRes, color) = when (status) {
-        AppointmentStatus.PENDING -> UiRes.string.appointment_status_pending to MaterialTheme.colorScheme.tertiary
-        AppointmentStatus.CONFIRMED -> UiRes.string.appointment_status_confirmed to MaterialTheme.colorScheme.primary
-        AppointmentStatus.REJECTED -> UiRes.string.appointment_status_rejected to MaterialTheme.colorScheme.error
-        AppointmentStatus.CANCELLED -> UiRes.string.appointment_status_cancelled to MaterialTheme.colorScheme.error
-        AppointmentStatus.COMPLETED -> UiRes.string.appointment_status_completed to MaterialTheme.colorScheme.secondary
-        AppointmentStatus.UNKNOWN -> UiRes.string.appointment_status_unknown to MaterialTheme.colorScheme.outline
-    }
-    Text(
-        text = stringResource(labelRes),
-        style = MaterialTheme.typography.labelMedium,
-        fontWeight = FontWeight.Medium,
-        color = color
-    )
 }
 
 @Preview(showBackground = true)

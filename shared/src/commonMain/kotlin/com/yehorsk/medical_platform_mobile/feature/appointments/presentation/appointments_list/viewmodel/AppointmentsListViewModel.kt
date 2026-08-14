@@ -50,11 +50,7 @@ class AppointmentsListViewModel(
             initialValue = AppointmentsListState()
         )
 
-    fun onAction(action: AppointmentsListAction){
-        when(action){
-            AppointmentsListAction.OnGoBackClicked -> {}
-        }
-    }
+    fun onAction(action: AppointmentsListAction) = Unit
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected

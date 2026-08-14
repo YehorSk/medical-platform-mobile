@@ -40,6 +40,10 @@ sealed interface Screen {
         val doctorId: String
     ): Screen
 
+    @Serializable data class AppointmentDetails(
+        val appointmentId: String
+    ): Screen
+
     @Serializable data object MySchedule: Screen
 
 }

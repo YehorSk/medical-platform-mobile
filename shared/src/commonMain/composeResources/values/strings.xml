@@ -161,6 +161,8 @@
     <!-- Book Appointment Screen -->
     <string name="select_date">Select Date</string>
     <string name="doctor">Doctor</string>
+    <string name="patient">Patient</string>
+    <string name="notes">Notes</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="confirm">Confirm</string>
@@ -178,5 +180,12 @@
     <string name="appointment_status_cancelled">Cancelled</string>
     <string name="appointment_status_completed">Completed</string>
     <string name="appointment_status_unknown">Unknown</string>
+
+    <string name="cancel_btn">Cancel</string>
+    <string name="reschedule_btn">Reschedule</string>
+
+    <string name="appointment_doesnt_exist">The appointment doesn't exist</string>
+
+    <string name="appointment">Appointment</string>
 
 </resources>

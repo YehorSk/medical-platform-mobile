@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentAction
@@ -80,6 +81,9 @@ fun NavGraphBuilder.patientNavGraph(
                 onGoBackClicked = {
                     navController.popBackStack()
                 },
+                onAppointmentClicked = { appointmentId ->
+                    navController.navigate(Screen.AppointmentDetails(appointmentId))
+                }
             )
         }
         composable<Screen.BookAppointment> {
@@ -172,6 +176,16 @@ fun NavGraphBuilder.patientNavGraph(
                 onBookAppointmentClicked = {
                     navController.navigate(Screen.BookAppointment(it.id))
                 }
+            )
+        }
+        composable<Screen.AppointmentDetails> {
+            AppointmentDetailsScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+                userRole = UserRole.PATIENT
             )
         }
         composable<Screen.Profile>{

@@ -20,7 +20,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.app
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.viewmodel.AppointmentsListState
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.viewmodel.AppointmentsListViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.book_appointment
+import medicalplatformmobile.shared.generated.resources.my_appointments
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -29,6 +29,7 @@ fun AppointmentsListScreen(
     modifier: Modifier = Modifier,
     viewModel: AppointmentsListViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
+    onAppointmentClicked: (String) -> Unit
     ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -38,6 +39,7 @@ fun AppointmentsListScreen(
         onAction = { action ->
             when(action){
                 is AppointmentsListAction.OnGoBackClicked -> onGoBackClicked()
+                is AppointmentsListAction.OnAppointmentClicked -> onAppointmentClicked(action.appointmentId)
             }
         }
     )
@@ -54,7 +56,7 @@ fun AppointmentsListScreenRoot(
             .fillMaxSize()
     ) {
         AppTopBar(
-            title = stringResource(UiRes.string.book_appointment),
+            title = stringResource(UiRes.string.my_appointments),
             showGoBackButton = true,
             onGoBackClicked = { onAction(AppointmentsListAction.OnGoBackClicked) }
         )
@@ -84,7 +86,7 @@ fun AppointmentsListScreenRoot(
                         items(state.appointments, key = { it.id }){ appointment ->
                             AppointmentCard(
                                 appointment = appointment,
-                                onClick = {}
+                                onClick = { onAction(AppointmentsListAction.OnAppointmentClicked(appointment.id)) }
                             )
                         }
                     }

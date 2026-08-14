@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component
+package com.yehorsk.medical_platform_mobile.core.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.theme.AppTheme
 
 @Composable
-fun DoctorInfoCard(
+fun DefaultInfoCard(
     modifier: Modifier = Modifier,
     title: String,
     content: String
@@ -47,9 +47,9 @@ fun DoctorInfoCard(
 
 @Preview
 @Composable
-fun DoctorInfoCardPreview(){
+fun DefaultInfoCardPreview(){
     AppTheme {
-        DoctorInfoCard(
+        DefaultInfoCard(
             title = "About",
             content = "Specialist in interventional cardiology with a focus on heart failure management and preventive cardiac care. Board certified by the American Board of Internal Medicine."
         )

@@ -8,6 +8,7 @@ data class AppointmentResponseDto(
     val id: String,
     val doctor: UserResponseDto? = null,
     val patient: UserResponseDto? = null,
+    val specialization: String = "",
     val status: String,
     val note: String,
     val date: String,

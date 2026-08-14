@@ -176,7 +176,7 @@ fun AppointmentCalendar(
                                 localDate = if (localDate == day.date) localDate else day.date
                                 onUpdateSelectedDate(localDate.toString())
                             },
-                            isClosed = (schedule != null) && (!schedule.isWorkingDay)
+                            isClosed = (schedule == null) || !schedule.isWorkingDay
                         )
                     },
                     monthHeader = {

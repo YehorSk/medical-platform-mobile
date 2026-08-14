@@ -4,4 +4,6 @@ sealed interface AppointmentsListAction {
 
     data object OnGoBackClicked: AppointmentsListAction
 
+    data class OnAppointmentClicked(val appointmentId: String): AppointmentsListAction
+
 }

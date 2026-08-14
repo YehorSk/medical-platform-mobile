@@ -21,7 +21,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorHeaderCard
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorInfoCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultInfoCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.WeeklyScheduleCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
@@ -103,7 +103,7 @@ fun DoctorDetailsScreenRoot(
                         lastName = state.doctorDetails.user?.lastName ?: "",
                         specialization = state.doctorDetails.specialization?.name ?: "----"
                     )
-                    DoctorInfoCard(
+                    DefaultInfoCard(
                         modifier = Modifier
                             .padding(vertical = 12.dp),
                         title = stringResource(UiRes.string.about),

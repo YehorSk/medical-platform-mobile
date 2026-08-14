@@ -12,6 +12,7 @@ fun AppointmentResponseDto.toAppointment() = Appointment(
     id = id,
     doctor = doctor?.toUser(),
     patient = patient?.toUser(),
+    specialization = specialization,
     status = getAppointmentStatus(status),
     note = note,
     date = LocalDate.parse(date),
