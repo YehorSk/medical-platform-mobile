@@ -12,7 +12,7 @@ interface AppointmentService {
 
     suspend fun createAppointment(request: CreateAppointmentRequestDto): Result<ApiResponseWithData<Appointment>, DataError.Remote>
 
-    suspend fun deleteAppointment(appointmentId: String): Result<ApiResponseDto, DataError.Remote>
+    suspend fun cancelAppointment(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote>
 
     suspend fun getAppointmentById(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote>
 

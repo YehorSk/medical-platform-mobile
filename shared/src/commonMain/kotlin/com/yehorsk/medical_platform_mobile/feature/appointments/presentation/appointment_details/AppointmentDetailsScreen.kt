@@ -60,13 +60,7 @@ fun AppointmentDetailsScreen(
                 AppointmentDetailsAction.OnGoBackClicked -> {
                     onGoBackClicked()
                 }
-
-                AppointmentDetailsAction.OnCancelClicked -> {
-                }
-
-                AppointmentDetailsAction.OnRescheduleClicked -> {
-
-                }
+                else -> {viewModel.onAction(action)}
             }
         }
     )
@@ -158,30 +152,30 @@ fun AppointmentDetailsScreenRoot(
                             title = stringResource(UiRes.string.notes),
                             content = appointment.note
                         )
-
+                        val isEnabled = (appointment.status != AppointmentStatus.CANCELLED) && (appointment.status != AppointmentStatus.COMPLETED)
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.reschedule_btn),
-                            isEnabled = state.isConnected,
+                            isEnabled = state.isConnected && isEnabled,
                             onClick = {
                                 onAction(
                                     AppointmentDetailsAction.OnRescheduleClicked
                                 )
                             }
                         )
-
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.cancel_btn),
                             textColor = MaterialTheme.colorScheme.onErrorContainer,
                             color = MaterialTheme.colorScheme.errorContainer,
-                            isEnabled = state.isConnected,
+                            isEnabled = state.isConnected && isEnabled,
                             onClick = {
                                 onAction(
                                     AppointmentDetailsAction.OnCancelClicked
                                 )
                             }
                         )
+
                     }
                 }
             }

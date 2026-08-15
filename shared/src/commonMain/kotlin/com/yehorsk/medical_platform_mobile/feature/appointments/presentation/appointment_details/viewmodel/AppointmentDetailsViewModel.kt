@@ -46,6 +46,20 @@ class AppointmentDetailsViewModel(
             initialValue = AppointmentDetailsState()
         )
 
+    init {
+        observeConnectivity()
+    }
+    
+    fun onAction(action: AppointmentDetailsAction) {
+        when(action){
+            AppointmentDetailsAction.OnCancelClicked -> {
+                cancelAppointment()
+            }
+            AppointmentDetailsAction.OnRescheduleClicked -> {}
+            AppointmentDetailsAction.OnGoBackClicked -> {}
+        }
+    }
+
     private fun getAppointment() {
         viewModelScope.launch {
             appointmentService
@@ -70,11 +84,29 @@ class AppointmentDetailsViewModel(
         }
     }
 
-    init {
-        observeConnectivity()
+    private fun cancelAppointment() {
+        viewModelScope.launch {
+            appointmentService
+                .cancelAppointment(appointmentId)
+                .onSuccess { data ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            appointment = data.data
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
+        }
     }
-    
-    fun onAction(action: AppointmentDetailsAction) = Unit
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected

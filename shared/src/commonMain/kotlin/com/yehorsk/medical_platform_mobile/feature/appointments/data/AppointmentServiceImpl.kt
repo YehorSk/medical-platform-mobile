@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.data
 
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toDoctor
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toSchedule
+import com.yehorsk.medical_platform_mobile.core.data.network.delete
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.data.network.get
@@ -37,8 +38,15 @@ class AppointmentServiceImpl(
         }
     }
 
-    override suspend fun deleteAppointment(appointmentId: String): Result<ApiResponseDto, DataError.Remote> {
-        TODO("Not yet implemented")
+    override suspend fun cancelAppointment(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote> {
+        return httpClient.delete<ApiResponseWithData<AppointmentResponseDto>>(
+            route = "appointments/$appointmentId"
+        ).map { response ->
+            ApiResponseWithData(
+                data = response.data.toAppointment(),
+                message = response.message
+            )
+        }
     }
 
     override suspend fun getAppointmentById(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote> {
