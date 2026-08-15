@@ -62,9 +62,15 @@ class AppointmentDetailsViewModel(
 
     private fun getAppointment() {
         viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             appointmentService
                 .getAppointmentById(appointmentId)
                 .onSuccess { data ->
+                    mainLogger.debug("Appointment ${data.data}")
                     _uiState.update {
                         it.copy(
                             isLoading = false,
@@ -76,7 +82,6 @@ class AppointmentDetailsViewModel(
                     _uiState.update {
                         it.copy(isLoading = false)
                     }
-
                     SnackbarController.sendEvent(
                         SnackbarEvent(error = error)
                     )
@@ -86,6 +91,11 @@ class AppointmentDetailsViewModel(
 
     private fun cancelAppointment() {
         viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
             appointmentService
                 .cancelAppointment(appointmentId)
                 .onSuccess { data ->

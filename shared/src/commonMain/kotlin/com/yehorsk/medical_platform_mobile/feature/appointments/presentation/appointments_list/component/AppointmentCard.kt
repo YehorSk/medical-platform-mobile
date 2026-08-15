@@ -14,23 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.text.font.FontStyle
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.StatusBox
-import com.yehorsk.medical_platform_mobile.util.getAppointmentStatus
-import com.yehorsk.medical_platform_mobile.util.toColor
 import com.yehorsk.theme.AppTheme
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.appointment_status_cancelled
-import medicalplatformmobile.shared.generated.resources.appointment_status_completed
-import medicalplatformmobile.shared.generated.resources.appointment_status_confirmed
-import medicalplatformmobile.shared.generated.resources.appointment_status_pending
-import medicalplatformmobile.shared.generated.resources.appointment_status_rejected
-import medicalplatformmobile.shared.generated.resources.appointment_status_unknown
-import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 
 @Composable
@@ -61,17 +50,17 @@ fun AppointmentCard(
                     "$hour:$minute"
                 }
 
-                if(appointment.doctor != null){
+                if(appointment.userDoctor != null){
                     Text(
-                        text = "${appointment.doctor.title} ${appointment.doctor.firstName} ${appointment.doctor.lastName}",
+                        text = "${appointment.userDoctor.title} ${appointment.userDoctor.firstName} ${appointment.userDoctor.lastName}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-                if(appointment.patient != null){
+                if(appointment.userPatient != null){
                     Text(
-                        text = "${appointment.patient.title} ${appointment.patient.firstName} ${appointment.patient.lastName}",
+                        text = "${appointment.userPatient.title} ${appointment.userPatient.firstName} ${appointment.userPatient.lastName}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -136,7 +125,7 @@ private fun AppointmentCardPreview() {
 
     val appointment = Appointment(
         id = "1",
-        doctor = sampleDoctorUser,
+        userDoctor = sampleDoctorUser,
         status = AppointmentStatus.CONFIRMED,
         note = "",
         date = LocalDate(2026, 7, 18),

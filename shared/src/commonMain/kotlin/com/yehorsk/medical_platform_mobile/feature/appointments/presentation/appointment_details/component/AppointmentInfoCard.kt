@@ -2,7 +2,6 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.ap
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,8 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
-import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
@@ -26,7 +23,6 @@ import com.yehorsk.theme.AppTheme
 import kotlinx.datetime.*
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.calendar_month_24px
-import medicalplatformmobile.shared.generated.resources.calendar_today_24px
 import org.jetbrains.compose.resources.painterResource
 import kotlin.time.Clock
 
@@ -170,7 +166,7 @@ private fun AppointmentGradientCardPreview() {
 
     val appointment = Appointment(
         id = "1",
-        doctor = sampleDoctorUser,
+        userDoctor = sampleDoctorUser,
         status = AppointmentStatus.PENDING,
         specialization = "Dermatologist",
         note = "",

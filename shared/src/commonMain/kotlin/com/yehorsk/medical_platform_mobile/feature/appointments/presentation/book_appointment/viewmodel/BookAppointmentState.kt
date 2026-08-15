@@ -24,6 +24,7 @@ data class BookAppointmentState(
 
 @Serializable
 data class BookingForm(
+    val appointmentId: String? = null,
     val doctorId: String? = null,
     @SerialName("date")
     val selectedDate: String = LocalDate.now().toString(),

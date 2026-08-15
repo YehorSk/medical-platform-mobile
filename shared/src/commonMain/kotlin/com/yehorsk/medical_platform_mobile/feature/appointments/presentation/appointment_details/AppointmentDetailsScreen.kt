@@ -47,6 +47,7 @@ fun AppointmentDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: AppointmentDetailsViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
+    onRescheduleClicked: (String, String) -> Unit,
     userRole: UserRole
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -59,6 +60,14 @@ fun AppointmentDetailsScreen(
             when (action) {
                 AppointmentDetailsAction.OnGoBackClicked -> {
                     onGoBackClicked()
+                }
+                AppointmentDetailsAction.OnRescheduleClicked -> {
+                    state.appointment?.let { appointment ->
+                        val doctorId = appointment.userDoctor.doctor?.id
+                            ?: return@let
+
+                        onRescheduleClicked(doctorId, appointment.id)
+                    }
                 }
                 else -> {viewModel.onAction(action)}
             }
@@ -128,8 +137,8 @@ fun AppointmentDetailsScreenRoot(
                             appointment = appointment
                         )
 
-                        val doctor = appointment.doctor
-                        val patient = appointment.patient
+                        val doctor = appointment.userDoctor
+                        val patient = appointment.userPatient
 
                         if (userRole == UserRole.PATIENT && doctor != null) {
                             DefaultInfoCard(
@@ -198,7 +207,7 @@ fun AppointmentDetailsMainPreview() {
 
     val appointment = Appointment(
         id = "1",
-        doctor = sampleDoctorUser,
+        userDoctor = sampleDoctorUser,
         status = AppointmentStatus.PENDING,
         specialization = "Dermatologist",
         note = "",

@@ -7,8 +7,8 @@ import kotlin.time.Instant
 
 data class Appointment(
     val id: String,
-    val doctor: User? = null,
-    val patient: User? = null,
+    val userDoctor: User,
+    val userPatient: User? = null,
     val specialization: String = "",
     val status: AppointmentStatus,
     val note: String,

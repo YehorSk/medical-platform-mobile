@@ -3,7 +3,6 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.bo
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.medical_platform_mobile.core.data.mappers.toDayOfWeek
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
@@ -41,11 +40,16 @@ class BookAppointmentViewModel(
     private val doctorId = savedStateHandle.get<String>("doctorId")
         ?: throw IllegalStateException("Doctor id is missing")
 
+    private val appointmentId = savedStateHandle.get<String>("appointmentId")
+
     private val _uiState = MutableStateFlow(BookAppointmentState())
     val uiState = _uiState
         .onStart {
             if(!hasLoadedInitialData){
                 getWeekSchedule()
+                if(appointmentId != null){
+                    getAppointment()
+                }
                 hasLoadedInitialData = true
             }
         }
@@ -87,6 +91,43 @@ class BookAppointmentViewModel(
             BookAppointmentAction.OnCreateAppointmentClicked -> {
                 createAppointment()
             }
+        }
+    }
+
+    private fun getAppointment() {
+        if(appointmentId == null) return
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+            appointmentService
+                .getAppointmentById(appointmentId)
+                .onSuccess { data ->
+                    mainLogger.debug("Appointment ${data.data}")
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            form = it.form.copy(
+                                appointmentId = appointmentId,
+                                doctorId = doctorId,
+                                selectedTime = data.data.time.toString(),
+                                selectedDate = data.data.date.toString(),
+                                note = data.data.note
+                            )
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
         }
     }
 
@@ -177,7 +218,7 @@ class BookAppointmentViewModel(
         when(step){
             BookingStep.Doctor -> {}
             BookingStep.Date -> {}
-            BookingStep.Time -> { getDateAvailableTimes() }
+            BookingStep.Time -> { loadAvailableTimes() }
             BookingStep.Confirm -> {}
         }
         _uiState.update { it.copy(
@@ -200,7 +241,6 @@ class BookAppointmentViewModel(
             _uiState.update {
                 it.copy(isLoadingDates = true)
             }
-
             scheduleService
                 .getSchedule(doctorId)
                 .onSuccess { response ->
@@ -227,10 +267,13 @@ class BookAppointmentViewModel(
         }
     }
 
-    private fun getDateAvailableTimes() {
+    private fun loadAvailableTimes() {
         viewModelScope.launch {
             _uiState.update {
-                it.copy(isLoadingTimes = true)
+                it.copy(
+                    isLoadingTimes = true,
+                    availableTime = emptyList()
+                )
             }
             scheduleService
                 .getScheduleAvailableTimes(doctorId, _uiState.value.form.selectedDate)
@@ -244,7 +287,10 @@ class BookAppointmentViewModel(
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(isLoadingTimes = false)
+                        it.copy(
+                            isLoadingTimes = false,
+                            availableTime = emptyList()
+                        )
                     }
 
                     SnackbarController.sendEvent(

@@ -174,7 +174,7 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 viewModel = viewModel,
                 onBookAppointmentClicked = {
-                    navController.navigate(Screen.BookAppointment(it.id))
+                    navController.navigate(Screen.BookAppointment(doctorId = it.id))
                 }
             )
         }
@@ -184,6 +184,9 @@ fun NavGraphBuilder.patientNavGraph(
                     .fillMaxSize(),
                 onGoBackClicked = {
                     navController.popBackStack()
+                },
+                onRescheduleClicked = { doctorId, appointmentId ->
+                    navController.navigate(Screen.BookAppointment(doctorId, appointmentId))
                 },
                 userRole = UserRole.PATIENT
             )

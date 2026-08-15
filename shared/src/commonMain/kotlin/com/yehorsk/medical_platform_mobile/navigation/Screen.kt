@@ -30,7 +30,7 @@ sealed interface Screen {
 
     @Serializable data object PatientDoctors: Screen
 
-    @Serializable data class BookAppointment(val doctorId: String): Screen
+    @Serializable data class BookAppointment(val doctorId: String, val appointmentId: String ?= null): Screen
 
     @Serializable data object PendingRequests: Screen
 

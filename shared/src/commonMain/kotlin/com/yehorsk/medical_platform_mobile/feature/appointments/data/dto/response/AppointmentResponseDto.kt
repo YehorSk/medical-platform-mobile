@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AppointmentResponseDto(
     val id: String,
-    val doctor: UserResponseDto? = null,
+    val doctor: UserResponseDto,
     val patient: UserResponseDto? = null,
     val specialization: String = "",
     val status: String,

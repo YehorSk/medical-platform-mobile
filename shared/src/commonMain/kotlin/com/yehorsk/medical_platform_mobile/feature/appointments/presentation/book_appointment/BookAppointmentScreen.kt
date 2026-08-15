@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationEventHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
-import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultMultilineTextField
@@ -36,10 +35,10 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.boo
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
 import com.yehorsk.theme.AppTheme
-import kotlinx.datetime.DayOfWeek
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.book_appointment
 import medicalplatformmobile.shared.generated.resources.confirm_appointment
+import medicalplatformmobile.shared.generated.resources.reschedule_appointment
 import medicalplatformmobile.shared.generated.resources.select_a_time_slot
 import medicalplatformmobile.shared.generated.resources.select_date
 import org.jetbrains.compose.resources.stringResource
@@ -188,7 +187,11 @@ fun BookAppointmentScreenRoot(
                                 DefaultButton(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
-                                    text = stringResource(UiRes.string.confirm_appointment),
+                                    text = if (state.form.appointmentId != null) {
+                                        stringResource(UiRes.string.reschedule_appointment)
+                                    }else{
+                                        stringResource(UiRes.string.confirm_appointment)
+                                    },
                                     onClick = {
                                         onAction(BookAppointmentAction.OnCreateAppointmentClicked)
                                     }
@@ -202,7 +205,7 @@ fun BookAppointmentScreenRoot(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun BookAppointmentScreenRootPreview(){
     AppTheme {

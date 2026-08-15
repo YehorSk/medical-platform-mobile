@@ -10,8 +10,8 @@ import kotlin.time.Instant
 
 fun AppointmentResponseDto.toAppointment() = Appointment(
     id = id,
-    doctor = doctor?.toUser(),
-    patient = patient?.toUser(),
+    userDoctor = doctor.toUser(),
+    userPatient = patient?.toUser(),
     specialization = specialization,
     status = getAppointmentStatus(status),
     note = note,

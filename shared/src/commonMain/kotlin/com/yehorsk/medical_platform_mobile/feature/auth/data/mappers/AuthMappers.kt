@@ -1,10 +1,15 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.data.mappers
 
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toSpecialization
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toWorkplace
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PagedResponseDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.UserResponseDto
+import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.models.AuthData
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import kotlin.time.Instant
 
 fun AuthDataDto.toAuthData() = AuthData(
     user = user.toUser(),
@@ -21,6 +26,7 @@ fun AuthData.toAuthDataDto() = AuthDataDto(
 fun UserResponseDto.toUser() = User(
     id = id,
     email = email,
+    doctor = doctor?.toDoctor(),
     firstName = firstName,
     lastName = lastName,
     role = role,
@@ -29,6 +35,19 @@ fun UserResponseDto.toUser() = User(
     title = title,
     emergencyContactName = emergencyContactName,
     emergencyContactPhone = emergencyContactPhone
+)
+
+fun DoctorResponseDto.toDoctor() = Doctor(
+    id = id,
+    licenseNumber = licenseNumber,
+    approved = approved,
+    description = description,
+    specialization = specialization?.toSpecialization(),
+    workplace = workplace?.toWorkplace(),
+    createdAt = Instant.parse(createdAt),
+    updatedAt = Instant.parse(updatedAt),
+    approvedAt = Instant.parse(approvedAt),
+    currentPatientHasDoctor = currentPatientHasDoctor
 )
 
 fun User.toUserDto() = UserResponseDto(

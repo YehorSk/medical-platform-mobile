@@ -14,4 +14,5 @@ data class UserResponseDto(
     val address: String,
     val emergencyContactPhone: String,
     val emergencyContactName: String,
+    val doctor: DoctorResponseDto ?= null
 )
