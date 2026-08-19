@@ -111,7 +111,7 @@ class BookAppointmentViewModel(
                             isLoading = false,
                             form = it.form.copy(
                                 appointmentId = appointmentId,
-                                doctorId = doctorId,
+                                doctorId = data.data.doctor!!.id,
                                 selectedTime = data.data.time.toString(),
                                 selectedDate = data.data.date.toString(),
                                 note = data.data.note
@@ -186,6 +186,7 @@ class BookAppointmentViewModel(
             appointmentService
                 .createAppointment(CreateAppointmentRequestDto(
                     doctorId = uiState.value.form.doctorId!!,
+                    appointmentId = uiState.value.form.appointmentId,
                     date = uiState.value.form.selectedDate,
                     time = uiState.value.form.selectedTime!!,
                     note = uiState.value.form.note

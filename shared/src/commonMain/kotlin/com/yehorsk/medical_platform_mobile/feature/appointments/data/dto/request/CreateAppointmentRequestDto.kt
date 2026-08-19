@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateAppointmentRequestDto(
     val doctorId: String,
+    val appointmentId: String ?= null,
     val date: String,
     val time: String,
     val note: String = ""
