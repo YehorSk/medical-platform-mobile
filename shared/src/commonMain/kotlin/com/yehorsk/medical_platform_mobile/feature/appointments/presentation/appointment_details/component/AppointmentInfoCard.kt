@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.util.formatShortDateTime
 import com.yehorsk.medical_platform_mobile.util.formatTime
@@ -78,9 +79,9 @@ fun AppointmentInfoCard(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Column {
-                    if(appointment.specialization.isNotEmpty()){
+                    if(appointment.doctor != null){
                         Text(
-                            text = appointment.specialization,
+                            text = appointment.doctor.specialization,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -154,26 +155,21 @@ private fun InfoBox(
 @Preview(showBackground = true)
 @Composable
 private fun AppointmentGradientCardPreview() {
-    val now = Clock.System.now()
-
-    val sampleDoctorUser = User(
-        id = "u1",
-        email = "sarah.chen@example.com",
-        firstName = "Sarah",
-        lastName = "Chen",
-        role = "DOCTOR"
-    )
-
     val appointment = Appointment(
         id = "1",
-        userDoctor = sampleDoctorUser,
-        status = AppointmentStatus.PENDING,
-        specialization = "Dermatologist",
+        doctor = AppointmentDoctor(
+            id = "",
+            firstName = "John",
+            lastName = "Smith",
+            title = "Bc.",
+            specialization = "Surgeon"
+        ),
+        status = AppointmentStatus.CONFIRMED,
         note = "",
-        date = LocalDate(2026, 7, 22),
-        time = LocalTime(14, 0),
-        createdAt = now,
-        updatedAt = now
+        date = LocalDate(2026, 7, 18),
+        time = LocalTime(10, 30),
+        createdAt = Clock.System.now(),
+        updatedAt = Clock.System.now()
     )
 
     AppTheme {

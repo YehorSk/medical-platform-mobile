@@ -23,6 +23,7 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultInfoCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentInfoCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsAction
@@ -41,6 +42,7 @@ import medicalplatformmobile.shared.generated.resources.patient
 import medicalplatformmobile.shared.generated.resources.reschedule_btn
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.Clock
 
 @Composable
 fun AppointmentDetailsScreen(
@@ -63,7 +65,7 @@ fun AppointmentDetailsScreen(
                 }
                 AppointmentDetailsAction.OnRescheduleClicked -> {
                     state.appointment?.let { appointment ->
-                        val doctorId = appointment.userDoctor.doctor?.id
+                        val doctorId = appointment.doctor?.id
                             ?: return@let
 
                         onRescheduleClicked(doctorId, appointment.id)
@@ -137,8 +139,8 @@ fun AppointmentDetailsScreenRoot(
                             appointment = appointment
                         )
 
-                        val doctor = appointment.userDoctor
-                        val patient = appointment.userPatient
+                        val doctor = appointment.doctor
+                        val patient = appointment.patient
 
                         if (userRole == UserRole.PATIENT && doctor != null) {
                             DefaultInfoCard(
@@ -195,26 +197,22 @@ fun AppointmentDetailsScreenRoot(
 @Preview(showBackground = true)
 @Composable
 fun AppointmentDetailsMainPreview() {
-    val now = kotlin.time.Clock.System.now()
-
-    val sampleDoctorUser = User(
-        id = "u1",
-        email = "sarah.chen@example.com",
-        firstName = "Sarah",
-        lastName = "Chen",
-        role = "DOCTOR"
-    )
-
     val appointment = Appointment(
         id = "1",
-        userDoctor = sampleDoctorUser,
-        status = AppointmentStatus.PENDING,
-        specialization = "Dermatologist",
+        doctor = AppointmentDoctor(
+            id = "",
+            firstName = "John",
+            lastName = "Smith",
+            title = "Bc.",
+            specialization = "Surgeon"
+        ),
+
+        status = AppointmentStatus.CONFIRMED,
         note = "",
-        date = LocalDate(2026, 7, 22),
-        time = LocalTime(14, 0),
-        createdAt = now,
-        updatedAt = now
+        date = LocalDate(2026, 7, 18),
+        time = LocalTime(10, 30),
+        createdAt = Clock.System.now(),
+        updatedAt = Clock.System.now()
     )
 
     AppTheme {

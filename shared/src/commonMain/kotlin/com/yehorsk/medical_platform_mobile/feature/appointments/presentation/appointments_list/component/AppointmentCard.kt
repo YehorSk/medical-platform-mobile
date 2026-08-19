@@ -16,6 +16,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import androidx.compose.foundation.layout.padding
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.StatusBox
 import com.yehorsk.theme.AppTheme
 import kotlinx.datetime.LocalDate
@@ -50,17 +51,17 @@ fun AppointmentCard(
                     "$hour:$minute"
                 }
 
-                if(appointment.userDoctor != null){
+                if(appointment.doctor != null){
                     Text(
-                        text = "${appointment.userDoctor.title} ${appointment.userDoctor.firstName} ${appointment.userDoctor.lastName}",
+                        text = "${appointment.doctor.title} ${appointment.doctor.firstName} ${appointment.doctor.lastName}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-                if(appointment.userPatient != null){
+                if(appointment.patient != null){
                     Text(
-                        text = "${appointment.userPatient.title} ${appointment.userPatient.firstName} ${appointment.userPatient.lastName}",
+                        text = "${appointment.patient.title} ${appointment.patient.firstName} ${appointment.patient.lastName}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -113,19 +114,16 @@ private fun DateBadge(date: LocalDate) {
 @Composable
 private fun AppointmentCardPreview() {
 
-    val sampleSpecialization = Specialization(id = "spec1", name = "Cardiology")
-
-    val sampleDoctorUser = User(
-        id = "u1",
-        email = "sarah.chen@example.com",
-        firstName = "Sarah",
-        lastName = "Chen",
-        role = "DOCTOR"
-    )
-
     val appointment = Appointment(
         id = "1",
-        userDoctor = sampleDoctorUser,
+        doctor = AppointmentDoctor(
+            id = "",
+            firstName = "John",
+            lastName = "Smith",
+            title = "Bc.",
+            specialization = "Surgeon"
+        ),
+
         status = AppointmentStatus.CONFIRMED,
         note = "",
         date = LocalDate(2026, 7, 18),
