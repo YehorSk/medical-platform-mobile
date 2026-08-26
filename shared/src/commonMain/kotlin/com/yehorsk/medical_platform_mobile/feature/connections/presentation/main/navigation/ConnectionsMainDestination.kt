@@ -5,6 +5,7 @@ sealed interface ConnectionsMainDestination {
     data object Appointments : ConnectionsMainDestination
     data object FindDoctor : ConnectionsMainDestination
     data object MyDoctors : ConnectionsMainDestination
+    data object MyPatients : ConnectionsMainDestination
     data object PendingRequests : ConnectionsMainDestination
     data object DataAccess : ConnectionsMainDestination
 }

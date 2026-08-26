@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.LocalUserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
@@ -49,10 +50,10 @@ fun AppointmentDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: AppointmentDetailsViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
-    onRescheduleClicked: (String, String) -> Unit,
-    userRole: UserRole
+    onRescheduleClicked: (String, String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val userRole = LocalUserRole.current
 
     AppointmentDetailsScreenRoot(
         modifier = modifier,
@@ -81,8 +82,8 @@ fun AppointmentDetailsScreen(
 fun AppointmentDetailsScreenRoot(
     modifier: Modifier = Modifier,
     state: AppointmentDetailsState,
-    userRole: UserRole,
-    onAction: (AppointmentDetailsAction) -> Unit
+    onAction: (AppointmentDetailsAction) -> Unit,
+    userRole: UserRole
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -148,13 +149,17 @@ fun AppointmentDetailsScreenRoot(
                                 title = stringResource(UiRes.string.doctor),
                                 content = "${doctor.title} ${doctor.firstName} ${doctor.lastName}"
                             )
-                        }
-
-                        if (userRole == UserRole.DOCTOR && patient != null) {
+                        }else if (userRole == UserRole.DOCTOR && patient != null) {
                             DefaultInfoCard(
                                 modifier = Modifier.padding(vertical = 12.dp),
                                 title = stringResource(UiRes.string.patient),
                                 content = "${patient.title} ${patient.firstName} ${patient.lastName}"
+                            )
+                        }else{
+                            DefaultInfoCard(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                title = "No Data",
+                                content = "No Data"
                             )
                         }
 

@@ -35,11 +35,11 @@ fun NavGraphBuilder.doctorNavGraph(
                 navigateTo = { destination ->
                     when(destination){
                         ConnectionsMainDestination.Back -> navController.popBackStack()
-                        ConnectionsMainDestination.Appointments -> {}
+                        ConnectionsMainDestination.Appointments -> navController.navigate(Screen.MyAppointments)
                         ConnectionsMainDestination.DataAccess -> {}
-                        ConnectionsMainDestination.FindDoctor -> {}
-                        ConnectionsMainDestination.MyDoctors -> {}
+                        ConnectionsMainDestination.MyPatients -> {}
                         ConnectionsMainDestination.PendingRequests -> {}
+                        else -> {}
                     }
                 }
             )

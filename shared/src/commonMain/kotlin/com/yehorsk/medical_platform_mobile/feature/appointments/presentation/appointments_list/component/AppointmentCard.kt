@@ -14,8 +14,10 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import androidx.compose.foundation.layout.padding
+import com.yehorsk.medical_platform_mobile.LocalUserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.StatusBox
 import com.yehorsk.theme.AppTheme
@@ -29,6 +31,7 @@ fun AppointmentCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
+    val role = LocalUserRole.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -51,17 +54,23 @@ fun AppointmentCard(
                     "$hour:$minute"
                 }
 
-                if(appointment.doctor != null){
+                if(role == UserRole.PATIENT && appointment.doctor != null){
                     Text(
                         text = "${appointment.doctor.title} ${appointment.doctor.firstName} ${appointment.doctor.lastName}",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                }
-                if(appointment.patient != null){
+                }else if(role == UserRole.DOCTOR && appointment.patient != null){
                     Text(
                         text = "${appointment.patient.title} ${appointment.patient.firstName} ${appointment.patient.lastName}",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }else {
+                    Text(
+                        text = "No Data",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface

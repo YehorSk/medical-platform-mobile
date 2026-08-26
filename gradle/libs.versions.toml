@@ -27,6 +27,8 @@ material3WindowSizeClass = "1.9.0"
 material3-adaptive = "1.2.0"
 kizitonwose = "2.10.1"
 navigationevent = "1.0.0"
+firebase-bom = "34.0.0"
+google-services = "4.5.0"
 
 
 [libraries]
@@ -91,6 +93,10 @@ androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.r
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "paging" }
 
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+
 kizitonwose-calendar = { module = "com.kizitonwose.calendar:compose-multiplatform", version.ref = "kizitonwose"}
 
 [plugins]
@@ -102,6 +108,8 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 [bundles]
 koin-common = [

@@ -78,22 +78,34 @@ fun App(
     }
 
     AppTheme {
-        CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
-            if(!state.isCheckingAuth) {
+        if (!state.isCheckingAuth && state.userRole != null) {
+            CompositionLocalProvider(
+                LocalUserRole provides state.userRole!!,
+                LocalSnackbarHostState provides snackbarHostState
+            ) {
                 NavigationRoot(
                     navController = navController,
-                    startDestination = if(state.isLoggedIn){
-                        when(state.userRole){
-                            UserRole.PATIENT -> Graph.Patient
-                            UserRole.DOCTOR -> Graph.Doctor
-                            UserRole.ADMIN -> Graph.Authentication
-                            null -> Graph.Authentication
-                        }
-                    }else{
-                        Graph.Authentication
+                    startDestination = when (state.userRole) {
+                        UserRole.PATIENT -> Graph.Patient
+                        UserRole.DOCTOR -> Graph.Doctor
+                        UserRole.ADMIN -> Graph.Authentication
+                        else -> Graph.Authentication
                     }
+                )
+            }
+        } else if (!state.isCheckingAuth) {
+            CompositionLocalProvider(
+                LocalSnackbarHostState provides snackbarHostState
+            ) {
+                NavigationRoot(
+                    navController = navController,
+                    startDestination = Graph.Authentication
                 )
             }
         }
     }
+}
+
+val LocalUserRole = compositionLocalOf<UserRole> {
+    error("UserRole not provided")
 }

@@ -28,7 +28,7 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.NoConnectionBanner
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.FilterBottomSheet
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorFilterBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
@@ -39,7 +39,6 @@ import medicalplatformmobile.shared.generated.resources.search_24px
 import medicalplatformmobile.shared.generated.resources.search_doctors
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FindDoctorScreen(
@@ -146,7 +145,7 @@ fun FindDoctorScreenRoot(
         }
     }
     if(state.showFilterBottomSheet){
-        FilterBottomSheet(
+        DoctorFilterBottomSheet(
             onDismiss = { onAction(FindDoctorAction.ShowFilterBottomSheet) },
             state = state,
             onSpecializationClicked = { onAction(FindDoctorAction.OnSpecializationClicked(it)) },

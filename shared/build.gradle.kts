@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -80,6 +81,10 @@ kotlin {
 
             implementation(libs.material3.adaptive)
             implementation(libs.material3.adaptive.navigation.suite)
+
+            // Firebase
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.messaging)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
