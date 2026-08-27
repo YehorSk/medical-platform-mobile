@@ -109,6 +109,7 @@
     <string name="pending_requests">Pending Request</string>
     <string name="data_access">Data Access (GDPR)</string>
     <string name="my_appointments">My Appointments</string>
+    <string name="my_patients">My Patients</string>
     <string name="search_doctors">Search doctors</string>
 
     <string name="no_internet">No internet connection</string>

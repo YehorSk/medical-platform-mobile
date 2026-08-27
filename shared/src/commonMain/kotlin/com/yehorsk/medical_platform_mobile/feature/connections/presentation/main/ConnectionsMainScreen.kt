@@ -18,6 +18,7 @@ import medicalplatformmobile.shared.generated.resources.find_a_doctor
 import medicalplatformmobile.shared.generated.resources.hourglass_24px
 import medicalplatformmobile.shared.generated.resources.my_appointments
 import medicalplatformmobile.shared.generated.resources.my_doctors
+import medicalplatformmobile.shared.generated.resources.my_patients
 import medicalplatformmobile.shared.generated.resources.patient_list_24px
 import medicalplatformmobile.shared.generated.resources.pending_requests
 import medicalplatformmobile.shared.generated.resources.search_24px
@@ -74,13 +75,25 @@ fun ConnectionsMainScreenRoot(
                         )
                     }
                 }
-                item {
-                    ConnectionListCard(
-                        title = stringResource(UiRes.string.my_doctors),
-                        subtitle = "",
-                        icon = painterResource(UiRes.drawable.patient_list_24px),
-                        onClick = { navigateTo(ConnectionsMainDestination.MyDoctors) }
-                    )
+                if(role == UserRole.PATIENT){
+                    item {
+                        ConnectionListCard(
+                            title = stringResource(UiRes.string.my_doctors),
+                            subtitle = "",
+                            icon = painterResource(UiRes.drawable.patient_list_24px),
+                            onClick = { navigateTo(ConnectionsMainDestination.MyDoctors) }
+                        )
+                    }
+                }
+                if(role == UserRole.DOCTOR){
+                    item {
+                        ConnectionListCard(
+                            title = stringResource(UiRes.string.my_patients),
+                            subtitle = "",
+                            icon = painterResource(UiRes.drawable.patient_list_24px),
+                            onClick = { navigateTo(ConnectionsMainDestination.MyPatients) }
+                        )
+                    }
                 }
                 item {
                     ConnectionListCard(
