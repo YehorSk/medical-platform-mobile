@@ -27,6 +27,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentInfoCard
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.CompleteAppointmentBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsState
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsViewModel
@@ -38,6 +39,7 @@ import medicalplatformmobile.shared.generated.resources.appointment
 import medicalplatformmobile.shared.generated.resources.appointment_doesnt_exist
 import medicalplatformmobile.shared.generated.resources.cancel_btn
 import medicalplatformmobile.shared.generated.resources.doctor
+import medicalplatformmobile.shared.generated.resources.mark_completed
 import medicalplatformmobile.shared.generated.resources.notes
 import medicalplatformmobile.shared.generated.resources.patient
 import medicalplatformmobile.shared.generated.resources.reschedule_btn
@@ -169,6 +171,18 @@ fun AppointmentDetailsScreenRoot(
                             content = appointment.note
                         )
                         val isEnabled = (appointment.status != AppointmentStatus.CANCELLED) && (appointment.status != AppointmentStatus.COMPLETED)
+                        if(userRole == UserRole.DOCTOR){
+                            DefaultButton(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                text = stringResource(UiRes.string.mark_completed),
+                                isEnabled = state.isConnected && isEnabled,
+                                onClick = {
+                                    onAction(
+                                        AppointmentDetailsAction.ShowBottomSheet
+                                    )
+                                }
+                            )
+                        }
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.reschedule_btn),
@@ -196,6 +210,22 @@ fun AppointmentDetailsScreenRoot(
                 }
             }
         }
+    }
+    if(state.showBottomSheet){
+        CompleteAppointmentBottomSheet(
+            onDismiss = {
+                onAction(
+                    AppointmentDetailsAction.ShowBottomSheet
+                )
+            },
+            onCreateMedicalRecordClicked = {},
+            onJustMarkCompleteClicked = {},
+            onCancelClicked = {
+                onAction(
+                    AppointmentDetailsAction.ShowBottomSheet
+                )
+            }
+        )
     }
 }
 

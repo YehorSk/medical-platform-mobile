@@ -23,7 +23,9 @@ fun MedicalCardResponseDto.toDomain(): MedicalCard =
         insuranceNumber = insuranceNumber,
         patient = user?.toDomain(),
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+        dateOfBirth = dateOfBirth,
+        gender = gender
     )
 
 fun MedicalCardPatientDto.toDomain(): MedicalCardPatient =

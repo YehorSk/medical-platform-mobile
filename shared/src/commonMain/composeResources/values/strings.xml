@@ -185,6 +185,11 @@
 
     <string name="cancel_btn">Cancel</string>
     <string name="reschedule_btn">Reschedule</string>
+    <string name="complete_appointment">Complete Appointment</string>
+    <string name="mark_completed">Mark Completed</string>
+    <string name="create_medical_record_prompt">Would you like to create a medical record for this visit?</string>
+    <string name="create_medical_record">Create Medical Record</string>
+    <string name="just_mark_complete">Just Mark Complete</string>
 
     <string name="appointment_doesnt_exist">The appointment doesn't exist</string>
 

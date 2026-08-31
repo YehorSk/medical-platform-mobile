@@ -29,9 +29,9 @@ import kotlin.time.Clock
 fun AppointmentCard(
     appointment: Appointment,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    role: UserRole
 ) {
-    val role = LocalUserRole.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -146,7 +146,8 @@ private fun AppointmentCardPreview() {
             AppointmentCard(
                 appointment = appointment,
                 modifier = Modifier.padding(16.dp),
-                onClick = {}
+                onClick = {},
+                role = UserRole.PATIENT
             )
         }
     }

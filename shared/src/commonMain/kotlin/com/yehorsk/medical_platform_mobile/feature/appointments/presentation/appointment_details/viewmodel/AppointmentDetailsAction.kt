@@ -8,4 +8,6 @@ sealed interface AppointmentDetailsAction {
 
     data object OnRescheduleClicked: AppointmentDetailsAction
 
+    data object ShowBottomSheet: AppointmentDetailsAction
+
 }

@@ -78,34 +78,42 @@ fun App(
     }
 
     AppTheme {
-        if (!state.isCheckingAuth && state.userRole != null) {
-            CompositionLocalProvider(
-                LocalUserRole provides state.userRole!!,
-                LocalSnackbarHostState provides snackbarHostState
-            ) {
-                NavigationRoot(
-                    navController = navController,
-                    startDestination = when (state.userRole) {
-                        UserRole.PATIENT -> Graph.Patient
-                        UserRole.DOCTOR -> Graph.Doctor
-                        UserRole.ADMIN -> Graph.Authentication
-                        else -> Graph.Authentication
+        CompositionLocalProvider(
+            LocalSnackbarHostState provides snackbarHostState
+        ) {
+            val userRole = state.userRole
+
+            when {
+                state.isCheckingAuth -> {
+                    // SplashScreen()
+                }
+
+                userRole == null -> {
+                    NavigationRoot(
+                        navController = navController,
+                        startDestination = Graph.Authentication
+                    )
+                }
+
+                else -> {
+                    CompositionLocalProvider(
+                        LocalUserRole provides userRole
+                    ) {
+                        NavigationRoot(
+                            navController = navController,
+                            startDestination = when (userRole) {
+                                UserRole.PATIENT -> Graph.Patient
+                                UserRole.DOCTOR -> Graph.Doctor
+                                UserRole.ADMIN -> Graph.Authentication
+                            }
+                        )
                     }
-                )
-            }
-        } else if (!state.isCheckingAuth) {
-            CompositionLocalProvider(
-                LocalSnackbarHostState provides snackbarHostState
-            ) {
-                NavigationRoot(
-                    navController = navController,
-                    startDestination = Graph.Authentication
-                )
+                }
             }
         }
     }
 }
 
 val LocalUserRole = compositionLocalOf<UserRole> {
-    error("UserRole not provided")
+    error("LocalUserRole must be provided in authenticated content")
 }

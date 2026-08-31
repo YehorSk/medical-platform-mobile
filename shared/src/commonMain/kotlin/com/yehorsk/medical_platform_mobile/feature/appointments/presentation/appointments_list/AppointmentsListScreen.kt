@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.LocalUserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.NoConnectionBanner
@@ -33,10 +34,12 @@ fun AppointmentsListScreen(
     onAppointmentClicked: (String) -> Unit
     ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val role = LocalUserRole.current
 
     AppointmentsListScreenRoot(
         modifier = modifier,
         state = state,
+        userRole = role,
         onAction = { action ->
             when(action){
                 is AppointmentsListAction.OnGoBackClicked -> onGoBackClicked()
@@ -50,7 +53,8 @@ fun AppointmentsListScreen(
 fun AppointmentsListScreenRoot(
     modifier: Modifier = Modifier,
     state: AppointmentsListState,
-    onAction: (AppointmentsListAction) -> Unit
+    onAction: (AppointmentsListAction) -> Unit,
+    userRole: UserRole
 ){
     Column(
         modifier = modifier
@@ -87,6 +91,7 @@ fun AppointmentsListScreenRoot(
                         items(state.appointments, key = { it.id }){ appointment ->
                             AppointmentCard(
                                 appointment = appointment,
+                                role = userRole,
                                 onClick = { onAction(AppointmentsListAction.OnAppointmentClicked(appointment.id)) }
                             )
                         }
