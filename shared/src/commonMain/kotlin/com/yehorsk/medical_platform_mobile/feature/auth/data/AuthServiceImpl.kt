@@ -11,6 +11,7 @@ import com.yehorsk.medical_platform_mobile.core.util.map
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.RefreshTokenDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.UserResponseDto
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthData
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toUser
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
@@ -19,6 +20,8 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_pass
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterForm
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 
 class AuthServiceImpl(
     private val httpClient: HttpClient
@@ -70,7 +73,9 @@ class AuthServiceImpl(
         return httpClient.post<Unit, ApiResponseDto>(
             route = "/auth/logout",
             body = Unit
-        )
+        ).onSuccess {
+            httpClient.authProvider<BearerAuthProvider>()?.clearToken()
+        }
     }
 
     override suspend fun forgotPassword(form: ForgotPasswordForm): Result<ApiResponseDto, DataError.Remote> {
