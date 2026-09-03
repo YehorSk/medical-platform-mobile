@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.viewmodel
+package com.yehorsk.medical_platform_mobile.feature.connections.presentation.patient_details.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +8,8 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.PatientHasDoctorService
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.MedicalCardService
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,37 +18,28 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
-class FindPatientViewModel(
-    private val patientHasDoctorService: PatientHasDoctorService,
+class PatientDetailsViewModel(
+    private val medicalCardService: MedicalCardService,
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver
 ): ViewModel() {
-
-    private var hasLoadedInitialData = false
 
     init {
         observeConnectivity()
     }
 
-    private val _uiState = MutableStateFlow(FindPatientState())
+    private val _uiState = MutableStateFlow(PatientDetailsState())
     val uiState = _uiState
-        .onStart {
-            if(!hasLoadedInitialData){
-                getAllPatients()
-                hasLoadedInitialData = true
-            }
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = FindPatientState()
+            initialValue = PatientDetailsState()
         )
 
     private fun observeConnectivity() {
@@ -59,29 +50,31 @@ class FindPatientViewModel(
             .onEach { connected ->
                 mainLogger.debug("Connectivity = $connected")
                 _uiState.update { it.copy(isConnected = connected) }
-                if(connected) {
-                    mainLogger.debug("Get Doctors: wifi")
-                    getAllPatients()
-                }
             }
             .launchIn(viewModelScope)
     }
 
-    private fun getAllPatients(){
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(isLoading = true)
+    fun onAction(action: PatientDetailsAction){
+        when(action){
+            is PatientDetailsAction.OnGetPatientById -> {
+                getPatient(action.id)
             }
-            patientHasDoctorService
-                .getMyPatients()
+            PatientDetailsAction.GoBackClicked -> {}
+        }
+    }
+
+    private fun getPatient(id: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            medicalCardService
+                .getPatientById(id)
                 .onSuccess { response ->
                     _uiState.update {
                         it.copy(
-                            patients = response.data,
-                            isLoading = false
+                            isLoading = false,
+                            patient = response.data
                         )
                     }
-                    mainLogger.debug("Doctors response UI: ${response.data}")
                 }
                 .onFailure { dataErrorRemote ->
                     _uiState.update { it.copy(isLoading = false) }

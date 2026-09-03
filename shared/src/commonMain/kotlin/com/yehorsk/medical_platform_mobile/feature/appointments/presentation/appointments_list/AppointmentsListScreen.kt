@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.LocalUserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.NoConnectionBanner
@@ -31,10 +30,10 @@ fun AppointmentsListScreen(
     modifier: Modifier = Modifier,
     viewModel: AppointmentsListViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
-    onAppointmentClicked: (String) -> Unit
+    onAppointmentClicked: (String) -> Unit,
+    role: UserRole
     ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val role = LocalUserRole.current
 
     AppointmentsListScreenRoot(
         modifier = modifier,

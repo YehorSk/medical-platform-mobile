@@ -84,7 +84,8 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 onAppointmentClicked = { appointmentId ->
                     navController.navigate(Screen.AppointmentDetails(appointmentId))
-                }
+                },
+                role = UserRole.PATIENT
             )
         }
         composable<Screen.BookAppointment> {
@@ -188,7 +189,8 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 onRescheduleClicked = { doctorId, appointmentId ->
                     navController.navigate(Screen.BookAppointment(doctorId, appointmentId))
-                }
+                },
+                userRole = UserRole.PATIENT
             )
         }
         composable<Screen.Profile>{

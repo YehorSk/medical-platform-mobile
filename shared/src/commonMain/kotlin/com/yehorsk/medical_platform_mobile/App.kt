@@ -88,32 +88,18 @@ fun App(
                     // SplashScreen()
                 }
 
-                userRole == null -> {
+                else -> {
                     NavigationRoot(
                         navController = navController,
-                        startDestination = Graph.Authentication
+                        startDestination = when (userRole) {
+                            UserRole.PATIENT -> Graph.Patient
+                            UserRole.DOCTOR -> Graph.Doctor
+                            UserRole.ADMIN -> Graph.Authentication
+                            else -> Graph.Authentication
+                        }
                     )
-                }
-
-                else -> {
-                    CompositionLocalProvider(
-                        LocalUserRole provides userRole
-                    ) {
-                        NavigationRoot(
-                            navController = navController,
-                            startDestination = when (userRole) {
-                                UserRole.PATIENT -> Graph.Patient
-                                UserRole.DOCTOR -> Graph.Doctor
-                                UserRole.ADMIN -> Graph.Authentication
-                            }
-                        )
-                    }
                 }
             }
         }
     }
-}
-
-val LocalUserRole = compositionLocalOf<UserRole> {
-    error("LocalUserRole must be provided in authenticated content")
 }

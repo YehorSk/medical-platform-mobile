@@ -17,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.LocalUserRole
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
@@ -50,12 +48,12 @@ import kotlin.time.Clock
 @Composable
 fun AppointmentDetailsScreen(
     modifier: Modifier = Modifier,
+    userRole: UserRole,
     viewModel: AppointmentDetailsViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
     onRescheduleClicked: (String, String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val userRole = LocalUserRole.current
 
     AppointmentDetailsScreenRoot(
         modifier = modifier,

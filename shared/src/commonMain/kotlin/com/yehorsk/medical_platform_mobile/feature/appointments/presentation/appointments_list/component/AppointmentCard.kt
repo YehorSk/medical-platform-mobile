@@ -14,9 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import androidx.compose.foundation.layout.padding
-import com.yehorsk.medical_platform_mobile.LocalUserRole
-import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.StatusBox
