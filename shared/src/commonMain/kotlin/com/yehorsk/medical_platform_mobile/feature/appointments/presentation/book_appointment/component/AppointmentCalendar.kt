@@ -59,6 +59,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.toLocalDateTime
 import medicalplatformmobile.shared.generated.resources.available
 import medicalplatformmobile.shared.generated.resources.selected
 import medicalplatformmobile.shared.generated.resources.unavailable
@@ -87,6 +89,11 @@ fun AppointmentCalendar(
         day()
     }
     var localDate = LocalDate.parse(selectedDate, formatter)
+    val now = Clock.System.now()
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+
+    val today = now.date
+    val currentTime = now.time
 
     val state = rememberCalendarState(
         startMonth = startMonth,
@@ -169,6 +176,17 @@ fun AppointmentCalendar(
                     state = state,
                     dayContent = { day ->
                         val schedule = closedWeekDays.firstOrNull { it.weekday == day.date.dayOfWeek }
+
+                        val isClosed = when {
+                            schedule == null -> true
+                            !schedule.isWorkingDay -> true
+                            day.date < today -> true
+                            day.date == today -> {
+                                val endTime = LocalTime.parse(schedule.endTime)
+                                currentTime >= endTime
+                            }
+                            else -> false
+                        }
                         Day(
                             day,
                             isSelected = localDate == day.date,
@@ -176,7 +194,7 @@ fun AppointmentCalendar(
                                 localDate = if (localDate == day.date) localDate else day.date
                                 onUpdateSelectedDate(localDate.toString())
                             },
-                            isClosed = (schedule == null) || !schedule.isWorkingDay
+                            isClosed = isClosed
                         )
                     },
                     monthHeader = {
@@ -299,7 +317,9 @@ fun CalendarPreview(){
 
             DayScheduleUi(
                 weekday = day,
-                isWorkingDay = isWorkingDay
+                isWorkingDay = isWorkingDay,
+                startTime = "09:00:00",
+                endTime = "18:00:00",
             )
         }
         AppointmentCalendar(

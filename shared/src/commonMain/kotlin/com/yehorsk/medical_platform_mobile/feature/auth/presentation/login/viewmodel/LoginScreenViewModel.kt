@@ -81,7 +81,10 @@ class LoginScreenViewModel(
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
-                        eventChannel.send(LoginEvent.Success(getRole(response.data.user.role)))
+                        eventChannel.send(LoginEvent.Success(
+                            userId = response.data.user.id,
+                            role = getRole(response.data.user.role))
+                        )
 //                        SnackbarController.sendEvent(
 //                            event = SnackbarEvent(
 //                                message = response.message

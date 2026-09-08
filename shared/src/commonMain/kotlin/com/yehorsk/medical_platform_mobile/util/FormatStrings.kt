@@ -22,6 +22,11 @@ fun formatTime(input: String): String {
     return localDate.format(formatter)
 }
 
+fun parseTime(input: String): LocalTime {
+    val parser = DateTimeFormatter.ofPattern("HH:mm:ss")
+    return LocalTime.parse(input, parser)
+}
+
 fun formatDateTime(input: String): String {
     val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val localDate = LocalDate.parse(input, parser)

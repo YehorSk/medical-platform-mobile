@@ -65,13 +65,13 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel= koinViewModel(),
     onSignUpClicked: () -> Unit,
     onForgotPwdClicked: () -> Unit,
-    onLoginSuccess: (UserRole) -> Unit,
+    onLoginSuccess: (String, UserRole) -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when(event) {
-            is LoginEvent.Success -> onLoginSuccess(event.role)
+            is LoginEvent.Success -> onLoginSuccess(event.userId, event.role)
         }
     }
     LoginScreenRoot(

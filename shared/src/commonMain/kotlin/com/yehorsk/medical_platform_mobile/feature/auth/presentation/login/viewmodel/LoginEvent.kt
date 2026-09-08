@@ -4,6 +4,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 
 sealed interface LoginEvent {
     data class Success(
+        val userId: String,
         val role: UserRole
     ): LoginEvent
 }

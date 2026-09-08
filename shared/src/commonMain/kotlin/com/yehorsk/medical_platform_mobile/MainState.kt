@@ -6,5 +6,6 @@ data class MainState(
     val isLoggedIn: Boolean = false,
     val isCheckingAuth: Boolean = false,
     val isLoading: Boolean = true,
-    val userRole: UserRole? = null
+    val userRole: UserRole? = null,
+    val userId: String? = null
 )

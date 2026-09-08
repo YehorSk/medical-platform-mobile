@@ -61,7 +61,8 @@ class MainViewModel(
                                 isCheckingAuth = false,
                                 isLoggedIn = true,
                                 isLoading = false,
-                                userRole = response.data.getUserRole()
+                                userRole = response.data.getUserRole(),
+                                userId = response.data.id
                             )
                         }
                     }

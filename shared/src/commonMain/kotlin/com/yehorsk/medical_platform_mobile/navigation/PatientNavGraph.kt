@@ -96,10 +96,11 @@ fun NavGraphBuilder.patientNavGraph(
                     navController.popBackStack()
                 },
                 goToAppointmentsScreen = {
-                    navController.navigate(Screen.MyAppointments){
-                        popUpTo<Screen.BookAppointment> {
-                            inclusive = true
+                    navController.navigate(Screen.MyAppointments) {
+                        popUpTo<Screen.Connect> {
+                            inclusive = false
                         }
+                        launchSingleTop = true
                     }
                 }
             )

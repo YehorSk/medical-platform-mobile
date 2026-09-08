@@ -68,7 +68,7 @@ class SessionDataStore(
 
             json.decodeFromString<AuthDataDto>(jsonString)
         } catch (e: Exception) {
-            logger.error( "Decode failed" )
+            logger.error("Decode failed: ${e::class.simpleName}")
             null
         }
     }

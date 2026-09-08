@@ -82,6 +82,7 @@ fun App(
             LocalSnackbarHostState provides snackbarHostState
         ) {
             val userRole = state.userRole
+            val userId = state.userId
 
             when {
                 state.isCheckingAuth -> {

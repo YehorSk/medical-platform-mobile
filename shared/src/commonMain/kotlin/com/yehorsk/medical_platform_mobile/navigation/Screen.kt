@@ -2,11 +2,16 @@ package com.yehorsk.medical_platform_mobile.navigation
 
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import kotlinx.serialization.Serializable
 
 sealed interface Screen {
 
     @Serializable data object Login : Screen
+    @Serializable data class LocalAuth(
+        val userId: String,
+        val userRole: UserRole
+    ) : Screen
     @Serializable data object Register : Screen
     @Serializable data class RegisterSuccess(
         val email: String

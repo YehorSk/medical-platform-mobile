@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -33,14 +34,17 @@ import com.yehorsk.theme.AppTheme
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.add_24px
 import medicalplatformmobile.shared.generated.resources.appointment
 import medicalplatformmobile.shared.generated.resources.appointment_doesnt_exist
 import medicalplatformmobile.shared.generated.resources.cancel_btn
+import medicalplatformmobile.shared.generated.resources.create_medical_record
 import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.mark_completed
 import medicalplatformmobile.shared.generated.resources.notes
 import medicalplatformmobile.shared.generated.resources.patient
 import medicalplatformmobile.shared.generated.resources.reschedule_btn
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
@@ -143,24 +147,28 @@ fun AppointmentDetailsScreenRoot(
                         val doctor = appointment.doctor
                         val patient = appointment.patient
 
-                        if (userRole == UserRole.PATIENT && doctor != null) {
-                            DefaultInfoCard(
-                                modifier = Modifier.padding(vertical = 12.dp),
-                                title = stringResource(UiRes.string.doctor),
-                                content = "${doctor.title} ${doctor.firstName} ${doctor.lastName}"
-                            )
-                        }else if (userRole == UserRole.DOCTOR && patient != null) {
-                            DefaultInfoCard(
-                                modifier = Modifier.padding(vertical = 12.dp),
-                                title = stringResource(UiRes.string.patient),
-                                content = "${patient.title} ${patient.firstName} ${patient.lastName}"
-                            )
-                        }else{
-                            DefaultInfoCard(
-                                modifier = Modifier.padding(vertical = 12.dp),
-                                title = "No Data",
-                                content = "No Data"
-                            )
+                        when (userRole) {
+                            UserRole.PATIENT if doctor != null -> {
+                                DefaultInfoCard(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    title = stringResource(UiRes.string.doctor),
+                                    content = "${doctor.title} ${doctor.firstName} ${doctor.lastName}"
+                                )
+                            }
+                            UserRole.DOCTOR if patient != null -> {
+                                DefaultInfoCard(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    title = stringResource(UiRes.string.patient),
+                                    content = "${patient.title} ${patient.firstName} ${patient.lastName}"
+                                )
+                            }
+                            else -> {
+                                DefaultInfoCard(
+                                    modifier = Modifier.padding(vertical = 12.dp),
+                                    title = "No Data",
+                                    content = "No Data"
+                                )
+                            }
                         }
 
                         DefaultInfoCard(
@@ -175,12 +183,20 @@ fun AppointmentDetailsScreenRoot(
                                 text = stringResource(UiRes.string.mark_completed),
                                 isEnabled = state.isConnected && isEnabled,
                                 onClick = {
-                                    onAction(
-                                        AppointmentDetailsAction.ShowBottomSheet
-                                    )
+//                                    onAction(
+//                                        AppointmentDetailsAction.ShowBottomSheet
+//                                    )
                                 }
                             )
                         }
+                        DefaultButton(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            onClick = {},
+                            text = stringResource(UiRes.string.create_medical_record),
+                            leadingIcon = painterResource(UiRes.drawable.add_24px),
+                            color = MaterialTheme.colorScheme.primary,
+                            textColor = MaterialTheme.colorScheme.onPrimary,
+                        )
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.reschedule_btn),
@@ -209,22 +225,22 @@ fun AppointmentDetailsScreenRoot(
             }
         }
     }
-    if(state.showBottomSheet){
-        CompleteAppointmentBottomSheet(
-            onDismiss = {
-                onAction(
-                    AppointmentDetailsAction.ShowBottomSheet
-                )
-            },
-            onCreateMedicalRecordClicked = {},
-            onJustMarkCompleteClicked = {},
-            onCancelClicked = {
-                onAction(
-                    AppointmentDetailsAction.ShowBottomSheet
-                )
-            }
-        )
-    }
+//    if(state.showBottomSheet){
+//        CompleteAppointmentBottomSheet(
+//            onDismiss = {
+//                onAction(
+//                    AppointmentDetailsAction.ShowBottomSheet
+//                )
+//            },
+//            onCreateMedicalRecordClicked = {},
+//            onJustMarkCompleteClicked = {},
+//            onCancelClicked = {
+//                onAction(
+//                    AppointmentDetailsAction.ShowBottomSheet
+//                )
+//            }
+//        )
+//    }
 }
 
 @Preview(showBackground = true)

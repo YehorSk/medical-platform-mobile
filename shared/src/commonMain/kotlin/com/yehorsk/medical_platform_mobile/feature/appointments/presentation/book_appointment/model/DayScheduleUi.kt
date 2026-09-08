@@ -3,6 +3,8 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.bo
 import kotlinx.datetime.DayOfWeek
 
 data class DayScheduleUi(
+    val startTime: String,
+    val endTime: String,
     val weekday: DayOfWeek?,
     val isWorkingDay: Boolean,
 )

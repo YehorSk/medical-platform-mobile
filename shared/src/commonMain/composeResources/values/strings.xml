@@ -195,4 +195,29 @@
 
     <string name="appointment">Appointment</string>
 
+    <!-- PIN SCREEN -->
+
+    <string name="error_pin_invalid">PIN must contain 4</string>
+    <string name="error_pin_mismatch">PIN codes do not match</string>
+    <string name="error_pin_incorrect">Incorrect PIN</string>
+    <string name="error_pin_required">Please enter your PIN</string>
+    <string name="error_pin_save_failed">Failed to save PIN. Please try again</string>
+    <string name="error_pin_verification_failed">Failed to verify PIN. Please try again</string>
+
+    <string name="pin_input">PIN</string>
+    <string name="pin_input_placeholder">Enter your PIN</string>
+
+    <string name="pin_confirm_input">Confirm PIN</string>
+    <string name="pin_confirm_input_placeholder">Enter your PIN again</string>
+
+    <string name="pin_create_title">Create PIN</string>
+    <string name="pin_confirm_title">Confirm PIN</string>
+    <string name="pin_enter_title">Enter PIN</string>
+    <string name="pin_create_description">Create a PIN to protect your account</string>
+    <string name="pin_confirm_description">Enter your PIN again to confirm</string>
+    <string name="pin_enter_description">Enter your PIN to continue</string>
+
+    <string name="continue_button">Continue</string>
+    <string name="confirm_button">Confirm</string>
+
 </resources>

@@ -7,6 +7,8 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.boo
 fun DaySchedule.toDayScheduleUi(): DayScheduleUi{
     return DayScheduleUi(
         weekday = weekday.toDayOfWeek(),
-        isWorkingDay = isWorkingDay
+        isWorkingDay = isWorkingDay,
+        startTime = startTime,
+        endTime = endTime
     )
 }

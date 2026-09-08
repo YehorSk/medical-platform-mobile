@@ -10,6 +10,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.FindPatientScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
@@ -106,6 +108,32 @@ fun NavGraphBuilder.doctorNavGraph(
                     text = "My Schedule"
                 )
             }
+        }
+        composable<Screen.MyAppointments> {
+            AppointmentsListScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+                onAppointmentClicked = { appointmentId ->
+                    navController.navigate(Screen.AppointmentDetails(appointmentId))
+                },
+                role = UserRole.DOCTOR
+            )
+        }
+        composable<Screen.AppointmentDetails> {
+            AppointmentDetailsScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+                onRescheduleClicked = { doctorId, appointmentId ->
+                    navController.navigate(Screen.BookAppointment(doctorId, appointmentId))
+                },
+                userRole = UserRole.DOCTOR
+            )
         }
     }
 }
