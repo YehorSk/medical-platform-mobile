@@ -16,7 +16,10 @@ import kotlinx.serialization.Serializable
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    startDestination: Graph
+    startDestination: Graph = Graph.Authentication,
+    isAuthenticated: Boolean,
+    userId: String?,
+    userRole: UserRole?
 ){
     val snackbarHostState = LocalSnackbarHostState.current
     Scaffold(
@@ -38,7 +41,10 @@ fun NavigationRoot(
             startDestination = startDestination
         ) {
             authGraph(
-                navController = navController
+                navController = navController,
+                isAuthenticated = isAuthenticated,
+                userId = userId,
+                userRole = userRole
             )
             patientNavGraph(
                 modifier = Modifier.padding(paddingValues),

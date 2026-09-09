@@ -92,12 +92,9 @@ fun App(
                 else -> {
                     NavigationRoot(
                         navController = navController,
-                        startDestination = when (userRole) {
-                            UserRole.PATIENT -> Graph.Patient
-                            UserRole.DOCTOR -> Graph.Doctor
-                            UserRole.ADMIN -> Graph.Authentication
-                            else -> Graph.Authentication
-                        }
+                        isAuthenticated = state.isLoggedIn,
+                        userId = userId,
+                        userRole = userRole
                     )
                 }
             }

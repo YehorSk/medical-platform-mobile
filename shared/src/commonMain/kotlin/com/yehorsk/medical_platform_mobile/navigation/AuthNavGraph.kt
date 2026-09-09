@@ -20,10 +20,24 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_su
 import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.authGraph(
-    navController: NavController
+    navController: NavController,
+    isAuthenticated: Boolean,
+    userId: String?,
+    userRole: UserRole?
 ){
     navigation<Graph.Authentication>(
-        startDestination = Screen.Login
+        startDestination = when {
+            !isAuthenticated -> Screen.Login
+
+            userId != null && userRole != null -> {
+                Screen.LocalAuth(
+                    userId = userId,
+                    userRole = userRole
+                )
+            }
+
+            else -> Screen.Login
+        }
     ){
         composable<Screen.Login> {
             LoginScreen(
