@@ -26,6 +26,7 @@ data class User(
     }
 }
 
+@Serializable
 enum class UserRole {
     PATIENT, DOCTOR, ADMIN
 }

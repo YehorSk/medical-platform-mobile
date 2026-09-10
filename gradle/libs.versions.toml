@@ -21,13 +21,13 @@ kotlinx-serialization = "1.11.0"
 datastore = "1.2.1"
 ktor = "3.5.2"
 datastoreCore = "1.2.1"
-kermit = "2.1.0"
+kermit = "2.2.0"
 paging = "3.5.0"
 material3WindowSizeClass = "1.9.0"
 material3-adaptive = "1.2.0"
 kizitonwose = "2.10.1"
-navigationevent = "1.0.0"
-firebase-bom = "34.0.0"
+navigationevent = "1.1.0"
+firebase-bom = "34.19.0"
 google-services = "4.5.0"
 
 
@@ -73,8 +73,7 @@ koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-nav
 # Compose
 jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "composeMultiplatform" }
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
-androidx-navigationevent = { module = "androidx.navigationevent:navigationevent", version.ref = "navigationevent" }
-androidx-navigationevent-compose = { module = "androidx.navigationevent:navigationevent-compose", version.ref = "navigationevent" }
+jetbrains-navigationevent = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "navigationevent" }
 
 # Ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }

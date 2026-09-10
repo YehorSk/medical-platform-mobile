@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.BottomBar
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
+import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.serialization.Serializable
 
 @Composable

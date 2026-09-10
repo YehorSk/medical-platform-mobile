@@ -44,6 +44,10 @@ kotlin {
             implementation(libs.koin.androidx.navigation)
             implementation(libs.koin.androidx.compose)
 
+            // Firebase
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.messaging)
+
             implementation(libs.androidx.paging.runtime)
         }
         commonMain.dependencies {
@@ -76,15 +80,10 @@ kotlin {
             implementation(libs.androidx.paging.common)
             implementation(libs.androidx.paging.compose)
 
-            implementation(libs.androidx.navigationevent)
-            implementation(libs.androidx.navigationevent.compose)
+            implementation(libs.jetbrains.navigationevent)
 
             implementation(libs.material3.adaptive)
             implementation(libs.material3.adaptive.navigation.suite)
-
-            // Firebase
-            implementation(project.dependencies.platform(libs.firebase.bom))
-            implementation(libs.firebase.messaging)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

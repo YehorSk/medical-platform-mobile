@@ -17,7 +17,9 @@ import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.Login
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.RegisterScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.RegisterSuccessScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessScreenViewModel
+import com.yehorsk.medical_platform_mobile.navigation.navTypes.serializableType
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.authGraph(
     navController: NavController,
@@ -78,7 +80,11 @@ fun NavGraphBuilder.authGraph(
                 }
             )
         }
-        composable<Screen.LocalAuth> { backStackEntry ->
+        composable<Screen.LocalAuth>(
+            typeMap = mapOf(
+                typeOf<UserRole>() to serializableType<UserRole>()
+            )
+        ) { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.LocalAuth>()
             val viewModel: LocalAuthScreenViewModel = koinViewModel()
             LaunchedEffect(args.userId){
