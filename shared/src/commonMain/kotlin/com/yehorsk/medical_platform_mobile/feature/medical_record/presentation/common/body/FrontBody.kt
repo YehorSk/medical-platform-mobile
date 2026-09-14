@@ -1,8 +1,7 @@
-package com.yehorsk.medical_platform_mobile.util.body
+package com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.common.body
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor
@@ -1528,7 +1527,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "hand_left",
+                name = "left_hand",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1569,16 +1568,16 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "hand_right",
+                name = "right_hand",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
                 moveTo(69f, 612f)
                 curveTo(73.3f, 601.1f, 78.5f, 584.5f, 84f, 568f)
                 curveTo(85.3f, 558.8f, 87.2f, 552f, 87.5f, 546f)
-                curveTo(86.5f, 537f, 86.5f, 536f, 86.5f, 531f)
-                curveTo(79f, 527.8f, 60.5f, 520.5f, 50f, 515.5f)
-                curveTo(41f, 519f, 36.5f, 519.5f, 25.5f, 526.5f)
+                curveTo(86.5f, 537f, 86.5f, 538.5f, 86.5f, 533.5f)
+                curveTo(79f, 530.3f, 58.5f, 521.5f, 48f, 516.5f)
+                curveTo(39f, 520f, 36.5f, 519.5f, 25.5f, 526.5f)
                 curveTo(20.5f, 531.5f, 8.6f, 537f, 7.5f, 541.5f)
                 curveTo(6.1f, 543.5f, 4.6f, 544.7f, 3.5f, 545.5f)
                 curveTo(-1.2f, 551.3f, 1f, 552.5f, 3f, 554.5f)
@@ -1610,73 +1609,97 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "forearm_left",
+                name = "left_forearm",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(509f, 531f)
-                curveTo(519f, 528f, 539.2f, 518.7f, 546.5f, 515.5f)
-                curveTo(542f, 507f, 535f, 489.3f, 529f, 467.5f)
-                curveTo(523f, 445.7f, 520.2f, 424f, 515f, 405.5f)
-                curveTo(509.8f, 387f, 508.5f, 384.5f, 503f, 375f)
-                curveTo(490.5f, 378f, 455.5f, 388.5f, 439f, 392.5f)
-                curveTo(440.5f, 403.5f, 444.4f, 413.8f, 448.5f, 425f)
-                curveTo(452.6f, 436.2f, 451.5f, 432.5f, 459.5f, 448.5f)
-                curveTo(469f, 463.9f, 486.2f, 485.6f, 496f, 502f)
-                curveTo(505.8f, 518.4f, 505.5f, 522.5f, 509f, 531f)
+                moveTo(504f, 518f)
+                curveTo(514f, 515f, 533.2f, 505.2f, 540.5f, 502f)
+                curveTo(537.5f, 493f, 534.5f, 488.3f, 528.5f, 466.5f)
+                curveTo(522.5f, 444.7f, 519.7f, 423f, 514.5f, 404.5f)
+                curveTo(512f, 395.5f, 512.5f, 397f, 508f, 385f)
+                curveTo(495.5f, 388f, 458.5f, 403.5f, 442f, 407.5f)
+                curveTo(446f, 419f, 443.9f, 412.8f, 448f, 424f)
+                curveTo(452.1f, 435.2f, 451f, 431.5f, 459f, 447.5f)
+                curveTo(468.5f, 462.9f, 485.7f, 484.6f, 495.5f, 501f)
+                curveTo(497.9f, 505f, 499f, 507.5f, 504f, 518f)
                 close()
             }
             path(
-                name = "forearm_right",
+                name = "right_forearm",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(87f, 531f)
-                curveTo(77f, 528f, 56.8f, 518.7f, 49.5f, 515.5f)
-                curveTo(54f, 507f, 61f, 489.3f, 67f, 467.5f)
+                moveTo(91.5f, 519f)
+                curveTo(81.5f, 516f, 62.3f, 506.2f, 55f, 503f)
+                curveTo(58f, 494f, 61f, 489.3f, 67f, 467.5f)
                 curveTo(73f, 445.7f, 75.8f, 424f, 81f, 405.5f)
-                curveTo(86.2f, 387f, 87.5f, 384.5f, 93f, 375f)
-                curveTo(105.5f, 378f, 140.5f, 388.5f, 157f, 392.5f)
-                curveTo(155.5f, 403.5f, 151.6f, 413.8f, 147.5f, 425f)
+                curveTo(83.5f, 396.5f, 83f, 398f, 87.5f, 386f)
+                curveTo(100f, 389f, 137f, 404.5f, 153.5f, 408.5f)
+                curveTo(149.5f, 420f, 151.6f, 413.8f, 147.5f, 425f)
                 curveTo(143.4f, 436.2f, 144.5f, 432.5f, 136.5f, 448.5f)
                 curveTo(127f, 463.9f, 109.8f, 485.6f, 100f, 502f)
-                curveTo(90.2f, 518.4f, 90.5f, 522.5f, 87f, 531f)
+                curveTo(97.6f, 506f, 96.5f, 508.5f, 91.5f, 519f)
                 close()
             }
             path(
-                name = "upper_arm_left",
+                name = "left_elbow",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(439.5f, 391.5f)
-                curveTo(452.5f, 390f, 490.8f, 377.6f, 503.5f, 374f)
-                curveTo(500.1f, 367.3f, 489f, 349.5f, 487f, 339f)
+                moveTo(507.5f, 385.5f)
+                curveTo(503.3f, 374.8f, 500.4f, 369.3f, 494.5f, 360f)
+                curveTo(473.4f, 371.7f, 461.5f, 378.2f, 438f, 384f)
+                curveTo(439f, 394.2f, 440.1f, 399.6f, 443f, 408.5f)
+                lineTo(507.5f, 385.5f)
+                close()
+            }
+            path(
+                name = "right_elbow",
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1f
+            ) {
+                moveTo(88f, 385.5f)
+                curveTo(92.2f, 374.8f, 95.1f, 369.3f, 101f, 360f)
+                curveTo(122.1f, 371.7f, 134f, 378.2f, 157.5f, 384f)
+                curveTo(156.5f, 394.2f, 155.4f, 399.6f, 152.5f, 408.5f)
+                lineTo(88f, 385.5f)
+                close()
+            }
+            path(
+                name = "left_upper_arm",
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1f
+            ) {
+                moveTo(438f, 383.5f)
+                curveTo(451f, 382f, 483.5f, 368f, 495f, 359f)
+                curveTo(491.6f, 352.3f, 489f, 349.5f, 487f, 339f)
                 curveTo(485.3f, 330f, 485.5f, 333f, 482f, 321.5f)
                 curveTo(477.5f, 308.5f, 471.5f, 289.5f, 463f, 279f)
                 curveTo(438.5f, 279f, 416f, 279f, 405f, 279f)
                 curveTo(405f, 289.5f, 408.5f, 315.5f, 416f, 333.5f)
                 curveTo(423f, 352f, 429.5f, 360f, 435.5f, 371.5f)
-                curveTo(438.5f, 383.5f, 438f, 385f, 439.5f, 391.5f)
+                curveTo(438.5f, 383.5f, 436.5f, 377f, 438f, 383.5f)
                 close()
             }
             path(
-                name = "upper_arm_right",
+                name = "right_upper_arm",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(156.5f, 392f)
-                curveTo(143.5f, 390.5f, 105.2f, 378.1f, 92.5f, 374.5f)
-                curveTo(95.9f, 367.8f, 107f, 350f, 109f, 339.5f)
+                moveTo(158f, 384f)
+                curveTo(145f, 382.5f, 112.5f, 368.5f, 101f, 359.5f)
+                curveTo(104.4f, 352.8f, 107f, 350f, 109f, 339.5f)
                 curveTo(110.7f, 330.5f, 110.5f, 333.5f, 114f, 322f)
                 curveTo(118.5f, 309f, 124.5f, 290f, 133f, 279.5f)
                 curveTo(157.5f, 279.5f, 180f, 279.5f, 191f, 279.5f)
                 curveTo(191f, 290f, 187.5f, 316f, 180f, 334f)
                 curveTo(173f, 352.5f, 166.5f, 360.5f, 160.5f, 372f)
-                curveTo(157.5f, 384f, 158f, 385.5f, 156.5f, 392f)
+                curveTo(157.5f, 384f, 159.5f, 377.5f, 158f, 384f)
                 close()
             }
             path(
-                name = "shoulder_left",
+                name = "left_shoulder",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1692,7 +1715,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "shoulder_right",
+                name = "right_shoulder",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1850,7 +1873,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "knee_left",
+                name = "left_knee",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1871,7 +1894,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "knee_right",
+                name = "right_knee",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1892,32 +1915,31 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="thigh_left",
+                name = "left_thigh",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(348f, 773.5f)
-                curveTo(354f, 769f, 371f, 764f, 379.5f, 757.5f)
-                curveTo(377.9f, 758.4f, 400.8f, 740.6f, 406f, 691f)
-                curveTo(411.2f, 641.4f, 409f, 526.5f, 398f, 514f)
-                curveTo(392.5f, 518.5f, 330.5f, 576.5f, 300.5f, 603f)
-                curveTo(300.5f, 627f, 298.1f, 627f, 304f, 655f)
+                moveTo(351f, 774f)
+                curveTo(358f, 770f, 373f, 764f, 379.5f, 757.5f)
+                curveTo(377.9f, 758.4f, 404f, 738.5f, 407.5f, 691.5f)
+                curveTo(414.5f, 643.5f, 405f, 527.5f, 399f, 514.5f)
+                curveTo(393.5f, 519f, 331.5f, 577f, 301.5f, 603.5f)
+                curveTo(301.5f, 627.5f, 298.1f, 627f, 304f, 655f)
                 curveTo(310.5f, 686f, 320f, 738f, 324f, 762f)
                 curveTo(327.5f, 767f, 328.9f, 769.4f, 332f, 772f)
-                curveTo(335.1f, 774.6f, 336.3f, 774.7f, 339.4f, 775f)
-                lineTo(339.5f, 775f)
-                curveTo(342.7f, 775.3f, 341.5f, 776.1f, 348f, 773.5f)
+                curveTo(335.1f, 774.6f, 336.3f, 775.2f, 339.5f, 775.5f)
+                curveTo(342.5f, 776.5f, 344f, 776.5f, 351f, 774f)
                 close()
             }
             path(
-                name="thigh_right",
+                name = "right_thigh",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
                 moveTo(246.5f, 774f)
-                curveTo(240.5f, 769.5f, 223.5f, 764.5f, 215f, 758f)
+                curveTo(239f, 771.5f, 223.5f, 764.5f, 215f, 758f)
                 curveTo(216.6f, 758.9f, 193.7f, 741.1f, 188.5f, 691.5f)
-                curveTo(183.3f, 641.9f, 185.5f, 527f, 196.5f, 514.5f)
+                curveTo(181f, 641f, 190f, 529f, 196.5f, 514.5f)
                 curveTo(202f, 519f, 264f, 577f, 294f, 603.5f)
                 curveTo(294f, 627.5f, 296.4f, 627.5f, 290.5f, 655.5f)
                 curveTo(284f, 686.5f, 274.5f, 738.5f, 270.5f, 762.5f)
@@ -1928,7 +1950,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="foot_left",
+                name = "left_foot",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1957,7 +1979,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="foot_right",
+                name = "right_foot",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -1986,7 +2008,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="ankle_left",
+                name = "left_ankle",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2002,7 +2024,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="ankle_right",
+                name = "right_ankle",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2018,7 +2040,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="leg_right",
+                name = "right_leg",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2038,7 +2060,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name="leg_left",
+                name = "left_leg",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2058,7 +2080,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "eye_left",
+                name = "left_eye",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2070,7 +2092,7 @@ val Front: ImageVector
                 close()
             }
             path(
-                name = "eye_right",
+                name = "right_eye",
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
@@ -2079,6 +2101,30 @@ val Front: ImageVector
                 curveTo(270.1f, 73.2f, 272.1f, 75.9f, 275.5f, 76f)
                 curveTo(278.9f, 76.1f, 285.9f, 74.5f, 287f, 73f)
                 curveTo(288.1f, 71.5f, 283.4f, 68.6f, 280f, 68.5f)
+                close()
+            }
+            path(
+                name = "left_wrist",
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1f
+            ) {
+                moveTo(504f, 518.5f)
+                lineTo(540f, 502f)
+                curveTo(542.7f, 507.1f, 544f, 515f, 547f, 515f)
+                curveTo(550f, 515f, 509f, 532f, 509f, 532f)
+                lineTo(504f, 518.5f)
+                close()
+            }
+            path(
+                name = "right_wrist",
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1f
+            ) {
+                moveTo(91f, 519.5f)
+                lineTo(55f, 503f)
+                curveTo(52.3f, 508.1f, 51f, 516f, 48f, 516f)
+                curveTo(45f, 516f, 86f, 533f, 86f, 533f)
+                lineTo(91f, 519.5f)
                 close()
             }
         }.build()

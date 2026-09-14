@@ -55,6 +55,7 @@ fun AppointmentDetailsScreen(
     userRole: UserRole,
     viewModel: AppointmentDetailsViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
+    onCreateMedicalRecordClicked: () -> Unit = {},
     onRescheduleClicked: (String, String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -75,6 +76,9 @@ fun AppointmentDetailsScreen(
 
                         onRescheduleClicked(doctorId, appointment.id)
                     }
+                }
+                AppointmentDetailsAction.OnCreateMedicalRecordClicked -> {
+                    onCreateMedicalRecordClicked()
                 }
                 else -> {viewModel.onAction(action)}
             }
@@ -191,7 +195,11 @@ fun AppointmentDetailsScreenRoot(
                         }
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
-                            onClick = {},
+                            onClick = {
+                                onAction(
+                                    AppointmentDetailsAction.OnCreateMedicalRecordClicked
+                                )
+                            },
                             text = stringResource(UiRes.string.create_medical_record),
                             leadingIcon = painterResource(UiRes.drawable.add_24px),
                             color = MaterialTheme.colorScheme.primary,

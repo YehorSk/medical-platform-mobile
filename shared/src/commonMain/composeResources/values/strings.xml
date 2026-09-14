@@ -220,4 +220,33 @@
     <string name="continue_button">Continue</string>
     <string name="confirm_button">Confirm</string>
 
+    <!-- Body Parts -->
+    <string name="body_part_right_hand">Right hand</string>
+    <string name="body_part_left_hand">Left hand</string>
+    <string name="body_part_left_forearm">Left forearm</string>
+    <string name="body_part_right_forearm">Right forearm</string>
+    <string name="body_part_right_upper_arm">Right upper arm</string>
+    <string name="body_part_left_upper_arm">Left upper arm</string>
+    <string name="body_part_left_shoulder">Left shoulder</string>
+    <string name="body_part_right_shoulder">Right shoulder</string>
+    <string name="body_part_neck">Neck</string>
+    <string name="body_part_head">Head</string>
+    <string name="body_part_chest">Chest</string>
+    <string name="body_part_abdomen">Abdomen</string>
+    <string name="body_part_pelvis">Pelvis</string>
+    <string name="body_part_left_knee">Left knee</string>
+    <string name="body_part_right_knee">Right knee</string>
+    <string name="body_part_left_thigh">Left thigh</string>
+    <string name="body_part_right_thigh">Right thigh</string>
+    <string name="body_part_left_foot">Left foot</string>
+    <string name="body_part_right_foot">Right foot</string>
+    <string name="body_part_left_ankle">Left ankle</string>
+    <string name="body_part_right_ankle">Right ankle</string>
+    <string name="body_part_left_leg">Left leg</string>
+    <string name="body_part_right_leg">Right leg</string>
+    <string name="body_part_left_wrist">Left wrist</string>
+    <string name="body_part_right_wrist">Right wrist</string>
+    <string name="body_part_left_elbow">Left elbow</string>
+    <string name="body_part_right_elbow">Right elbow</string>
+
 </resources>

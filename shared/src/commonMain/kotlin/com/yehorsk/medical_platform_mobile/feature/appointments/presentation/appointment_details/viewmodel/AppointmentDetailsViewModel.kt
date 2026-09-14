@@ -56,10 +56,10 @@ class AppointmentDetailsViewModel(
                 cancelAppointment()
             }
             AppointmentDetailsAction.OnRescheduleClicked -> {}
-            AppointmentDetailsAction.OnGoBackClicked -> {}
             AppointmentDetailsAction.ShowBottomSheet -> {
                 _uiState.update { it.copy(showBottomSheet = !it.showBottomSheet) }
             }
+            else -> {}
         }
     }
 
