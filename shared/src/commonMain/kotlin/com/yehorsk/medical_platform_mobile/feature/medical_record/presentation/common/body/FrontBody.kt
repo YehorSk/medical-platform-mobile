@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.theme.AppTheme
 
-val Front: ImageVector
+val FrontAnatomy: ImageVector
     get() {
         if (_Front != null) {
             return _Front!!
@@ -1671,15 +1671,16 @@ val Front: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(438f, 383.5f)
-                curveTo(451f, 382f, 483.5f, 368f, 495f, 359f)
-                curveTo(491.6f, 352.3f, 489f, 349.5f, 487f, 339f)
-                curveTo(485.3f, 330f, 485.5f, 333f, 482f, 321.5f)
-                curveTo(477.5f, 308.5f, 471.5f, 289.5f, 463f, 279f)
-                curveTo(438.5f, 279f, 416f, 279f, 405f, 279f)
-                curveTo(405f, 289.5f, 408.5f, 315.5f, 416f, 333.5f)
-                curveTo(423f, 352f, 429.5f, 360f, 435.5f, 371.5f)
-                curveTo(438.5f, 383.5f, 436.5f, 377f, 438f, 383.5f)
+                moveTo(437.5f, 383.6f)
+                curveTo(450.5f, 382.1f, 483f, 368.1f, 494.5f, 359.1f)
+                curveTo(491.1f, 352.4f, 488.5f, 349.6f, 486.5f, 339.1f)
+                curveTo(484.8f, 330.1f, 485f, 333.1f, 481.5f, 321.6f)
+                curveTo(477f, 308.6f, 471f, 289.6f, 462.5f, 279.1f)
+                curveTo(440.5f, 272.6f, 418.5f, 255.1f, 405.5f, 243.1f)
+                lineTo(405.5f, 243.3f)
+                curveTo(405.2f, 265.7f, 404.8f, 299.6f, 409.5f, 317.6f)
+                curveTo(414.2f, 335.6f, 429f, 360.1f, 435f, 371.6f)
+                curveTo(438f, 383.6f, 436f, 377.1f, 437.5f, 383.6f)
                 close()
             }
             path(
@@ -1692,9 +1693,10 @@ val Front: ImageVector
                 curveTo(104.4f, 352.8f, 107f, 350f, 109f, 339.5f)
                 curveTo(110.7f, 330.5f, 110.5f, 333.5f, 114f, 322f)
                 curveTo(118.5f, 309f, 124.5f, 290f, 133f, 279.5f)
-                curveTo(157.5f, 279.5f, 180f, 279.5f, 191f, 279.5f)
-                curveTo(191f, 290f, 187.5f, 316f, 180f, 334f)
-                curveTo(173f, 352.5f, 166.5f, 360.5f, 160.5f, 372f)
+                curveTo(155f, 273f, 177f, 255.5f, 190f, 243.5f)
+                lineTo(190f, 243.7f)
+                curveTo(190.3f, 266.2f, 190.7f, 300.1f, 186f, 318f)
+                curveTo(181.3f, 336f, 166.5f, 360.5f, 160.5f, 372f)
                 curveTo(157.5f, 384f, 159.5f, 377.5f, 158f, 384f)
                 close()
             }
@@ -1703,15 +1705,14 @@ val Front: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(406.5f, 279.1f)
-                horizontalLineTo(462.5f)
-                curveTo(462.5f, 266.6f, 462f, 239.6f, 458f, 225.1f)
-                curveTo(452.3f, 211f, 447.8f, 204.2f, 437f, 194.6f)
-                curveTo(429.9f, 189.9f, 423.2f, 187f, 414f, 185.1f)
-                curveTo(404.8f, 183.2f, 398.9f, 184.3f, 391f, 185.1f)
-                curveTo(383.1f, 185.9f, 380.5f, 188.1f, 375f, 189.6f)
-                curveTo(377f, 203.1f, 407.5f, 239.1f, 406.5f, 245.6f)
-                curveTo(407.5f, 263.6f, 405.5f, 270.6f, 406.5f, 279.1f)
+                moveTo(374f, 189.6f)
+                curveTo(376f, 203.1f, 406f, 236.1f, 405f, 242.6f)
+                curveTo(426f, 261.9f, 438.5f, 269.4f, 461.5f, 279.1f)
+                curveTo(461.5f, 266.6f, 461f, 239.6f, 457f, 225.1f)
+                curveTo(451.3f, 211f, 446.8f, 204.2f, 436f, 194.6f)
+                curveTo(428.9f, 189.9f, 422.2f, 187f, 413f, 185.1f)
+                curveTo(403.8f, 183.2f, 397.9f, 184.3f, 390f, 185.1f)
+                curveTo(382.1f, 185.9f, 379.5f, 188.1f, 374f, 189.6f)
                 close()
             }
             path(
@@ -1719,15 +1720,14 @@ val Front: ImageVector
                 stroke = SolidColor(Color.Black),
                 strokeLineWidth = 1f
             ) {
-                moveTo(190f, 279.5f)
-                horizontalLineTo(134f)
+                moveTo(221.5f, 190f)
+                curveTo(219.5f, 203.5f, 189.5f, 236.5f, 190.5f, 243f)
+                curveTo(169.5f, 262.3f, 157f, 269.8f, 134f, 279.5f)
                 curveTo(134f, 267f, 134.5f, 240f, 138.5f, 225.5f)
                 curveTo(144.2f, 211.4f, 148.7f, 204.7f, 159.5f, 195f)
                 curveTo(166.6f, 190.3f, 173.3f, 187.4f, 182.5f, 185.5f)
                 curveTo(191.7f, 183.6f, 197.6f, 184.7f, 205.5f, 185.5f)
                 curveTo(213.4f, 186.3f, 216f, 188.5f, 221.5f, 190f)
-                curveTo(219.5f, 203.5f, 189f, 239.5f, 190f, 246f)
-                curveTo(189f, 264f, 191f, 271f, 190f, 279.5f)
                 close()
             }
             path(
@@ -2140,7 +2140,7 @@ private var _Front: ImageVector? = null
 fun FrontBodyPreview(){
     AppTheme {
         Image(
-            imageVector = Front,
+            imageVector = FrontAnatomy,
             contentDescription = ""
         )
     }

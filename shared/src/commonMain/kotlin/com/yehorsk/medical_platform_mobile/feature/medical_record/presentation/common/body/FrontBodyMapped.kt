@@ -1,98 +1,35 @@
 package com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.common.body
 
 import androidx.compose.ui.graphics.Path
-import com.yehorsk.medical_platform_mobile.util.UiText
-import com.yehorsk.medical_platform_mobile.util.UiText.Resource
-import medicalplatformmobile.shared.generated.resources.UiRes.string
-import medicalplatformmobile.shared.generated.resources.body_part_left_hand
-import medicalplatformmobile.shared.generated.resources.body_part_right_hand
-import medicalplatformmobile.shared.generated.resources.body_part_right_forearm
-import medicalplatformmobile.shared.generated.resources.body_part_left_forearm
-import medicalplatformmobile.shared.generated.resources.body_part_right_upper_arm
-import medicalplatformmobile.shared.generated.resources.body_part_left_upper_arm
-import medicalplatformmobile.shared.generated.resources.body_part_left_shoulder
-import medicalplatformmobile.shared.generated.resources.body_part_right_shoulder
-import medicalplatformmobile.shared.generated.resources.body_part_neck
-import medicalplatformmobile.shared.generated.resources.body_part_head
-import medicalplatformmobile.shared.generated.resources.body_part_chest
-import medicalplatformmobile.shared.generated.resources.body_part_abdomen
-import medicalplatformmobile.shared.generated.resources.body_part_left_ankle
-import medicalplatformmobile.shared.generated.resources.body_part_left_elbow
-import medicalplatformmobile.shared.generated.resources.body_part_left_foot
-import medicalplatformmobile.shared.generated.resources.body_part_pelvis
-import medicalplatformmobile.shared.generated.resources.body_part_left_knee
-import medicalplatformmobile.shared.generated.resources.body_part_left_leg
-import medicalplatformmobile.shared.generated.resources.body_part_right_knee
-import medicalplatformmobile.shared.generated.resources.body_part_left_thigh
-import medicalplatformmobile.shared.generated.resources.body_part_left_wrist
-import medicalplatformmobile.shared.generated.resources.body_part_right_ankle
-import medicalplatformmobile.shared.generated.resources.body_part_right_elbow
-import medicalplatformmobile.shared.generated.resources.body_part_right_foot
-import medicalplatformmobile.shared.generated.resources.body_part_right_leg
-import medicalplatformmobile.shared.generated.resources.body_part_right_thigh
-import medicalplatformmobile.shared.generated.resources.body_part_right_wrist
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyHitRegion
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyPart
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyRegion
 
-enum class BodyPart( val text: UiText ) {
-    RIGHT_HAND(Resource(string.body_part_right_hand)),
-    LEFT_HAND(Resource(string.body_part_left_hand)),
-    LEFT_FOREARM(Resource(string.body_part_left_forearm)),
-    RIGHT_FOREARM(Resource(string.body_part_right_forearm)),
-    RIGHT_UPPER_ARM(Resource(string.body_part_right_upper_arm)),
-    LEFT_UPPER_ARM(Resource(string.body_part_left_upper_arm)),
-    LEFT_SHOULDER(Resource(string.body_part_left_shoulder)),
-    RIGHT_SHOULDER(Resource(string.body_part_right_shoulder)),
-    NECK(Resource(string.body_part_neck)),
-    HEAD(Resource(string.body_part_head)),
-    CHEST(Resource(string.body_part_chest)),
-    ABDOMEN(Resource(string.body_part_abdomen)),
-    PELVIS(Resource(string.body_part_pelvis)),
-    LEFT_KNEE(Resource(string.body_part_left_knee)),
-    RIGHT_KNEE(Resource(string.body_part_right_knee)),
-    LEFT_THIGH(Resource(string.body_part_left_thigh)),
-    RIGHT_THIGH(Resource(string.body_part_right_thigh)),
-    LEFT_FOOT(Resource(string.body_part_left_foot)),
-    RIGHT_FOOT(Resource(string.body_part_right_foot)),
-    LEFT_ANKLE(Resource(string.body_part_left_ankle)),
-    RIGHT_ANKLE(Resource(string.body_part_right_ankle)),
-    LEFT_LEG(Resource(string.body_part_left_leg)),
-    RIGHT_LEG(Resource(string.body_part_right_leg)),
-    LEFT_WRIST(Resource(string.body_part_left_wrist)),
-    RIGHT_WRIST(Resource(string.body_part_right_wrist)),
-    LEFT_ELBOW(Resource(string.body_part_left_elbow)),
-    RIGHT_ELBOW(Resource(string.body_part_right_elbow))}
-
-data class BodyHitRegion(
-    val name: String,
-    val part: BodyPart,
-    val path: Path
-)
 
 private fun createRightShoulderPath(): Path{
     return Path().apply {
-        moveTo(190f, 279.5f)
-        lineTo(134f, 279.1f)
+        moveTo(221.5f, 190f)
+        cubicTo(219.5f, 203.5f, 189.5f, 236.5f, 190.5f, 243f)
+        cubicTo(169.5f, 262.3f, 157f, 269.8f, 134f, 279.5f)
         cubicTo(134f, 267f, 134.5f, 240f, 138.5f, 225.5f)
         cubicTo(144.2f, 211.4f, 148.7f, 204.7f, 159.5f, 195f)
         cubicTo(166.6f, 190.3f, 173.3f, 187.4f, 182.5f, 185.5f)
         cubicTo(191.7f, 183.6f, 197.6f, 184.7f, 205.5f, 185.5f)
         cubicTo(213.4f, 186.3f, 216f, 188.5f, 221.5f, 190f)
-        cubicTo(219.5f, 203.5f, 189f, 239.5f, 190f, 246f)
-        cubicTo(189f, 264f, 191f, 271f, 190f, 279.5f)
         close()
     }
 }
 
 private fun createLeftShoulderPath(): Path{
     return Path().apply {
-        moveTo(406.5f, 279.1f)
-        lineTo(462.5f, 279.1f)
-        cubicTo(462.5f, 266.6f, 462f, 239.6f, 458f, 225.1f)
-        cubicTo(452.3f, 211f, 447.8f, 204.2f, 437f, 194.6f)
-        cubicTo(429.9f, 189.9f, 423.2f, 187f, 414f, 185.1f)
-        cubicTo(404.8f, 183.2f, 398.9f, 184.3f, 391f, 185.1f)
-        cubicTo(383.1f, 185.9f, 380.5f, 188.1f, 375f, 189.6f)
-        cubicTo(377f, 203.1f, 407.5f, 239.1f, 406.5f, 245.6f)
-        cubicTo(407.5f, 263.6f, 405.5f, 270.6f, 406.5f, 279.1f)
+        moveTo(374f, 189.6f)
+        cubicTo(376f, 203.1f, 406f, 236.1f, 405f, 242.6f)
+        cubicTo(426f, 261.9f, 438.5f, 269.4f, 461.5f, 279.1f)
+        cubicTo(461.5f, 266.6f, 461f, 239.6f, 457f, 225.1f)
+        cubicTo(451.3f, 211f, 446.8f, 204.2f, 436f, 194.6f)
+        cubicTo(428.9f, 189.9f, 422.2f, 187f, 413f, 185.1f)
+        cubicTo(403.8f, 183.2f, 397.9f, 184.3f, 390f, 185.1f)
+        cubicTo(382.1f, 185.9f, 379.5f, 188.1f, 374f, 189.6f)
         close()
     }
 }
@@ -211,15 +148,16 @@ private fun createRightForearmPath(): Path{
 
 private fun createLeftUpperArmPath(): Path{
     return Path().apply {
-        moveTo(438f, 383.5f)
-        cubicTo(451f, 382f, 483.5f, 368f, 495f, 359f)
-        cubicTo(491.6f, 352.3f, 489f, 349.5f, 487f, 339f)
-        cubicTo(485.3f, 330f, 485.5f, 333f, 482f, 321.5f)
-        cubicTo(477.5f, 308.5f, 471.5f, 289.5f, 463f, 279f)
-        cubicTo(438.5f, 279f, 416f, 279f, 405f, 279f)
-        cubicTo(405f, 289.5f, 408.5f, 315.5f, 416f, 333.5f)
-        cubicTo(423f, 352f, 429.5f, 360f, 435.5f, 371.5f)
-        cubicTo(438.5f, 383.5f, 436.5f, 377f, 438f, 383.5f)
+        moveTo(437.5f, 383.6f)
+        cubicTo(450.5f, 382.1f, 483f, 368.1f, 494.5f, 359.1f)
+        cubicTo(491.1f, 352.4f, 488.5f, 349.6f, 486.5f, 339.1f)
+        cubicTo(484.8f, 330.1f, 485f, 333.1f, 481.5f, 321.6f)
+        cubicTo(477f, 308.6f, 471f, 289.6f, 462.5f, 279.1f)
+        cubicTo(440.5f, 272.6f, 418.5f, 255.1f, 405.5f, 243.1f)
+        lineTo(405.5f, 243.3f)
+        cubicTo(405.2f, 265.7f, 404.8f, 299.6f, 409.5f, 317.6f)
+        cubicTo(414.2f, 335.6f, 429f, 360.1f, 435f, 371.6f)
+        cubicTo(438f, 383.6f, 436f, 377.1f, 437.5f, 383.6f)
         close()
     }
 }
@@ -231,9 +169,10 @@ private fun createRightUpperArmPath(): Path{
         cubicTo(104.4f, 352.8f, 107f, 350f, 109f, 339.5f)
         cubicTo(110.7f, 330.5f, 110.5f, 333.5f, 114f, 322f)
         cubicTo(118.5f, 309f, 124.5f, 290f, 133f, 279.5f)
-        cubicTo(157.5f, 279.5f, 180f, 279.5f, 191f, 279.5f)
-        cubicTo(191f, 290f, 187.5f, 316f, 180f, 334f)
-        cubicTo(173f, 352.5f, 166.5f, 360.5f, 160.5f, 372f)
+        cubicTo(155f, 273f, 177f, 255.5f, 190f, 243.5f)
+        lineTo(190f, 243.7f)
+        cubicTo(190.3f, 266.2f, 190.7f, 300.1f, 186f, 318f)
+        cubicTo(181.3f, 336f, 166.5f, 360.5f, 160.5f, 372f)
         cubicTo(157.5f, 384f, 159.5f, 377.5f, 158f, 384f)
         close()
     }
@@ -623,136 +562,163 @@ val frontBodyRegions = listOf(
     BodyHitRegion(
         name = "left_hand",
         part = BodyPart.LEFT_HAND,
-        path = createLeftHandPath()
+        path = createLeftHandPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_hand",
         part = BodyPart.RIGHT_HAND,
-        path = createRightHandPath()
+        path = createRightHandPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_forearm",
         part = BodyPart.LEFT_FOREARM,
-        path = createLeftForearmPath()
+        path = createLeftForearmPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_forearm",
         part = BodyPart.RIGHT_FOREARM,
-        path = createRightForearmPath()
+        path = createRightForearmPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_upper_arm",
         part = BodyPart.LEFT_UPPER_ARM,
-        path = createLeftUpperArmPath()
+        path = createLeftUpperArmPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_upper_arm",
         part = BodyPart.RIGHT_UPPER_ARM,
-        path = createRightUpperArmPath()
+        path = createRightUpperArmPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_shoulder",
         part = BodyPart.RIGHT_SHOULDER,
-        path = createRightShoulderPath()
+        path = createRightShoulderPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_shoulder",
         part = BodyPart.LEFT_SHOULDER,
-        path = createLeftShoulderPath()
+        path = createLeftShoulderPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "neck",
         part = BodyPart.NECK,
-        path = createNeckPath()
+        path = createNeckPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "chest",
         part = BodyPart.CHEST,
-        path = createChestPath()
+        path = createChestPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "abdomen",
         part = BodyPart.ABDOMEN,
-        path = createAbdomenPath()
+        path = createAbdomenPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "pelvis",
         part = BodyPart.PELVIS,
-        path = createPelvisPath()
+        path = createPelvisPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "head",
         part = BodyPart.HEAD,
-        path = createHeadPath()
+        path = createHeadPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_wrist",
         part = BodyPart.LEFT_WRIST,
-        path = createLeftWristPath()
+        path = createLeftWristPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_wrist",
         part = BodyPart.RIGHT_WRIST,
-        path = createRightWristPath()
+        path = createRightWristPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_leg",
         part = BodyPart.LEFT_LEG,
-        path = createLeftLegPath()
+        path = createLeftLegPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_leg",
         part = BodyPart.RIGHT_LEG,
-        path = createRightLegPath()
+        path = createRightLegPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_ankle",
         part = BodyPart.LEFT_ANKLE,
-        path = createLeftAnklePath()
+        path = createLeftAnklePath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_ankle",
         part = BodyPart.RIGHT_ANKLE,
-        path = createRightAnklePath()
+        path = createRightAnklePath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_foot",
         part = BodyPart.LEFT_FOOT,
-        path = createLeftFootPath()
+        path = createLeftFootPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_foot",
         part = BodyPart.RIGHT_FOOT,
-        path = createRightFootPath()
+        path = createRightFootPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_thigh",
         part = BodyPart.LEFT_THIGH,
-        path = createLeftThighPath()
+        path = createLeftThighPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_thigh",
         part = BodyPart.RIGHT_THIGH,
-        path = createRightThighPath()
+        path = createRightThighPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_knee",
         part = BodyPart.LEFT_KNEE,
-        path = createLeftKneePath()
+        path = createLeftKneePath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_knee",
         part = BodyPart.RIGHT_KNEE,
-        path = createRightKneePath()
+        path = createRightKneePath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "left_elbow",
         part = BodyPart.LEFT_ELBOW,
-        path = createLeftElbowPath()
+        path = createLeftElbowPath(),
+        region = BodyRegion.FRONT
     ),
     BodyHitRegion(
         name = "right_elbow",
         part = BodyPart.RIGHT_ELBOW,
-        path = createRightElbowPath()
+        path = createRightElbowPath(),
+        region = BodyRegion.FRONT
     ),
 )

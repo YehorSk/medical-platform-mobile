@@ -234,6 +234,9 @@
     <string name="body_part_chest">Chest</string>
     <string name="body_part_abdomen">Abdomen</string>
     <string name="body_part_pelvis">Pelvis</string>
+    <string name="body_part_back">Back</string>
+    <string name="body_part_loin">Loin</string>
+    <string name="body_part_buttocks">Buttocks</string>
     <string name="body_part_left_knee">Left knee</string>
     <string name="body_part_right_knee">Right knee</string>
     <string name="body_part_left_thigh">Left thigh</string>
@@ -248,5 +251,13 @@
     <string name="body_part_right_wrist">Right wrist</string>
     <string name="body_part_left_elbow">Left elbow</string>
     <string name="body_part_right_elbow">Right elbow</string>
+    <string name="body_part_left_hamstring">Left hamstring</string>
+    <string name="body_part_right_hamstring">Right hamstring</string>
+    <string name="body_part_left_calf">Left calf</string>
+    <string name="body_part_right_calf">Right calf</string>
+    <string name="body_part_left_sole">Left sole</string>
+    <string name="body_part_right_sole">Right sole</string>
+    <string name="body_part_left_arm">Left arm</string>
+    <string name="body_part_right_arm">Right arm</string>
 
 </resources>

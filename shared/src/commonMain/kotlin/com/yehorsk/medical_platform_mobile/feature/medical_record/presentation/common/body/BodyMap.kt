@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyHitRegion
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyPart
 import com.yehorsk.theme.AppTheme
 
 private fun indexToColor(index: Int): Color {
@@ -53,7 +55,7 @@ fun BodyMap(
     bodyVector: ImageVector,
     modifier: Modifier = Modifier,
     onPartSelected: (BodyHitRegion?) -> Unit,
-    selected: BodyPart? = null,
+    selected: List<BodyPart> = emptyList(),
 ) {
     val viewportWidth = bodyVector.viewportWidth
     val viewportHeight = bodyVector.viewportHeight
@@ -106,9 +108,11 @@ fun BodyMap(
             with(bodyPainter) {
                 draw(size = Size(viewportWidth, viewportHeight))
             }
-            selected?.let { sel ->
-                regions.firstOrNull { it.part == sel }?.let { region ->
-                    drawPath(path = region.path, color = Color(0x664FC3F7))
+            selected.let { sel ->
+                regions.forEach { region ->
+                    if (region.part in selected) {
+                        drawPath(path = region.path, color = Color(0x664FC3F7))
+                    }
                 }
             }
         }
@@ -119,14 +123,21 @@ fun BodyMap(
 @Composable
 fun BodyMapPreview(){
     AppTheme {
-        var selectedPart by remember { mutableStateOf<BodyPart?>(null) }
+        var selectedParts by remember { mutableStateOf<List<BodyPart>>(emptyList()) }
 
         BodyMap(
             regions = frontBodyRegions,
-            bodyVector = Front,
+            bodyVector = BackAnatomy,
             modifier = Modifier.fillMaxWidth().aspectRatio(596f / 1137f),
-            selected = selectedPart,
-            onPartSelected = { region -> selectedPart = region?.part }
+            selected = selectedParts,
+            onPartSelected = { region ->
+                val part = region?.part ?: return@BodyMap
+                selectedParts = if (part in selectedParts) {
+                    selectedParts - part
+                } else {
+                    selectedParts + part
+                }
+            }
         )
     }
 }
