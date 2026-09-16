@@ -55,7 +55,7 @@ fun BodyMap(
     bodyVector: ImageVector,
     modifier: Modifier = Modifier,
     onPartSelected: (BodyHitRegion?) -> Unit,
-    selected: List<BodyPart> = emptyList(),
+    selected: List<BodyHitRegion> = emptyList(),
 ) {
     val viewportWidth = bodyVector.viewportWidth
     val viewportHeight = bodyVector.viewportHeight
@@ -110,7 +110,7 @@ fun BodyMap(
             }
             selected.let { sel ->
                 regions.forEach { region ->
-                    if (region.part in selected) {
+                    if (region in selected) {
                         drawPath(path = region.path, color = Color(0x664FC3F7))
                     }
                 }
@@ -123,19 +123,19 @@ fun BodyMap(
 @Composable
 fun BodyMapPreview(){
     AppTheme {
-        var selectedParts by remember { mutableStateOf<List<BodyPart>>(emptyList()) }
+        var selectedRegions by remember { mutableStateOf<List<BodyHitRegion>>(emptyList()) }
 
         BodyMap(
             regions = frontBodyRegions,
             bodyVector = BackAnatomy,
             modifier = Modifier.fillMaxWidth().aspectRatio(596f / 1137f),
-            selected = selectedParts,
+            selected = selectedRegions,
             onPartSelected = { region ->
-                val part = region?.part ?: return@BodyMap
-                selectedParts = if (part in selectedParts) {
-                    selectedParts - part
+                val hit = region ?: return@BodyMap
+                selectedRegions = if (hit in selectedRegions) {
+                    selectedRegions - hit
                 } else {
-                    selectedParts + part
+                    selectedRegions + hit
                 }
             }
         )

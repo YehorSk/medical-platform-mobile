@@ -260,4 +260,11 @@
     <string name="body_part_left_arm">Left arm</string>
     <string name="body_part_right_arm">Right arm</string>
 
+    <!-- CREATE MEDICAL RECORD SCREEN -->
+    <string name="create_record">Create Record</string>
+    <string name="details_tab">Details</string>
+    <string name="anatomy_tab">Anatomy</string>
+    <string name="anatomy_front_view">Front</string>
+    <string name="anatomy_back_view">Back</string>
+
 </resources>

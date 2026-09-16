@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.presentation.component
+package com.yehorsk.medical_platform_mobile.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,13 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun RoleToggleButton(
+fun TabToggleButton(
     label: String,
-    icon: Painter,
+    icon: Painter ?= null,
+    roundCorners: Boolean = true,
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Box(
         modifier = modifier.padding(2.dp),
         contentAlignment = Alignment.Center
@@ -37,7 +39,13 @@ fun RoleToggleButton(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(50.dp))
+                .then(
+                    if (roundCorners) {
+                        Modifier.clip(RoundedCornerShape(50.dp))
+                    } else {
+                        Modifier
+                    }
+                )
                 .background(if (selected) Color.White else Color.Transparent)
                 .clickable { onClick() }
                 .padding(vertical = 10.dp),
@@ -47,13 +55,15 @@ fun RoleToggleButton(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
             ) {
-                Icon(
-                    painter = icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                    tint = if (selected) Color(0xFF2B5CE6) else Color.Black
-                )
-                Spacer(modifier = Modifier.width(6.dp))
+                icon?.let {
+                    Icon(
+                        painter = it,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = if (selected) Color(0xFF2B5CE6) else Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                }
                 Text(
                     text = label,
                     fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,

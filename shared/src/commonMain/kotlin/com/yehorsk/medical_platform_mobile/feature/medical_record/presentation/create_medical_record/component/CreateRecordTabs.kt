@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.auth.presentation.component
+package com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,37 +10,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.TabToggleButton
+import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.viewmodel.CreateRecordTab
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.anatomy_tab
+import medicalplatformmobile.shared.generated.resources.details_tab
 import medicalplatformmobile.shared.generated.resources.person_24px
 import medicalplatformmobile.shared.generated.resources.stethoscope_24px
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun RoleToggle(
-    selectedRole: UserRole,
-    onRoleSelected: (UserRole) -> Unit
-) {
+fun CreateRecordTabs(
+    selectedTab: CreateRecordTab,
+    onTabSelected: (CreateRecordTab) -> Unit
+){
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFFF0F0F0), RoundedCornerShape(50.dp))
+            .background(Color(0xFFF0F0F0))
             .padding(4.dp)
     ) {
         Row {
             TabToggleButton(
-                label = "Patient",
-                icon = painterResource(UiRes.drawable.person_24px),
-                selected = selectedRole == UserRole.PATIENT,
-                onClick = { onRoleSelected(UserRole.PATIENT) },
+                roundCorners = false,
+                label = stringResource(UiRes.string.details_tab),
+                selected = selectedTab == CreateRecordTab.DETAILS,
+                onClick = { onTabSelected(CreateRecordTab.DETAILS) },
                 modifier = Modifier.weight(1f)
             )
             TabToggleButton(
-                label = "Doctor",
-                icon = painterResource(UiRes.drawable.stethoscope_24px),
-                selected = selectedRole == UserRole.DOCTOR,
-                onClick = { onRoleSelected(UserRole.DOCTOR) },
+                roundCorners = false,
+                label = stringResource(UiRes.string.anatomy_tab),
+                selected = selectedTab == CreateRecordTab.ANATOMY,
+                onClick = { onTabSelected(CreateRecordTab.ANATOMY) },
                 modifier = Modifier.weight(1f)
             )
         }
