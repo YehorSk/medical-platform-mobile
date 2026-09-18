@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.BottomBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.MainScaffold
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
 import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.serialization.Serializable
@@ -23,40 +24,33 @@ fun NavigationRoot(
     userRole: UserRole?
 ){
     val snackbarHostState = LocalSnackbarHostState.current
-    Scaffold(
+    MainScaffold(
         modifier = Modifier
             .fillMaxSize(),
-        bottomBar = {
-            BottomBar(
-                navController = navController
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState
-            )
-        }
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = startDestination
-        ) {
-            authGraph(
+        navController = navController,
+        snackbarHostState = snackbarHostState,
+        content = { paddingValues ->
+            NavHost(
                 navController = navController,
-                isAuthenticated = isAuthenticated,
-                userId = userId,
-                userRole = userRole
-            )
-            patientNavGraph(
-                modifier = Modifier.padding(paddingValues),
-                navController = navController
-            )
-            doctorNavGraph(
-                modifier = Modifier.padding(paddingValues),
-                navController = navController
-            )
+                startDestination = startDestination
+            ) {
+                authGraph(
+                    navController = navController,
+                    isAuthenticated = isAuthenticated,
+                    userId = userId,
+                    userRole = userRole
+                )
+                patientNavGraph(
+                    modifier = Modifier.padding(paddingValues),
+                    navController = navController
+                )
+                doctorNavGraph(
+                    modifier = Modifier.padding(paddingValues),
+                    navController = navController
+                )
+            }
         }
-    }
+    )
 }
 
 @Serializable

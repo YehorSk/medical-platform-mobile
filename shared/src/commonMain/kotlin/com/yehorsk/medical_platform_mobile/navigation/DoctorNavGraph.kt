@@ -97,10 +97,11 @@ fun NavGraphBuilder.doctorNavGraph(
                     navController.navigate(Screen.UpdatePwd)
                 },
                 onLogoutClicked = {
-                    navController.navigate(Graph.Authentication) {
-                        popUpTo(Graph.Authentication) {
+                    navController.navigate(Screen.Login) {
+                        popUpTo(0) {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 },
                 navigateToMySchedulePage = {

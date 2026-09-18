@@ -19,9 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.theme.AppTheme
-import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.search_24px
-import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun DefaultTextField(

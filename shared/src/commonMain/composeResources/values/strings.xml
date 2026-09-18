@@ -267,4 +267,6 @@
     <string name="anatomy_front_view">Front</string>
     <string name="anatomy_back_view">Back</string>
 
+    <string name="date_time_at_format">%1$s at %2$s</string>
+
 </resources>

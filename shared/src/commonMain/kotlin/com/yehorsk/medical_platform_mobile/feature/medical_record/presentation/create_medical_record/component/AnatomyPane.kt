@@ -15,10 +15,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyHitRegion
 import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyRegion
@@ -38,71 +44,84 @@ fun AnatomyPane(
     onRegionToggled: (BodyRegion) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(modifier = modifier.fillMaxSize()) {
-        val isPortrait = maxHeight > maxWidth
-        val isCompactWidth = maxWidth < 600.dp
-        val diagramHeightFraction = if (isPortrait && isCompactWidth) 0.7f else 0.5f
-        val diagramHeight = maxHeight * diagramHeightFraction
+    val windowInfo = LocalWindowInfo.current
+    val density = LocalDensity.current
+    val diagramHeight = remember(windowInfo.containerSize, density) {
+        with(density) { (windowInfo.containerSize.height * 0.7f).toDp() }
+    }.coerceAtMost(600.dp)
 
-        Column(
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        ViewAnatomyTabs(
+            modifier = Modifier.padding(bottom = 8.dp),
+            selectedRegion = selectedRegion,
+            onRegionSelected = { onRegionToggled(it) }
+        )
+
+        val (regions, bodyVector) = when (selectedRegion) {
+            BodyRegion.FRONT -> Pair(frontBodyRegions, FrontAnatomy)
+            BodyRegion.BACK -> Pair(backBodyRegions, BackAnatomy)
+        }
+
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+                .height(diagramHeight)
+                .padding(horizontal = 24.dp),
+            contentAlignment = Alignment.Center
         ) {
-            ViewAnatomyTabs(
+            BodyMap(
+                regions = regions,
+                bodyVector = bodyVector,
                 modifier = Modifier
-                    .padding(bottom = 8.dp),
-                selectedRegion = selectedRegion,
-                onRegionSelected = { onRegionToggled(it) }
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(diagramHeight)
-                    .padding(horizontal = 24.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                val (regions, bodyVector) = when(selectedRegion){
-                    BodyRegion.FRONT -> Pair(frontBodyRegions, FrontAnatomy)
-                    BodyRegion.BACK -> Pair(backBodyRegions, BackAnatomy)
+                    .fillMaxHeight()
+                    .aspectRatio(
+                        bodyVector.viewportWidth / bodyVector.viewportHeight,
+                        matchHeightConstraintsFirst = true
+                    ),
+                selected = selectedParts,
+                onPartSelected = { region ->
+                    val hit = region ?: return@BodyMap
+                    onBodyPartToggled(hit)
                 }
-                BodyMap(
-                    regions = regions,
-                    bodyVector = bodyVector,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(
-                            bodyVector.viewportWidth / bodyVector.viewportHeight,
-                            matchHeightConstraintsFirst = true
-                        ),
-                    selected = selectedParts,
-                    onPartSelected = { region ->
-                        val hit = region ?: return@BodyMap
-                        onBodyPartToggled(hit)
+            )
+        }
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            selectedParts.forEach { part ->
+                AssistChip(
+                    onClick = { onBodyPartToggled(part) },
+                    modifier = Modifier.height(28.dp),
+                    colors = AssistChipDefaults.assistChipColors(),
+                    border = AssistChipDefaults.assistChipBorder(enabled = true),
+                    label = {
+                        val partName = part.name.replace('_', ' ').lowercase().replaceFirstChar { it.uppercase() }
+                        Text(
+                            text = partName,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    },
+                    leadingIcon = {
+                        val regionLetter = when (part.region) {
+                            BodyRegion.FRONT -> "F"
+                            BodyRegion.BACK -> "B"
+                        }
+                        Text(
+                            text = regionLetter,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 )
-            }
-
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                selectedParts.forEach { part ->
-                    AssistChip(
-                        onClick = { onBodyPartToggled(part) },
-                        label = {
-                            val partName = part.name.replace('_', ' ').lowercase().replaceFirstChar { it.uppercase() }
-                            val regionLabel = when (part.region) {
-                                BodyRegion.FRONT -> "Front"
-                                BodyRegion.BACK -> "Back"
-                            }
-                            Text("$regionLabel: $partName")
-                        },
-                    )
-                }
             }
         }
     }

@@ -40,6 +40,7 @@ data class AppointmentPatient(
             .filter { it.isNotBlank() }
             .joinToString(" ")
 }
+
 enum class AppointmentStatus {
     PENDING,
     CONFIRMED,

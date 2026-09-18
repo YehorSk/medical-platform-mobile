@@ -1,7 +1,10 @@
 package com.yehorsk.medical_platform_mobile.util
 
 import kotlinx.datetime.DayOfWeek
+import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.date_time_at_format
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -27,11 +30,32 @@ fun parseTime(input: String): LocalTime {
     return LocalTime.parse(input, parser)
 }
 
-fun formatDateTime(input: String): String {
+fun formatDate(input: String): String {
     val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val localDate = LocalDate.parse(input, parser)
     val formatter = DateTimeFormatter.ofPattern("EEEE, MMMM d")
     return localDate.format(formatter)
+}
+
+fun formatDateTime(
+    input: String,
+    includeTime: Boolean = true,
+    locale: Locale = Locale.getDefault()
+): UiText {
+    val value = LocalDateTime.parse(input)
+
+    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d", locale)
+    val date = value.format(dateFormatter)
+
+    if (!includeTime) return UiText.DynamicString(date)
+
+    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm", locale)
+    val time = value.format(timeFormatter)
+
+    return UiText.Resource(
+        id = UiRes.string.date_time_at_format,
+        args = arrayOf(date, time)
+    )
 }
 
 fun formatShortDateTime(input: String): String {

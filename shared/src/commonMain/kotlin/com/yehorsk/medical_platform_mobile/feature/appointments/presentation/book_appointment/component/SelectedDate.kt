@@ -1,6 +1,5 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.util.formatDateTime
+import com.yehorsk.medical_platform_mobile.util.formatDate
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.calendar_today_24px
@@ -49,7 +48,7 @@ fun SelectedDate(
             Text(
                 modifier = Modifier
                     .padding(start = 15.dp),
-                text = formatDateTime(date),
+                text = formatDate(date),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold
             )
