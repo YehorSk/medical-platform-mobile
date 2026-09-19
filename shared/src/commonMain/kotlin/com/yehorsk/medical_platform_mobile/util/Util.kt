@@ -7,7 +7,10 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.BloodType
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Gender
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
+import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.MedicalRecordType
 import com.yehorsk.theme.LocalExtendedColors
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -16,27 +19,117 @@ import kotlin.time.Instant
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.blood_type_a_negative
+import medicalplatformmobile.shared.generated.resources.blood_type_a_positive
+import medicalplatformmobile.shared.generated.resources.blood_type_ab_negative
+import medicalplatformmobile.shared.generated.resources.blood_type_ab_positive
+import medicalplatformmobile.shared.generated.resources.blood_type_b_negative
+import medicalplatformmobile.shared.generated.resources.blood_type_b_positive
+import medicalplatformmobile.shared.generated.resources.blood_type_o_negative
+import medicalplatformmobile.shared.generated.resources.blood_type_o_positive
 import medicalplatformmobile.shared.generated.resources.confirm
 import medicalplatformmobile.shared.generated.resources.d_ago
 import medicalplatformmobile.shared.generated.resources.date
 import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.friday_short
+import medicalplatformmobile.shared.generated.resources.gender_female
+import medicalplatformmobile.shared.generated.resources.gender_male
 import medicalplatformmobile.shared.generated.resources.h_ago
 import medicalplatformmobile.shared.generated.resources.just_now
 import medicalplatformmobile.shared.generated.resources.m_ago
 import medicalplatformmobile.shared.generated.resources.monday_short
+import medicalplatformmobile.shared.generated.resources.not_available
+import medicalplatformmobile.shared.generated.resources.record_type_clinical_note
+import medicalplatformmobile.shared.generated.resources.record_type_diagnosis
+import medicalplatformmobile.shared.generated.resources.record_type_lab_result
+import medicalplatformmobile.shared.generated.resources.record_type_prescription
+import medicalplatformmobile.shared.generated.resources.record_type_procedure
+import medicalplatformmobile.shared.generated.resources.record_type_vaccination
+import medicalplatformmobile.shared.generated.resources.record_type_visit
 import medicalplatformmobile.shared.generated.resources.saturday_short
 import medicalplatformmobile.shared.generated.resources.sunday_short
 import medicalplatformmobile.shared.generated.resources.thursday_short
 import medicalplatformmobile.shared.generated.resources.time
 import medicalplatformmobile.shared.generated.resources.tuesday_short
 import medicalplatformmobile.shared.generated.resources.wednesday_short
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+fun BloodType.toDisplayName(): UiText {
+    return when (this) {
+        BloodType.A_POSITIVE ->
+            UiText.Resource(UiRes.string.blood_type_a_positive)
+
+        BloodType.A_NEGATIVE ->
+            UiText.Resource(UiRes.string.blood_type_a_negative)
+
+        BloodType.B_POSITIVE ->
+            UiText.Resource(UiRes.string.blood_type_b_positive)
+
+        BloodType.B_NEGATIVE ->
+            UiText.Resource(UiRes.string.blood_type_b_negative)
+
+        BloodType.AB_POSITIVE ->
+            UiText.Resource(UiRes.string.blood_type_ab_positive)
+
+        BloodType.AB_NEGATIVE ->
+            UiText.Resource(UiRes.string.blood_type_ab_negative)
+
+        BloodType.O_POSITIVE ->
+            UiText.Resource(UiRes.string.blood_type_o_positive)
+
+        BloodType.O_NEGATIVE ->
+            UiText.Resource(UiRes.string.blood_type_o_negative)
+
+        BloodType.UNKNOWN ->
+            UiText.Resource(UiRes.string.not_available)
+    }
+}
+
+fun Gender.toDisplayName(): UiText {
+    return when (this) {
+        Gender.MALE ->
+            UiText.Resource(UiRes.string.gender_male)
+        Gender.FEMALE ->
+            UiText.Resource(UiRes.string.gender_female)
+        Gender.UNKNOWN ->
+            UiText.Resource(UiRes.string.not_available)
+    }
+}
+
+fun MedicalRecordType.toDisplayName(): UiText {
+    return when (this) {
+        MedicalRecordType.VISIT ->
+            UiText.Resource(UiRes.string.record_type_visit)
+        MedicalRecordType.LAB_RESULT ->
+            UiText.Resource(UiRes.string.record_type_lab_result)
+        MedicalRecordType.PRESCRIPTION ->
+            UiText.Resource(UiRes.string.record_type_prescription)
+        MedicalRecordType.VACCINATION ->
+            UiText.Resource(UiRes.string.record_type_vaccination)
+        MedicalRecordType.PROCEDURE ->
+            UiText.Resource(UiRes.string.record_type_procedure)
+        MedicalRecordType.DIAGNOSIS ->
+            UiText.Resource(UiRes.string.record_type_diagnosis)
+        MedicalRecordType.CLINICAL_NOTE ->
+            UiText.Resource(UiRes.string.record_type_clinical_note)
+    }
+}
+
+fun calculateAge(dateOfBirth: String): Int? {
+    if (dateOfBirth.isBlank()) return null
+
+    return runCatching {
+        val birthDate = java.time.LocalDate.parse(dateOfBirth)
+        val today = java.time.LocalDate.now()
+
+        java.time.Period
+            .between(birthDate, today)
+            .years
+            .coerceAtLeast(0)
+    }.getOrNull()
+}
 
 fun getRole(role: String): UserRole {
     return UserRole.entries.find { it.name.equals(role, ignoreCase = true) } ?: UserRole.PATIENT
@@ -48,6 +141,14 @@ fun getAccessStatus(status: String): AccessStatus {
 
 fun getAppointmentStatus(status: String): AppointmentStatus {
     return AppointmentStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AppointmentStatus.UNKNOWN
+}
+
+fun getGender(status: String): Gender {
+    return Gender.entries.find { it.name.equals(status, ignoreCase = true) } ?: Gender.UNKNOWN
+}
+
+fun getBloodType(status: String): BloodType {
+    return BloodType.entries.find { it.name.equals(status, ignoreCase = true) } ?: BloodType.UNKNOWN
 }
 
 fun getWeekDay(status: String): WeekDay {

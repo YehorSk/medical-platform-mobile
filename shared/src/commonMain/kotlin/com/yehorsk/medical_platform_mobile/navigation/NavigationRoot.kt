@@ -29,6 +29,7 @@ fun NavigationRoot(
             .fillMaxSize(),
         navController = navController,
         snackbarHostState = snackbarHostState,
+        userRole = userRole,
         content = { paddingValues ->
             NavHost(
                 navController = navController,

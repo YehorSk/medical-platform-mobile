@@ -144,8 +144,8 @@ fun NavGraphBuilder.doctorNavGraph(
                     navController.navigate(Screen.BookAppointment(doctorId, appointmentId))
                 },
                 userRole = UserRole.DOCTOR,
-                onCreateMedicalRecordClicked = {
-                    navController.navigate(Screen.CreateMedicalRecord)
+                onCreateMedicalRecordClicked = { appointmentId ->
+                    navController.navigate(Screen.CreateMedicalRecord(appointmentId))
                 }
             )
         }

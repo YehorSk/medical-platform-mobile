@@ -33,7 +33,10 @@ data class AppointmentPatient(
     val id: String,
     val firstName: String,
     val lastName: String,
-    val title: String
+    val title: String,
+    val dateOfBirth: String = "",
+    val gender: Gender = Gender.UNKNOWN,
+    val bloodType: BloodType = BloodType.UNKNOWN
 ) {
     val fullName: String
         get() = listOf(title, firstName, lastName)
@@ -47,5 +50,23 @@ enum class AppointmentStatus {
     REJECTED,
     CANCELLED,
     COMPLETED,
+    UNKNOWN
+}
+
+enum class BloodType {
+    A_POSITIVE,
+    A_NEGATIVE,
+    B_POSITIVE,
+    B_NEGATIVE,
+    AB_POSITIVE,
+    AB_NEGATIVE,
+    O_POSITIVE,
+    O_NEGATIVE,
+    UNKNOWN
+}
+
+enum class Gender {
+    MALE,
+    FEMALE,
     UNKNOWN
 }

@@ -30,5 +30,8 @@ data class AppointmentPatientDto(
     val id: String,
     val firstName: String,
     val lastName: String,
-    val title: String
+    val title: String,
+    val dateOfBirth: String = "",
+    val gender: String = "",
+    val bloodType: String = ""
 )

@@ -110,13 +110,13 @@ class LoginScreenViewModel(
     }
 
     private fun updatePwd(pwd: String) {
-        validateForm()
         _uiState.update { it.copy(loginForm = it.loginForm.copy(password = pwd)) }
+        validateForm()
     }
 
     private fun updateEmail(email: String) {
-        validateForm()
         _uiState.update { it.copy(loginForm = it.loginForm.copy(email = email)) }
+        validateForm()
     }
 
     private fun changePwdVisibility() {

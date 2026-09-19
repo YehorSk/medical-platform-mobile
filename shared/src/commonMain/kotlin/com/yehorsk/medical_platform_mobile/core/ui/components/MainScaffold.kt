@@ -20,6 +20,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.navigation.Graph
 import com.yehorsk.medical_platform_mobile.navigation.Screen
 import org.jetbrains.compose.resources.painterResource
@@ -31,6 +32,7 @@ fun MainScaffold(
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit,
+    userRole: UserRole?
 ) {
     val screens = listOf(
         BottomBarScreen.Home,

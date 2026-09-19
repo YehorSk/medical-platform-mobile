@@ -5,6 +5,8 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentPatient
 import com.yehorsk.medical_platform_mobile.util.getAppointmentStatus
+import com.yehorsk.medical_platform_mobile.util.getBloodType
+import com.yehorsk.medical_platform_mobile.util.getGender
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.time.Instant
@@ -28,7 +30,10 @@ fun AppointmentResponseDto.toAppointment(): Appointment {
                 id = it.id,
                 firstName = it.firstName,
                 lastName = it.lastName,
-                title = it.title
+                title = it.title,
+                dateOfBirth = it.dateOfBirth,
+                gender = getGender(it.gender),
+                bloodType = getBloodType(it.bloodType)
             )
         },
 

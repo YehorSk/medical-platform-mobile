@@ -47,7 +47,7 @@ sealed interface Screen {
 
     @Serializable data object DataAccessGDPR: Screen
 
-    @Serializable data object CreateMedicalRecord: Screen
+    @Serializable data class CreateMedicalRecord(val appointmentId: String): Screen
 
     @Serializable data class DoctorDetails(
         val doctorId: String

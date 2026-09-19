@@ -92,8 +92,7 @@ fun CreateMedicalRecordScreenRoot(
             AnimatedContent(
                 targetState = state.currentTab,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                    .fillMaxSize(),
                 transitionSpec = {
                     val direction = if (targetState.ordinal > initialState.ordinal) {
                         AnimatedContentTransitionScope.SlideDirection.Left
@@ -108,7 +107,12 @@ fun CreateMedicalRecordScreenRoot(
                 label = "create_record_tab_switch"
             ) { tab ->
                 when (tab) {
-                    CreateRecordTab.DETAILS -> DetailsPane()
+                    CreateRecordTab.DETAILS -> {
+                        DetailsPane(
+                            state = state,
+                            onAction = { onAction(it) }
+                        )
+                    }
                     CreateRecordTab.ANATOMY -> AnatomyPane(
                         selectedRegion = state.selectedRegion,
                         selectedParts = state.form.selectedBodyParts,

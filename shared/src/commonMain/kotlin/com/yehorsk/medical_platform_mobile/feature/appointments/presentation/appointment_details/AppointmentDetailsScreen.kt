@@ -26,6 +26,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentInfoCard
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentPatientCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.CompleteAppointmentBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsState
@@ -55,7 +56,7 @@ fun AppointmentDetailsScreen(
     userRole: UserRole,
     viewModel: AppointmentDetailsViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
-    onCreateMedicalRecordClicked: () -> Unit = {},
+    onCreateMedicalRecordClicked: (String) -> Unit = {},
     onRescheduleClicked: (String, String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,7 +79,9 @@ fun AppointmentDetailsScreen(
                     }
                 }
                 AppointmentDetailsAction.OnCreateMedicalRecordClicked -> {
-                    onCreateMedicalRecordClicked()
+                    state.appointment?.let { appointment ->
+                        onCreateMedicalRecordClicked(appointment.id)
+                    }
                 }
                 else -> {viewModel.onAction(action)}
             }
@@ -160,10 +163,9 @@ fun AppointmentDetailsScreenRoot(
                                 )
                             }
                             UserRole.DOCTOR if patient != null -> {
-                                DefaultInfoCard(
+                                AppointmentPatientCard(
                                     modifier = Modifier.padding(vertical = 12.dp),
-                                    title = stringResource(UiRes.string.patient),
-                                    content = "${patient.title} ${patient.firstName} ${patient.lastName}"
+                                    appointment = appointment
                                 )
                             }
                             else -> {
