@@ -121,12 +121,35 @@ fun BodyMap(
 
 @Preview
 @Composable
-fun BodyMapPreview(){
+fun BodyMapFrontPreview(){
     AppTheme {
         var selectedRegions by remember { mutableStateOf<List<BodyHitRegion>>(emptyList()) }
 
         BodyMap(
             regions = frontBodyRegions,
+            bodyVector = FrontAnatomy,
+            modifier = Modifier.fillMaxWidth().aspectRatio(596f / 1137f),
+            selected = selectedRegions,
+            onPartSelected = { region ->
+                val hit = region ?: return@BodyMap
+                selectedRegions = if (hit in selectedRegions) {
+                    selectedRegions - hit
+                } else {
+                    selectedRegions + hit
+                }
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun BodyMapBackPreview(){
+    AppTheme {
+        var selectedRegions by remember { mutableStateOf<List<BodyHitRegion>>(emptyList()) }
+
+        BodyMap(
+            regions = backBodyRegions,
             bodyVector = BackAnatomy,
             modifier = Modifier.fillMaxWidth().aspectRatio(596f / 1137f),
             selected = selectedRegions,

@@ -29,6 +29,7 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyHitRegion
 import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.BodyRegion
 import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.component.AnatomyPane
+import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.component.CreateMedicalRecordScreenLayout
 import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.component.CreateRecordTabs
 import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.component.DetailsPane
 import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.viewmodel.CreateMedicalRecordViewModel
@@ -80,49 +81,11 @@ fun CreateMedicalRecordScreenRoot(
             showGoBackButton = true,
             onGoBackClicked = { onAction(CreateRecordAction.OnGoBackClicked) }
         )
-        CreateRecordTabs(
-            selectedTab = state.currentTab,
-            onTabSelected = { onAction(CreateRecordAction.OnTabSelected(it)) }
+        CreateMedicalRecordScreenLayout(
+            state = state,
+            onAction = onAction,
+            modifier = Modifier.weight(1f)
         )
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 16.dp)
-        ) {
-            AnimatedContent(
-                targetState = state.currentTab,
-                modifier = Modifier
-                    .fillMaxSize(),
-                transitionSpec = {
-                    val direction = if (targetState.ordinal > initialState.ordinal) {
-                        AnimatedContentTransitionScope.SlideDirection.Left
-                    } else {
-                        AnimatedContentTransitionScope.SlideDirection.Right
-                    }
-                    (slideIntoContainer(direction, animationSpec = tween(300)) + fadeIn(tween(300)))
-                        .togetherWith(
-                            slideOutOfContainer(direction, animationSpec = tween(300)) + fadeOut(tween(300))
-                        )
-                },
-                label = "create_record_tab_switch"
-            ) { tab ->
-                when (tab) {
-                    CreateRecordTab.DETAILS -> {
-                        DetailsPane(
-                            state = state,
-                            onAction = { onAction(it) }
-                        )
-                    }
-                    CreateRecordTab.ANATOMY -> AnatomyPane(
-                        selectedRegion = state.selectedRegion,
-                        selectedParts = state.form.selectedBodyParts,
-                        onBodyPartToggled = { onAction(CreateRecordAction.OnBodyPartSelected(it)) },
-                        onRegionToggled = { onAction(CreateRecordAction.OnBodyRegionSelected(it)) },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
-        }
     }
 }
 

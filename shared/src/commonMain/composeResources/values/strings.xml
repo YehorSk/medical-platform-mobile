@@ -287,6 +287,13 @@
     <string name="blood_type_o_negative">O−</string>
 
     <string name="record_type">Record Type</string>
+    <string name="record_save">Save Record</string>
+    <string name="record_title">Title</string>
+    <string name="record_title_placeholder">Type title</string>
+    <string name="record_diagnosis">Diagnosis</string>
+    <string name="record_diagnosis_placeholder">Type diagnosis</string>
+    <string name="record_recommendations">Recommendations</string>
+    <string name="record_recommendations_placeholder">Type recommendations</string>
 
     <string name="record_type_visit">Visit</string>
     <string name="record_type_lab_result">Lab Result</string>

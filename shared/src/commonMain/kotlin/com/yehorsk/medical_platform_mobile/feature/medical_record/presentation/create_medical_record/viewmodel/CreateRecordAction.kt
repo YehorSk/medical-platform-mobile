@@ -14,5 +14,11 @@ sealed interface CreateRecordAction {
 
     data class OnMedRecordTypeSelected(val type: MedicalRecordType): CreateRecordAction
 
+    data class OnTitleUpdated(val title: String): CreateRecordAction
+
+    data class OnDiagnosisUpdated(val diagnosis: String): CreateRecordAction
+
+    data class OnRecommendationsUpdated(val recommendations: String): CreateRecordAction
+
     data object OnGoBackClicked: CreateRecordAction
 }

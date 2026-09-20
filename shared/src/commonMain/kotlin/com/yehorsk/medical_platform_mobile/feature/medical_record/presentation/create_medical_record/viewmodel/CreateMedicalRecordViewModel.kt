@@ -61,6 +61,9 @@ class CreateMedicalRecordViewModel(
             is CreateRecordAction.OnBodyRegionSelected -> onBodyRegionSelected(action.region)
             is CreateRecordAction.OnTabSelected -> onTabSelected(action.tab)
             is CreateRecordAction.OnMedRecordTypeSelected -> onMedRecordSelected(action.type)
+            is CreateRecordAction.OnDiagnosisUpdated -> onDiagnosisUpdated(action.diagnosis)
+            is CreateRecordAction.OnRecommendationsUpdated -> onRecommendationsUpdated(action.recommendations)
+            is CreateRecordAction.OnTitleUpdated -> onTitleUpdated(action.title)
             CreateRecordAction.OnGoBackClicked -> {}
         }
     }
@@ -133,6 +136,36 @@ class CreateMedicalRecordViewModel(
             state.copy(
                 form = state.form.copy(
                     medicalRecordType =  type
+                )
+            )
+        }
+    }
+
+    private fun onTitleUpdated(title: String) {
+        _uiState.update { state ->
+            state.copy(
+                form = state.form.copy(
+                    title = title
+                )
+            )
+        }
+    }
+
+    private fun onRecommendationsUpdated(recommendations: String) {
+        _uiState.update { state ->
+            state.copy(
+                form = state.form.copy(
+                    recommendations = recommendations
+                )
+            )
+        }
+    }
+
+    private fun onDiagnosisUpdated(diagnosis: String) {
+        _uiState.update { state ->
+            state.copy(
+                form = state.form.copy(
+                    diagnosis = diagnosis
                 )
             )
         }

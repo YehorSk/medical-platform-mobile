@@ -65,10 +65,11 @@ fun DefaultTextField(
         },
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = Color(0xFFF5F5F5),
-            focusedContainerColor = Color(0xFFF5F5F5),
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             unfocusedBorderColor = Color.Transparent,
-            focusedBorderColor = Color(0xFF2B5CE6)
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            errorBorderColor = MaterialTheme.colorScheme.error
         ),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = true

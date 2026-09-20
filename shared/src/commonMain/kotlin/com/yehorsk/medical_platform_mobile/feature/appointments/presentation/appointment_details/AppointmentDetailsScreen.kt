@@ -194,19 +194,20 @@ fun AppointmentDetailsScreenRoot(
 //                                    )
                                 }
                             )
+                            DefaultButton(
+                                modifier = Modifier.padding(vertical = 12.dp),
+                                onClick = {
+                                    onAction(
+                                        AppointmentDetailsAction.OnCreateMedicalRecordClicked
+                                    )
+                                },
+                                isEnabled = state.isConnected && isEnabled,
+                                text = stringResource(UiRes.string.create_medical_record),
+                                leadingIcon = painterResource(UiRes.drawable.add_24px),
+                                color = MaterialTheme.colorScheme.primary,
+                                textColor = MaterialTheme.colorScheme.onPrimary,
+                            )
                         }
-                        DefaultButton(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            onClick = {
-                                onAction(
-                                    AppointmentDetailsAction.OnCreateMedicalRecordClicked
-                                )
-                            },
-                            text = stringResource(UiRes.string.create_medical_record),
-                            leadingIcon = painterResource(UiRes.drawable.add_24px),
-                            color = MaterialTheme.colorScheme.primary,
-                            textColor = MaterialTheme.colorScheme.onPrimary,
-                        )
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.reschedule_btn),
