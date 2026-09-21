@@ -9,6 +9,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.BloodType
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Gender
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
+import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.InsuranceCompany
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
 import com.yehorsk.theme.LocalExtendedColors
 import kotlinx.datetime.TimeZone
@@ -32,7 +33,11 @@ import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.friday_short
 import medicalplatformmobile.shared.generated.resources.gender_female
 import medicalplatformmobile.shared.generated.resources.gender_male
+import medicalplatformmobile.shared.generated.resources.gender_prefer_not_to_say
 import medicalplatformmobile.shared.generated.resources.h_ago
+import medicalplatformmobile.shared.generated.resources.insurance_dovera
+import medicalplatformmobile.shared.generated.resources.insurance_union
+import medicalplatformmobile.shared.generated.resources.insurance_vszp
 import medicalplatformmobile.shared.generated.resources.just_now
 import medicalplatformmobile.shared.generated.resources.m_ago
 import medicalplatformmobile.shared.generated.resources.monday_short
@@ -92,7 +97,21 @@ fun Gender.toDisplayName(): UiText {
         Gender.FEMALE ->
             UiText.Resource(UiRes.string.gender_female)
         Gender.UNKNOWN ->
-            UiText.Resource(UiRes.string.not_available)
+            UiText.Resource(UiRes.string.gender_prefer_not_to_say)
+    }
+}
+
+fun InsuranceCompany.toDisplayName(): UiText {
+    return when (this) {
+        InsuranceCompany.VSZP -> {
+            UiText.Resource(UiRes.string.insurance_vszp)
+        }
+        InsuranceCompany.DOVERA -> {
+            UiText.Resource(UiRes.string.insurance_dovera)
+        }
+        InsuranceCompany.UNION -> {
+            UiText.Resource(UiRes.string.insurance_union)
+        }
     }
 }
 

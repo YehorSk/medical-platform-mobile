@@ -38,7 +38,7 @@ fun DefaultTextField(
 ) {
     header?.let {
         Text(it, fontWeight = FontWeight.Medium)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     }
 
     OutlinedTextField(

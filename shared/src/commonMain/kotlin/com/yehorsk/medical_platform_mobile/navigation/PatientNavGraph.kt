@@ -25,6 +25,7 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
+import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.MedicalCardScreen
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_main.MedicalMainDestination
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_main.MedicalMainScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
@@ -71,7 +72,7 @@ fun NavGraphBuilder.patientNavGraph(
                 navigateTo = { destination ->
                     when(destination){
                         MedicalMainDestination.Back -> navController.popBackStack()
-                        MedicalMainDestination.MedicalCard -> {}
+                        MedicalMainDestination.MedicalCard -> navController.navigate(Screen.PatientMedicalCard)
                         MedicalMainDestination.MedicalRecords -> {}
                     }
                 },
@@ -209,6 +210,15 @@ fun NavGraphBuilder.patientNavGraph(
         }
         composable<Screen.UpdatePwd>{
             UpdatePasswordScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<Screen.PatientMedicalCard>{
+            MedicalCardScreen(
                 modifier = modifier
                     .fillMaxSize(),
                 onGoBackClicked = {

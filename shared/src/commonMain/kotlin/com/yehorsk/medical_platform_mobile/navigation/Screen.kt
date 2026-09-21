@@ -47,6 +47,8 @@ sealed interface Screen {
 
     @Serializable data class CreateMedicalRecord(val appointmentId: String): Screen
 
+    @Serializable data object PatientMedicalCard: Screen
+
     @Serializable data class DoctorDetails(
         val doctorId: String
     ): Screen

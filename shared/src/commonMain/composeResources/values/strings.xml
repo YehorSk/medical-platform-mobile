@@ -275,9 +275,13 @@
     <string name="patient_blood">Blood</string>
     <string name="not_available">—</string>
 
+    <string name="gender_title">Gender</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+    <string name="gender_prefer_not_to_say">Prefer not to say</string>
 
+
+    <string name="blood_type_title">Blood Type</string>
     <string name="blood_type_a_positive">A+</string>
     <string name="blood_type_a_negative">A−</string>
     <string name="blood_type_b_positive">B+</string>
@@ -305,6 +309,14 @@
     <string name="record_type_clinical_note">Clinical Note</string>
 
     <string name="medical_card">Medical Card</string>
+    <string name="save_medical_card">Save Medical Card</string>
     <string name="medical_records">Medical Records</string>
+
+    <string name="insurance_title">Insurance</string>
+    <string name="insurance_provider">Provider</string>
+    <string name="insurance_vszp">VSZP</string>
+    <string name="insurance_dovera">DOVERA</string>
+    <string name="insurance_union">UNION</string>
+    <string name="insurance_policy_member_id">Policy / Member ID</string>
 
 </resources>

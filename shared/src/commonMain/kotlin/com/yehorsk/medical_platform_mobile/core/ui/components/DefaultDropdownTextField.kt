@@ -32,22 +32,23 @@ import com.yehorsk.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultDropdownTextField(
+fun <T> DefaultDropdownTextField(
     modifier: Modifier = Modifier,
-    value: String = "",
+    value: T? = null,
     header: String? = null,
     placeholder: String = "",
     leadingIcon: Painter? = null,
     leadingIconDescr: String = "",
-    options: List<String>,
-    onOptionSelected: (String) -> Unit,
+    options: List<T>,
+    optionText: (T) -> String,
+    onOptionSelected: (T) -> Unit,
     error: String = ""
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     header?.let {
         Text(it, fontWeight = FontWeight.Medium)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
     }
 
     ExposedDropdownMenuBox(
@@ -59,8 +60,8 @@ fun DefaultDropdownTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable, true),
-            value = value,
-            onValueChange = {}, // read-only, selection happens via menu
+            value = value?.let(optionText) ?: "",
+            onValueChange = {},
             readOnly = true,
             leadingIcon = leadingIcon?.let { painter ->
                 {
@@ -102,7 +103,9 @@ fun DefaultDropdownTextField(
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = {
+                        Text(optionText(option))
+                    },
                     onClick = {
                         onOptionSelected(option)
                         expanded = false
@@ -126,7 +129,8 @@ private fun DefaultDropdownTextFieldPreview() {
                     placeholder = "Select a country",
                     value = selectedCountry,
                     options = listOf("Slovakia", "Czechia", "Poland", "Austria"),
-                    onOptionSelected = { selectedCountry = it }
+                    onOptionSelected = { selectedCountry = it },
+                    optionText = { it }
                 )
             }
         }
