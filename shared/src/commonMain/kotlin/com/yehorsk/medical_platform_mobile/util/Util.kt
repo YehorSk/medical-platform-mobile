@@ -1,6 +1,5 @@
 package com.yehorsk.medical_platform_mobile.util
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
@@ -10,9 +9,8 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.BloodType
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Gender
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookingStep
-import com.yehorsk.medical_platform_mobile.feature.medical_record.domain.models.MedicalRecordType
+import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
 import com.yehorsk.theme.LocalExtendedColors
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlin.time.Clock
 import kotlin.time.Instant

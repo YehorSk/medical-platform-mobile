@@ -9,7 +9,8 @@ import medicalplatformmobile.shared.generated.resources.home_24px
 import medicalplatformmobile.shared.generated.resources.chat
 import medicalplatformmobile.shared.generated.resources.group_24px
 import medicalplatformmobile.shared.generated.resources.history_24px
-import medicalplatformmobile.shared.generated.resources.records
+import medicalplatformmobile.shared.generated.resources.health
+import medicalplatformmobile.shared.generated.resources.health_and_safety_24px
 import medicalplatformmobile.shared.generated.resources.settings
 import medicalplatformmobile.shared.generated.resources.settings_24px
 import org.jetbrains.compose.resources.DrawableResource
@@ -33,10 +34,10 @@ sealed class BottomBarScreen(
         icon = UiRes.drawable.chat_24px
     )
 
-    object Records : BottomBarScreen(
-        screen = Screen.Records,
-        title = UiRes.string.records,
-        icon = UiRes.drawable.history_24px
+    object Health : BottomBarScreen(
+        screen = Screen.Health,
+        title = UiRes.string.health,
+        icon = UiRes.drawable.health_and_safety_24px
     )
 
     object Connect : BottomBarScreen(

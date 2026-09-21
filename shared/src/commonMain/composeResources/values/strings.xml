@@ -46,7 +46,8 @@
 
     <string name="home">Home</string>
     <string name="connect">Connect</string>
-    <string name="records">Records</string>
+    <string name="health">Health</string>
+    <string name="my_health">My Health</string>
     <string name="chat">Chat</string>
     <string name="settings">Settings</string>
 
@@ -302,5 +303,8 @@
     <string name="record_type_procedure">Procedure</string>
     <string name="record_type_diagnosis">Diagnosis</string>
     <string name="record_type_clinical_note">Clinical Note</string>
+
+    <string name="medical_card">Medical Card</string>
+    <string name="medical_records">Medical Records</string>
 
 </resources>

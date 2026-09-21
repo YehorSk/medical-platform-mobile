@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultListCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.viewmodel.ConnectionsMainViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -58,7 +59,7 @@ fun ConnectionsMainScreenRoot(
                 modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    ConnectionListCard(
+                    DefaultListCard(
                         title = stringResource(UiRes.string.my_appointments),
                         subtitle = "",
                         icon = painterResource(UiRes.drawable.calendar_today_24px),
@@ -67,7 +68,7 @@ fun ConnectionsMainScreenRoot(
                 }
                 if(role == UserRole.PATIENT){
                     item {
-                        ConnectionListCard(
+                        DefaultListCard(
                             title = stringResource(UiRes.string.find_a_doctor),
                             subtitle = "",
                             icon = painterResource(UiRes.drawable.search_24px),
@@ -77,7 +78,7 @@ fun ConnectionsMainScreenRoot(
                 }
                 if(role == UserRole.PATIENT){
                     item {
-                        ConnectionListCard(
+                        DefaultListCard(
                             title = stringResource(UiRes.string.my_doctors),
                             subtitle = "",
                             icon = painterResource(UiRes.drawable.patient_list_24px),
@@ -87,7 +88,7 @@ fun ConnectionsMainScreenRoot(
                 }
                 if(role == UserRole.DOCTOR){
                     item {
-                        ConnectionListCard(
+                        DefaultListCard(
                             title = stringResource(UiRes.string.my_patients),
                             subtitle = "",
                             icon = painterResource(UiRes.drawable.patient_list_24px),
@@ -96,7 +97,7 @@ fun ConnectionsMainScreenRoot(
                     }
                 }
                 item {
-                    ConnectionListCard(
+                    DefaultListCard(
                         title = stringResource(UiRes.string.pending_requests),
                         subtitle = "",
                         icon = painterResource(UiRes.drawable.hourglass_24px),
@@ -105,7 +106,7 @@ fun ConnectionsMainScreenRoot(
                 }
                 if(role == UserRole.PATIENT){
                     item {
-                        ConnectionListCard(
+                        DefaultListCard(
                             title = stringResource(UiRes.string.data_access),
                             subtitle = "",
                             icon = painterResource(UiRes.drawable.shield_24px),

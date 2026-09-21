@@ -1,7 +1,5 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
-import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import kotlinx.serialization.Serializable
 
@@ -27,7 +25,7 @@ sealed interface Screen {
 
     @Serializable data object Home : Screen
     @Serializable data object Connect : Screen
-    @Serializable data object Records : Screen
+    @Serializable data object Health : Screen
     @Serializable data object Chat : Screen
     @Serializable data object Settings : Screen
     @Serializable data object Profile : Screen

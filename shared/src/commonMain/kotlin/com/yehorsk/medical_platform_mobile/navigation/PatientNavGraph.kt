@@ -15,8 +15,6 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
-import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentAction
-import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.DoctorDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
@@ -27,6 +25,8 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.PatientDashboardScreen
+import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_main.MedicalMainDestination
+import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_main.MedicalMainScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.UpdatePasswordScreen
@@ -64,16 +64,19 @@ fun NavGraphBuilder.patientNavGraph(
                 }
             )
         }
-        composable<Screen.Records> {
-            Box(
+        composable<Screen.Health> {
+            MedicalMainScreen(
                 modifier = modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "Records"
-                )
-            }
+                navigateTo = { destination ->
+                    when(destination){
+                        MedicalMainDestination.Back -> navController.popBackStack()
+                        MedicalMainDestination.MedicalCard -> {}
+                        MedicalMainDestination.MedicalRecords -> {}
+                    }
+                },
+                role = UserRole.PATIENT
+            )
         }
         composable<Screen.MyAppointments> {
             AppointmentsListScreen(

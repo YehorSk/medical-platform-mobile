@@ -128,7 +128,7 @@ fun BookAppointmentScreenRoot(
                                         .padding(vertical = 12.dp),
                                     selectedDate = state.form.selectedDate,
                                     onUpdateSelectedDate = { onAction(BookAppointmentAction.OnDateSelected(it)) },
-                                    closedWeekDays = state.openWeekDays,
+                                    weekSchedule = state.openWeekDays,
                                     isLoading = state.isLoadingDates,
                                 )
                                 DefaultButton(

@@ -24,7 +24,7 @@ fun BottomBar(
         BottomBarScreen.Home,
         BottomBarScreen.Chat,
         BottomBarScreen.Connect,
-        BottomBarScreen.Records,
+        BottomBarScreen.Health,
         BottomBarScreen.Profile,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()

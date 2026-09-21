@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -28,18 +29,23 @@ fun DefaultTextField(
     placeholder: String = "",
     leadingIcon: Painter? = null,
     leadingIconDescr: String = "",
+    trailingIcon: Painter? = null,
+    trailingIconDescr: String = "",
+    onTrailingIconClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
-    error: String= ""
-){
+    error: String = ""
+) {
     header?.let {
         Text(it, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.height(8.dp))
     }
+
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         value = value,
-        onValueChange = { onValueChange(it) },
+        onValueChange = onValueChange,
+
         leadingIcon = leadingIcon?.let { painter ->
             {
                 Icon(
@@ -48,12 +54,26 @@ fun DefaultTextField(
                 )
             }
         },
-        placeholder = {
-            Text(
-                text = placeholder
-            )
+
+        trailingIcon = trailingIcon?.let { painter ->
+            {
+                IconButton(
+                    onClick = { onTrailingIconClick?.invoke() }
+                ) {
+                    Icon(
+                        painter = painter,
+                        contentDescription = trailingIconDescr
+                    )
+                }
+            }
         },
+
+        placeholder = {
+            Text(text = placeholder)
+        },
+
         isError = error.isNotBlank(),
+
         supportingText = {
             if (error.isNotBlank()) {
                 Text(
@@ -63,14 +83,19 @@ fun DefaultTextField(
                 )
             }
         },
+
         shape = RoundedCornerShape(12.dp),
+
         colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            unfocusedContainerColor =
+                MaterialTheme.colorScheme.surfaceContainerHighest,
+            focusedContainerColor =
+                MaterialTheme.colorScheme.surfaceContainerHighest,
             unfocusedBorderColor = Color.Transparent,
             focusedBorderColor = MaterialTheme.colorScheme.primary,
             errorBorderColor = MaterialTheme.colorScheme.error
         ),
+
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         singleLine = true
     )

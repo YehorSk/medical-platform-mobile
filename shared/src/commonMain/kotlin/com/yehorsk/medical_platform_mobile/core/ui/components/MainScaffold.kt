@@ -22,7 +22,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.navigation.Graph
-import com.yehorsk.medical_platform_mobile.navigation.Screen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -38,7 +37,7 @@ fun MainScaffold(
         BottomBarScreen.Home,
         BottomBarScreen.Chat,
         BottomBarScreen.Connect,
-        BottomBarScreen.Records,
+        BottomBarScreen.Health,
         BottomBarScreen.Profile,
     )
 

@@ -17,7 +17,7 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.DoctorDashboardScreen
-import com.yehorsk.medical_platform_mobile.feature.medical_record.presentation.create_medical_record.CreateMedicalRecordScreen
+import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.CreateMedicalRecordScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
 
 fun NavGraphBuilder.doctorNavGraph(
@@ -48,7 +48,7 @@ fun NavGraphBuilder.doctorNavGraph(
                 }
             )
         }
-        composable<Screen.Records> {
+        composable<Screen.Health> {
             Box(
                 modifier = modifier
                     .fillMaxSize(),
