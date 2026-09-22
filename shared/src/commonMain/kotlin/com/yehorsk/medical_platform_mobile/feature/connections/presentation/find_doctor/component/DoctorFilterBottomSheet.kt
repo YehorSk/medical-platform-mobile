@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes

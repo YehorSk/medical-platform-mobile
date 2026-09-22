@@ -5,14 +5,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
-import com.yehorsk.medical_platform_mobile.core.data.mappers.toRegisterFormErrors
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -22,7 +19,6 @@ import medicalplatformmobile.shared.generated.resources.first_name
 import medicalplatformmobile.shared.generated.resources.last_name
 import medicalplatformmobile.shared.generated.resources.license_number
 import medicalplatformmobile.shared.generated.resources.password
-import medicalplatformmobile.shared.generated.resources.specialization
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

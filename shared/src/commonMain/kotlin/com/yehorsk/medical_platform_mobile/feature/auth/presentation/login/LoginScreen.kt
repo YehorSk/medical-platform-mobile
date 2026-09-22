@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.PwdTextField
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent

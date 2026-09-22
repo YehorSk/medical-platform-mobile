@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.DestructiveConfirmationDialog
+import com.yehorsk.medical_platform_mobile.core.ui.components.dialogs.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsListItem
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsAction

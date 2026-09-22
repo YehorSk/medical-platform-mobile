@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsMainHeader
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePasswordAction
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePasswordState

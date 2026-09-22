@@ -19,12 +19,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.MedicalCardPatient
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
-import com.yehorsk.medical_platform_mobile.util.fakeDoctor
+import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.response.MedicalCardPatient
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_forward_ios_24px
 import org.jetbrains.compose.resources.painterResource

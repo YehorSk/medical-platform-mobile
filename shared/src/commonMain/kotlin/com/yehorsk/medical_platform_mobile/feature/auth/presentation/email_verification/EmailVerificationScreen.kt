@@ -31,14 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationState
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationViewModel
 import com.yehorsk.theme.AppTheme
 import com.yehorsk.theme.extended
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.app_description
 import medicalplatformmobile.shared.generated.resources.app_name
 import medicalplatformmobile.shared.generated.resources.close
 import medicalplatformmobile.shared.generated.resources.email_verified_failed

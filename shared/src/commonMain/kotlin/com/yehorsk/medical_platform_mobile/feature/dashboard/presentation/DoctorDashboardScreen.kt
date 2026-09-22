@@ -10,15 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
-import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
-import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.DashboardTopBar
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardState
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardViewModel
 import com.yehorsk.theme.AppTheme
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
-import kotlin.time.Instant
 
 
 @Composable

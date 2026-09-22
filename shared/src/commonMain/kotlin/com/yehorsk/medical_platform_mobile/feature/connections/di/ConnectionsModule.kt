@@ -1,8 +1,8 @@
 package com.yehorsk.medical_platform_mobile.feature.connections.di
 
-import com.yehorsk.medical_platform_mobile.feature.connections.data.network.service.MedicalCardServiceImpl
+import com.yehorsk.medical_platform_mobile.feature.medical.data.service.MedicalCardServiceImpl
 import com.yehorsk.medical_platform_mobile.feature.connections.data.network.service.PatientHasDoctorServiceImpl
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.MedicalCardService
+import com.yehorsk.medical_platform_mobile.feature.medical.domain.service.MedicalCardService
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.PatientHasDoctorService
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
@@ -21,5 +21,4 @@ val connectionsModule = module {
     viewModelOf(::DoctorDetailsViewModel)
     viewModelOf(::PatientDetailsViewModel)
     singleOf(::PatientHasDoctorServiceImpl) bind PatientHasDoctorService::class
-    singleOf(::MedicalCardServiceImpl) bind MedicalCardService::class
 }

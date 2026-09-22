@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.TabToggleButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.TabToggleButton
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.person_24px
 import medicalplatformmobile.shared.generated.resources.stethoscope_24px

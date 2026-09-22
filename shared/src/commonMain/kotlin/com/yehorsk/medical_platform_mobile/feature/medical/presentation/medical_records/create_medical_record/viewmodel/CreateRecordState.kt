@@ -15,6 +15,7 @@ data class CreateRecordScreenState(
 )
 
 data class CreateRecordForm(
+    val patientId: String = "",
     val selectedBodyParts: List<BodyHitRegion> = emptyList(),
     val medicalRecordType: MedicalRecordType = MedicalRecordType.VISIT,
     val title: String = "",
@@ -23,5 +24,5 @@ data class CreateRecordForm(
 )
 
 enum class CreateRecordTab {
-    DETAILS,  ANATOMY
+    DETAILS, ANATOMY
 }

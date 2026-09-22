@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.PwdTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.PwdTextField
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.viewmodel.RegisterState
 import medicalplatformmobile.shared.generated.resources.UiRes

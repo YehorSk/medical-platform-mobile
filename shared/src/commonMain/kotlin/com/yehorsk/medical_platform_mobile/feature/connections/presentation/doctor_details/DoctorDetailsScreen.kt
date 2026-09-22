@@ -18,16 +18,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.DoctorHeaderCard
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultInfoCard
-import com.yehorsk.medical_platform_mobile.core.ui.components.DestructiveConfirmationDialog
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultInfoCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.dialogs.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.component.WeeklyScheduleCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
-import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.viewmodel.MedicalCardAction
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.about
 import medicalplatformmobile.shared.generated.resources.approve_access
@@ -35,12 +34,10 @@ import medicalplatformmobile.shared.generated.resources.cancel_btn
 import medicalplatformmobile.shared.generated.resources.decline_access
 import medicalplatformmobile.shared.generated.resources.find_doctors
 import medicalplatformmobile.shared.generated.resources.grant_access
+import medicalplatformmobile.shared.generated.resources.grant_access_btn
 import medicalplatformmobile.shared.generated.resources.grant_access_descr
 import medicalplatformmobile.shared.generated.resources.open_chat_with_doctor
-import medicalplatformmobile.shared.generated.resources.please_verify_medical_card
 import medicalplatformmobile.shared.generated.resources.revoke_access
-import medicalplatformmobile.shared.generated.resources.save_btn
-import medicalplatformmobile.shared.generated.resources.update_medical_card
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -177,7 +174,7 @@ fun DoctorDetailsScreenRoot(
         DestructiveConfirmationDialog(
             title = stringResource(UiRes.string.grant_access),
             description = stringResource(UiRes.string.grant_access_descr),
-            confirmButtonText = stringResource(UiRes.string.grant_access),
+            confirmButtonText = stringResource(UiRes.string.grant_access_btn),
             cancelButtonText = stringResource(UiRes.string.cancel_btn),
             onDismiss = {
                 onAction(DoctorDetailsAction.HideConfirmationDialog)

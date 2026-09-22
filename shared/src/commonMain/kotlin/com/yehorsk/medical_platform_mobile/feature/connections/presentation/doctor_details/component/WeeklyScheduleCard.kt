@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.DaySchedule
 import com.yehorsk.medical_platform_mobile.core.domain.model.WeekDay
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.book_appointment

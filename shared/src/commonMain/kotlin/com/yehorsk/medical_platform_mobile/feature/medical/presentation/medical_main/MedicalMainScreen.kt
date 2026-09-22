@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultListCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultListCard
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.lab_profile_24px
 import medicalplatformmobile.shared.generated.resources.medical_card

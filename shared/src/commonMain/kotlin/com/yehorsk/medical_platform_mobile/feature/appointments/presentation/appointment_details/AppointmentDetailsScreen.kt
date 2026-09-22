@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,15 +18,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultInfoCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultInfoCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentInfoCard
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.AppointmentPatientCard
-import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.component.CompleteAppointmentBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsState
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsViewModel
@@ -43,7 +41,6 @@ import medicalplatformmobile.shared.generated.resources.create_medical_record
 import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.mark_completed
 import medicalplatformmobile.shared.generated.resources.notes
-import medicalplatformmobile.shared.generated.resources.patient
 import medicalplatformmobile.shared.generated.resources.reschedule_btn
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

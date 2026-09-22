@@ -33,61 +33,61 @@ class FindPatientViewModel(
 
     private var hasLoadedInitialData = false
 
-    init {
-        observeConnectivity()
-    }
-
-    private val _uiState = MutableStateFlow(FindPatientState())
-    val uiState = _uiState
-        .onStart {
-            if(!hasLoadedInitialData){
-                getAllPatients()
-                hasLoadedInitialData = true
-            }
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = FindPatientState()
-        )
-
-    private fun observeConnectivity() {
-        connectivityObserver.isConnected
-            .debounce(1.seconds)
-            .distinctUntilChanged()
-            .drop(1)
-            .onEach { connected ->
-                mainLogger.debug("Connectivity = $connected")
-                _uiState.update { it.copy(isConnected = connected) }
-                if(connected) {
-                    mainLogger.debug("Get Doctors: wifi")
-                    getAllPatients()
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
-    private fun getAllPatients(){
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(isLoading = true)
-            }
-            patientHasDoctorService
-                .getMyPatients()
-                .onSuccess { response ->
-                    _uiState.update {
-                        it.copy(
-                            patients = response.data,
-                            isLoading = false
-                        )
-                    }
-                    mainLogger.debug("Doctors response UI: ${response.data}")
-                }
-                .onFailure { dataErrorRemote ->
-                    _uiState.update { it.copy(isLoading = false) }
-                    SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
-                }
-        }
-    }
+//    init {
+//        observeConnectivity()
+//    }
+//
+//    private val _uiState = MutableStateFlow(FindPatientState())
+//    val uiState = _uiState
+//        .onStart {
+//            if(!hasLoadedInitialData){
+//                getAllPatients()
+//                hasLoadedInitialData = true
+//            }
+//        }
+//        .stateIn(
+//            scope = viewModelScope,
+//            started = SharingStarted.WhileSubscribed(5_000L),
+//            initialValue = FindPatientState()
+//        )
+//
+//    private fun observeConnectivity() {
+//        connectivityObserver.isConnected
+//            .debounce(1.seconds)
+//            .distinctUntilChanged()
+//            .drop(1)
+//            .onEach { connected ->
+//                mainLogger.debug("Connectivity = $connected")
+//                _uiState.update { it.copy(isConnected = connected) }
+//                if(connected) {
+//                    mainLogger.debug("Get Doctors: wifi")
+//                    getAllPatients()
+//                }
+//            }
+//            .launchIn(viewModelScope)
+//    }
+//
+//    private fun getAllPatients(){
+//        viewModelScope.launch {
+//            _uiState.update {
+//                it.copy(isLoading = true)
+//            }
+//            patientHasDoctorService
+//                .getMyPatients()
+//                .onSuccess { response ->
+//                    _uiState.update {
+//                        it.copy(
+//                            patients = response.data,
+//                            isLoading = false
+//                        )
+//                    }
+//                    mainLogger.debug("Doctors response UI: ${response.data}")
+//                }
+//                .onFailure { dataErrorRemote ->
+//                    _uiState.update { it.copy(isLoading = false) }
+//                    SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+//                }
+//        }
+//    }
 
 }

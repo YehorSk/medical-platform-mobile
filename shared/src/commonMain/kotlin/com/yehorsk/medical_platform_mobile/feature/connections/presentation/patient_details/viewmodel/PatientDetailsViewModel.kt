@@ -8,7 +8,6 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.MedicalCardService
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsState
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @OptIn(FlowPreview::class)
 class PatientDetailsViewModel(
-    private val medicalCardService: MedicalCardService,
+//    private val medicalCardService: MedicalCardService,
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver
 ): ViewModel() {
@@ -65,21 +64,21 @@ class PatientDetailsViewModel(
 
     private fun getPatient(id: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            medicalCardService
-                .getPatientById(id)
-                .onSuccess { response ->
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            patient = response.data
-                        )
-                    }
-                }
-                .onFailure { dataErrorRemote ->
-                    _uiState.update { it.copy(isLoading = false) }
-                    SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
-                }
+//            _uiState.update { it.copy(isLoading = true) }
+//            medicalCardService
+//                .getPatientById(id)
+//                .onSuccess { response ->
+//                    _uiState.update {
+//                        it.copy(
+//                            isLoading = false,
+//                            patient = response.data
+//                        )
+//                    }
+//                }
+//                .onFailure { dataErrorRemote ->
+//                    _uiState.update { it.copy(isLoading = false) }
+//                    SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
+//                }
         }
     }
 

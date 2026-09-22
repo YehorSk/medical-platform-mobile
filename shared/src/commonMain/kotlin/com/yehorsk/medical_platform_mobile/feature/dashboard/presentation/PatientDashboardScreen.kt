@@ -19,10 +19,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
-import com.yehorsk.medical_platform_mobile.core.ui.components.DashboardTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.DashboardTopBar
 import com.yehorsk.medical_platform_mobile.util.conversations
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
-import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashAppointmentItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardAction
@@ -30,7 +29,6 @@ import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmo
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardViewModel
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.no_appointments
 import medicalplatformmobile.shared.generated.resources.no_recent_messages
 import medicalplatformmobile.shared.generated.resources.recent_messages
 import medicalplatformmobile.shared.generated.resources.upcoming_appointments

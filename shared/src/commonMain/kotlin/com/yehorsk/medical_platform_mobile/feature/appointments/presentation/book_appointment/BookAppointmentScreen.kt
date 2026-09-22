@@ -20,9 +20,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationEventHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultMultilineTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultMultilineTextField
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.AppointmentCalendar
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.AppointmentSummaryCard

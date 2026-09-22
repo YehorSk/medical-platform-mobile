@@ -119,6 +119,7 @@
 
     <!-- Access Buttons -->
     <string name="grant_access_descr">Grant medical access? This will allow the selected doctor to view your health records.</string>
+    <string name="grant_access_btn">Grant</string>
     <string name="grant_access">Grant Access</string>
     <string name="revoke_access">Revoke Access</string>
     <string name="open_chat_with_doctor">Open Chat</string>

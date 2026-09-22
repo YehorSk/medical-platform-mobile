@@ -13,12 +13,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.NoConnectionBanner
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.other.NoConnectionBanner
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.component.PatientCard
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.viewmodel.FindPatientState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.viewmodel.FindPatientViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.find_a_doctor
@@ -32,11 +29,9 @@ fun FindPatientScreen(
     goBack: () -> Unit,
     onPatientClicked: (String) -> Unit
 ){
-    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     FindPatientScreenRoot(
         modifier = modifier,
-        state = state,
         goBack = goBack
     )
 }
@@ -44,7 +39,6 @@ fun FindPatientScreen(
 @Composable
 fun FindPatientScreenRoot(
     modifier: Modifier = Modifier,
-    state: FindPatientState,
     goBack: () -> Unit
 ){
     Column(modifier = modifier.fillMaxSize()) {
@@ -53,35 +47,35 @@ fun FindPatientScreenRoot(
             showGoBackButton = true,
             onGoBackClicked = { goBack() }
         )
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            if (!state.isConnected) {
-                NoConnectionBanner(
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(state.patients, key = { it.id }){ patient ->
-                        patient.medicalCard.patient?.let {
-                            PatientCard(
-                                patient = patient.medicalCard.patient,
-                                onClick = {  },
-                            )
-                        }
-                    }
-                }
-            }
-        }
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            if (state.isLoading) {
+//                Box(
+//                    modifier = Modifier
+//                        .fillMaxSize()
+//                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    CircularProgressIndicator()
+//                }
+//            }
+//            if (!state.isConnected) {
+//                NoConnectionBanner(
+//                    modifier = Modifier.fillMaxSize()
+//                )
+//            } else {
+//                LazyColumn(
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    items(state.patients, key = { it.id }){ patient ->
+//                        patient.medicalCard.patient?.let {
+//                            PatientCard(
+//                                patient = patient.medicalCard.patient,
+//                                onClick = {  },
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 }

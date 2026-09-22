@@ -17,14 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultAssistChip
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultContentCard
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultDatePicker
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultDropdownTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.DestructiveConfirmationDialog
+import com.kizitonwose.calendar.core.now
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultAssistChip
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultContentCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultDatePicker
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultDropdownTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.dialogs.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.BloodType
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Gender
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.InsuranceCompany
@@ -33,6 +34,7 @@ import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.viewmodel.MedicalCardViewModel
 import com.yehorsk.medical_platform_mobile.util.toDisplayName
 import com.yehorsk.theme.AppTheme
+import kotlinx.datetime.LocalDate
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.blood_type_title
 import medicalplatformmobile.shared.generated.resources.calendar_month_24px
@@ -58,7 +60,7 @@ fun MedicalCardScreen(
     viewModel: MedicalCardViewModel = koinViewModel(),
     onGoBackClicked: () -> Unit,
 ){
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MedicalCardScreenRoot(
         modifier = modifier,
@@ -100,7 +102,7 @@ fun MedicalCardScreenRoot(
                     title = stringResource(UiRes.string.date_of_birth_title),
                     content = {
                         DefaultDatePicker(
-                            value = state.form.dateOfBirth,
+                            value = state.form.dateOfBirth ?: LocalDate.now(),
                             onValueChange = { onAction(MedicalCardAction.BirthOfDateChanged(it)) },
                             trailingIcon = painterResource(UiRes.drawable.calendar_month_24px)
                         )
@@ -171,7 +173,7 @@ fun MedicalCardScreenRoot(
                     content = {
                         Column {
                             DefaultDropdownTextField(
-                                value = state.form.insuranceProvider,
+                                value = state.form.insuranceCompany,
                                 onOptionSelected = {
                                     onAction(
                                         MedicalCardAction.InsuranceProviderChanged(it)
@@ -185,7 +187,7 @@ fun MedicalCardScreenRoot(
                                 },
                             )
                             DefaultTextField(
-                                value = state.form.insurancePolicyMemberId,
+                                value = state.form.insuranceNumber,
                                 onValueChange = {
                                     onAction(
                                         MedicalCardAction.InsurancePolicyMemberIdChanged(it)

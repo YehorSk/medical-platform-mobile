@@ -2,17 +2,13 @@ package com.yehorsk.medical_platform_mobile.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
-import com.yehorsk.medical_platform_mobile.core.ui.components.BottomBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.MainScaffold
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.MainScaffold
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
-import com.yehorsk.medical_platform_mobile.util.getRole
 import kotlinx.serialization.Serializable
 
 @Composable

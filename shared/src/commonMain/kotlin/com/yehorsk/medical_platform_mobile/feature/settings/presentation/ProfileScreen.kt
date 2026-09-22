@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsAction
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsMainHeader
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsState

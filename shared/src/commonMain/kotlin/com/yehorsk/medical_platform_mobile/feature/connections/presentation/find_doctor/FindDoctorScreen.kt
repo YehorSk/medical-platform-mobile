@@ -24,9 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
-import com.yehorsk.medical_platform_mobile.core.ui.components.NoConnectionBanner
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.other.NoConnectionBanner
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component.DoctorFilterBottomSheet
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction

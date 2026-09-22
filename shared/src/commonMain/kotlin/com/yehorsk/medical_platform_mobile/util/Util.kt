@@ -160,11 +160,15 @@ fun getAppointmentStatus(status: String): AppointmentStatus {
     return AppointmentStatus.entries.find { it.name.equals(status, ignoreCase = true) } ?: AppointmentStatus.UNKNOWN
 }
 
-fun getGender(status: String): Gender {
+fun getGender(status: String?): Gender {
     return Gender.entries.find { it.name.equals(status, ignoreCase = true) } ?: Gender.UNKNOWN
 }
 
-fun getBloodType(status: String): BloodType {
+fun getInsuranceProvider(provider: String?): InsuranceCompany? {
+    return InsuranceCompany.entries.find { it.name.equals(provider, ignoreCase = true) }
+}
+
+fun getBloodType(status: String?): BloodType {
     return BloodType.entries.find { it.name.equals(status, ignoreCase = true) } ?: BloodType.UNKNOWN
 }
 

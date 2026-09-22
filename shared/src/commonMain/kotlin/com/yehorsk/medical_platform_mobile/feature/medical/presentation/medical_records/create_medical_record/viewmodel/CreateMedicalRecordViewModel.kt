@@ -77,6 +77,15 @@ class CreateMedicalRecordViewModel(
                 .getAppointmentById(appointmentId)
                 .onSuccess { data ->
                     mainLogger.debug("Appointment ${data.data}")
+                    data.data.patient?.let { patient ->
+                        _uiState.update { state ->
+                            state.copy(
+                                form = state.form.copy(
+                                    patientId = patient.id
+                                )
+                            )
+                        }
+                    }
                     _uiState.update {
                         it.copy(
                             isLoading = false,

@@ -16,10 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.email_input
-import medicalplatformmobile.shared.generated.resources.email_input_placeholder
 import medicalplatformmobile.shared.generated.resources.otp_input_placeholder
 import medicalplatformmobile.shared.generated.resources.otp_verify_btn
 import org.jetbrains.compose.resources.stringResource

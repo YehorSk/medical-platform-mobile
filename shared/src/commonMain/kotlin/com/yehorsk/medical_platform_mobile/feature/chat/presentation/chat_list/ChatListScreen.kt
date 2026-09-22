@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
-import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.components.ConversationItem
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListAction
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListState
