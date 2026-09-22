@@ -21,29 +21,33 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultAssistChip
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultContentCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultDatePicker
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultDropdownTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.DefaultTextField
+import com.yehorsk.medical_platform_mobile.core.ui.components.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.BloodType
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Gender
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.InsuranceCompany
-import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.viewmodel.MedicalCardAction
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.viewmodel.MedicalCardState
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_card.viewmodel.MedicalCardViewModel
-import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordAction
 import com.yehorsk.medical_platform_mobile.util.toDisplayName
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.blood_type_title
-import medicalplatformmobile.shared.generated.resources.create_record
-import medicalplatformmobile.shared.generated.resources.gender_male
+import medicalplatformmobile.shared.generated.resources.calendar_month_24px
+import medicalplatformmobile.shared.generated.resources.cancel_btn
+import medicalplatformmobile.shared.generated.resources.date_of_birth_title
 import medicalplatformmobile.shared.generated.resources.gender_title
 import medicalplatformmobile.shared.generated.resources.insurance_policy_member_id
 import medicalplatformmobile.shared.generated.resources.insurance_provider
 import medicalplatformmobile.shared.generated.resources.insurance_title
 import medicalplatformmobile.shared.generated.resources.medical_card
+import medicalplatformmobile.shared.generated.resources.please_verify_medical_card
+import medicalplatformmobile.shared.generated.resources.save_btn
 import medicalplatformmobile.shared.generated.resources.save_medical_card
 import medicalplatformmobile.shared.generated.resources.shield_24px
+import medicalplatformmobile.shared.generated.resources.update_medical_card
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -90,6 +94,18 @@ fun MedicalCardScreenRoot(
                 .padding(12.dp)
         ) {
             Column {
+                DefaultContentCard(
+                    modifier = Modifier
+                        .padding(vertical = 12.dp),
+                    title = stringResource(UiRes.string.date_of_birth_title),
+                    content = {
+                        DefaultDatePicker(
+                            value = state.form.dateOfBirth,
+                            onValueChange = { onAction(MedicalCardAction.BirthOfDateChanged(it)) },
+                            trailingIcon = painterResource(UiRes.drawable.calendar_month_24px)
+                        )
+                    }
+                )
                 DefaultContentCard(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
@@ -185,10 +201,31 @@ fun MedicalCardScreenRoot(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
                     text = stringResource(UiRes.string.save_medical_card),
-                    onClick = {}
+                    onClick = {
+                        onAction(
+                            MedicalCardAction.ShowSaveConfirmationDialog
+                        )
+                    }
                 )
             }
         }
+    }
+    if(state.showUpdateConfirmation) {
+        DestructiveConfirmationDialog(
+            title = stringResource(UiRes.string.update_medical_card),
+            description = stringResource(UiRes.string.please_verify_medical_card),
+            confirmButtonText = stringResource(UiRes.string.save_btn),
+            cancelButtonText = stringResource(UiRes.string.cancel_btn),
+            onDismiss = {
+                onAction(MedicalCardAction.HideSaveConfirmationDialog)
+            },
+            onCancelClick = {
+                onAction(MedicalCardAction.HideSaveConfirmationDialog)
+            },
+            onConfirmClick = {
+                onAction(MedicalCardAction.OnSaveClicked)
+            },
+        )
     }
 }
 

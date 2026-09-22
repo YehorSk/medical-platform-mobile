@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.ui.components.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.component.SettingsListItem
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsAction
@@ -19,6 +20,9 @@ import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmod
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsViewModel
 import com.yehorsk.medical_platform_mobile.util.getRole
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.cancel_btn
+import medicalplatformmobile.shared.generated.resources.do_you_want_to_logout
+import medicalplatformmobile.shared.generated.resources.do_you_want_to_logout_desc
 import medicalplatformmobile.shared.generated.resources.logout
 import medicalplatformmobile.shared.generated.resources.my_schedule
 import medicalplatformmobile.shared.generated.resources.settings_account_header
@@ -85,6 +89,23 @@ fun SettingsScreenRoot(
             )
         }
     }
+    if(state.showLogoutConfirmation) {
+        DestructiveConfirmationDialog(
+            title = stringResource(UiRes.string.do_you_want_to_logout),
+            description = stringResource(UiRes.string.do_you_want_to_logout_desc),
+            confirmButtonText = stringResource(UiRes.string.logout),
+            cancelButtonText = stringResource(UiRes.string.cancel_btn),
+            onDismiss = {
+                onAction(SettingsAction.HideLogoutConfirmationDialog)
+            },
+            onCancelClick = {
+                onAction(SettingsAction.HideLogoutConfirmationDialog)
+            },
+            onConfirmClick = {
+                onAction(SettingsAction.OnLogoutClicked)
+            },
+        )
+    }
 }
 
 @Composable
@@ -120,7 +141,7 @@ fun SettingsList(
         item {
             SettingsListItem(
                 text = stringResource(UiRes.string.logout),
-                onClick = { onAction(SettingsAction.OnLogoutClicked) }
+                onClick = { onAction(SettingsAction.ShowLogoutConfirmationDialog) }
             )
         }
     }

@@ -10,4 +10,5 @@ data class DoctorDetailsState(
     val doctorDetails: Doctor? = null,
     val patientAccess: PatientHasDoctor? = null,
     val isConnected: Boolean = true,
+    val showGrantConfirmation: Boolean = false
 )

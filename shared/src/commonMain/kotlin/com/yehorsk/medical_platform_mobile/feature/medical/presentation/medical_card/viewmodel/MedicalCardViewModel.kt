@@ -54,6 +54,31 @@ class MedicalCardViewModel(
                 }
             }
 
+            is MedicalCardAction.BirthOfDateChanged -> {
+                _state.update { state ->
+                    state.copy(
+                        form = state.form.copy(
+                            dateOfBirth = action.date
+                        )
+                    )
+                }
+            }
+
+            MedicalCardAction.HideSaveConfirmationDialog -> {
+                _state.update {
+                    it.copy(
+                        showUpdateConfirmation = false
+                    )
+                }
+            }
+            MedicalCardAction.ShowSaveConfirmationDialog -> {
+                _state.update {
+                    it.copy(
+                        showUpdateConfirmation = true
+                    )
+                }
+            }
+
             MedicalCardAction.OnSaveClicked -> {
                 saveMedicalCard()
             }
@@ -63,6 +88,11 @@ class MedicalCardViewModel(
 
     private fun saveMedicalCard() {
         val form = _state.value.form
+        _state.update {
+            it.copy(
+                showUpdateConfirmation = false
+            )
+        }
 
 //        viewModelScope.launch {
 //            _state.update {

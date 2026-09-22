@@ -56,6 +56,20 @@ class DoctorDetailsViewModel(
             DoctorDetailsAction.OnBookAppointmentClicked -> {}
             DoctorDetailsAction.OnOpenChatClicked -> {}
             DoctorDetailsAction.GoBackClicked -> {}
+            DoctorDetailsAction.HideConfirmationDialog -> {
+                _uiState.update {
+                    it.copy(
+                        showGrantConfirmation = false
+                    )
+                }
+            }
+            DoctorDetailsAction.ShowConfirmationDialog -> {
+                _uiState.update {
+                    it.copy(
+                        showGrantConfirmation = true
+                    )
+                }
+            }
         }
     }
 
@@ -81,6 +95,7 @@ class DoctorDetailsViewModel(
                         _uiState.update {
                             it.copy(
                                 isLoadingDoctor = false,
+                                showGrantConfirmation = false,
                                 patientAccess = response.data
                             )
                         }

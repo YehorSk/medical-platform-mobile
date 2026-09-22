@@ -18,6 +18,10 @@ sealed interface DoctorDetailsAction {
 
     data object OnBookAppointmentClicked: DoctorDetailsAction
 
+    data object ShowConfirmationDialog: DoctorDetailsAction
+
+    data object HideConfirmationDialog: DoctorDetailsAction
+
 
 
 }

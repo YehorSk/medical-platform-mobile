@@ -28,4 +28,8 @@ sealed interface SettingsAction {
 
     data object GoToMyScheduleClicked: SettingsAction
 
+    data object ShowLogoutConfirmationDialog: SettingsAction
+
+    data object HideLogoutConfirmationDialog: SettingsAction
+
 }

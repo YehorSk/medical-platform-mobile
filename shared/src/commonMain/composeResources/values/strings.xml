@@ -118,6 +118,7 @@
     <string name="about">About</string>
 
     <!-- Access Buttons -->
+    <string name="grant_access_descr">Grant medical access? This will allow the selected doctor to view your health records.</string>
     <string name="grant_access">Grant Access</string>
     <string name="revoke_access">Revoke Access</string>
     <string name="open_chat_with_doctor">Open Chat</string>
@@ -142,6 +143,11 @@
     <string name="close">Close</string>
 
     <string name="logout">Logout</string>
+    <string name="do_you_want_to_logout">Do you want to log out?</string>
+    <string name="do_you_want_to_logout_desc">You will have to log in again to use the app.</string>
+
+    <string name="update_medical_card">Update Medical Card</string>
+    <string name="please_verify_medical_card">Please verify that this information is correct.</string>
 
     <string name="my_schedule">My Schedule</string>
 
@@ -280,6 +286,7 @@
     <string name="gender_female">Female</string>
     <string name="gender_prefer_not_to_say">Prefer not to say</string>
 
+    <string name="date_of_birth_title">Date Of Birth</string>
 
     <string name="blood_type_title">Blood Type</string>
     <string name="blood_type_a_positive">A+</string>

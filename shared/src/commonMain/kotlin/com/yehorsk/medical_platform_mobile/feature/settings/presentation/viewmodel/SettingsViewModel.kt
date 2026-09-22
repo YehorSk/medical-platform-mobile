@@ -53,6 +53,20 @@ class SettingsViewModel(
             is SettingsAction.UpdateSecondName -> { updateSecondName(action.value) }
             is SettingsAction.UpdateTitle -> { updateTitle(action.value) }
             SettingsAction.OnLogoutClicked -> { logout() }
+            SettingsAction.ShowLogoutConfirmationDialog -> {
+                _uiState.update {
+                    it.copy(
+                        showLogoutConfirmation = true
+                    )
+                }
+            }
+            SettingsAction.HideLogoutConfirmationDialog -> {
+                _uiState.update {
+                    it.copy(
+                        showLogoutConfirmation = false
+                    )
+                }
+            }
             else -> {}
         }
     }
@@ -113,7 +127,8 @@ class SettingsViewModel(
     private fun logout() {
         viewModelScope.launch {
             _uiState.update { it.copy(
-                isLoading = true
+                isLoading = true,
+                showLogoutConfirmation = false
             ) }
             authService
                 .logout()
