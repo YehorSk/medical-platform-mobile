@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
-import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.util.AuthEvent
 import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
 import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
@@ -81,22 +80,13 @@ fun App(
         CompositionLocalProvider(
             LocalSnackbarHostState provides snackbarHostState
         ) {
-            val userRole = state.userRole
-            val userId = state.userId
-
-            when {
-                state.isCheckingAuth -> {
-                    // SplashScreen()
-                }
-
-                else -> {
-                    NavigationRoot(
-                        navController = navController,
-                        isAuthenticated = state.isLoggedIn,
-                        userId = userId,
-                        userRole = userRole
-                    )
-                }
+            if(!state.isCheckingAuth){
+                NavigationRoot(
+                    navController = navController,
+                    isAuthenticated = state.isLoggedIn,
+                    userId = state.userId,
+                    userRole = state.userRole
+                )
             }
         }
     }

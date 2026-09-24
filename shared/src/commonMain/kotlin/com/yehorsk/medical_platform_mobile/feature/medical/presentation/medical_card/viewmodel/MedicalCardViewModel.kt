@@ -134,19 +134,22 @@ class MedicalCardViewModel(
                     _uiState.update { state ->
                         state.copy(
                             medicalCard = card,
+                            isLoading = false,
                             form = state.form.copy(
                                 gender = card.gender,
                                 bloodType = card.bloodType,
                                 insuranceCompany = card.insuranceProvider,
                                 insuranceNumber = card.insuranceNumber ?: "",
-                                dateOfBirth = card.dateOfBirth
+                                dateOfBirth = card.dateOfBirth,
                             )
                         )
                     }
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(isLoading = false)
+                        it.copy(
+                            isLoading = false
+                        )
                     }
                     SnackbarController.sendEvent(
                         SnackbarEvent(error = error)
@@ -181,6 +184,8 @@ class MedicalCardViewModel(
                     _uiState.update { state ->
                         state.copy(
                             medicalCard = card,
+                            showUpdateConfirmation = false,
+                            isLoading = false,
                             form = state.form.copy(
                                 gender = card.gender,
                                 bloodType = card.bloodType,
@@ -193,7 +198,10 @@ class MedicalCardViewModel(
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(isLoading = false)
+                        it.copy(
+                            showUpdateConfirmation = false,
+                            isLoading = false
+                        )
                     }
                     SnackbarController.sendEvent(
                         SnackbarEvent(error = error)

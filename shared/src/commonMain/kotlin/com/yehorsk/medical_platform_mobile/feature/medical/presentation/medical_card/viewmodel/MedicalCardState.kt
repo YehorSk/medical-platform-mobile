@@ -13,6 +13,7 @@ data class MedicalCardState(
     val isConnected: Boolean = false,
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
+    val isFormValid: Boolean = false,
     val error: String? = null,
     val showUpdateConfirmation: Boolean = false,
     val medicalCard: MedicalCard? = null

@@ -40,7 +40,7 @@ fun MainScaffold(
         BottomBarScreen.Connect,
         BottomBarScreen.Health,
         BottomBarScreen.Profile,
-    )
+    ).filter { userRole in it.userRoles }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

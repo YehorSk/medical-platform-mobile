@@ -48,6 +48,7 @@ import medicalplatformmobile.shared.generated.resources.medical_card
 import medicalplatformmobile.shared.generated.resources.please_verify_medical_card
 import medicalplatformmobile.shared.generated.resources.save_btn
 import medicalplatformmobile.shared.generated.resources.save_medical_card
+import medicalplatformmobile.shared.generated.resources.save_medical_card_btn
 import medicalplatformmobile.shared.generated.resources.shield_24px
 import medicalplatformmobile.shared.generated.resources.update_medical_card
 import org.jetbrains.compose.resources.painterResource
@@ -203,6 +204,7 @@ fun MedicalCardScreenRoot(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
                     text = stringResource(UiRes.string.save_medical_card),
+                    isLoading = state.isLoading,
                     onClick = {
                         onAction(
                             MedicalCardAction.ShowSaveConfirmationDialog
@@ -216,7 +218,8 @@ fun MedicalCardScreenRoot(
         DestructiveConfirmationDialog(
             title = stringResource(UiRes.string.update_medical_card),
             description = stringResource(UiRes.string.please_verify_medical_card),
-            confirmButtonText = stringResource(UiRes.string.save_btn),
+            confirmButtonText = stringResource(UiRes.string.save_medical_card_btn),
+            isConfirmLoading = state.isLoading,
             cancelButtonText = stringResource(UiRes.string.cancel_btn),
             onDismiss = {
                 onAction(MedicalCardAction.HideSaveConfirmationDialog)

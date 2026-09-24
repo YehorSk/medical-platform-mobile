@@ -4,8 +4,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 
 data class MainState(
     val isLoggedIn: Boolean = false,
-    val isCheckingAuth: Boolean = false,
-    val isLoading: Boolean = true,
+    val isCheckingAuth: Boolean = true,
     val userRole: UserRole? = null,
     val userId: String? = null
 )

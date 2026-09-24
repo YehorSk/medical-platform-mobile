@@ -8,11 +8,14 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -33,7 +36,7 @@ class MainViewModel(
     val uiState = _uiState
         .onStart {
             if(!hasLoadedInitialData){
-                authenticate()
+                observeAuthData()
                 hasLoadedInitialData = true
             }
         }
@@ -43,67 +46,47 @@ class MainViewModel(
             initialValue = MainState()
         )
 
-    fun authenticate() {
+    init {
         viewModelScope.launch {
-            val user = sessionStorage.observeAuthData().firstOrNull()
-            _uiState.update {
-                it.copy(
-                    isCheckingAuth = true,
-                    isLoading = true
-                )
-            }
-            if(user != null){
-                authService
-                    .me()
-                    .onSuccess { response ->
-                        _uiState.update {
-                            it.copy(
-                                isCheckingAuth = false,
-                                isLoggedIn = true,
-                                isLoading = false,
-                                userRole = response.data.getUserRole(),
-                                userId = response.data.id
-                            )
-                        }
-                    }
-                    .onFailure { dataErrorRemote ->
-                        when(dataErrorRemote){
-                            DataError.Remote.Status.UNAUTHORIZED -> {
-//                                sessionStorage.clearAuthData()
-                                _uiState.update {
-                                    it.copy(
-                                        isCheckingAuth = false,
-                                        isLoggedIn = false,
-                                        isLoading = false
-                                    )
-                                }
-                                SnackbarController.sendEvent(
-                                    event = SnackbarEvent(
-                                        error = dataErrorRemote
-                                    )
-                                )
-                                eventChannel.send(MainEvent.OnSessionExpired)
-                            }
-                            DataError.Remote.Status.NO_INTERNET -> {
-                                _uiState.update { it.copy(isCheckingAuth = false, isLoggedIn = true) }
-                            }
-                            else -> {
-                                _uiState.update { it.copy(isCheckingAuth = false, isLoggedIn = false) }
-                                SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
-                            }
-
-                        }
-                    }
-            }else{
-                _uiState.update {
-                    it.copy(
-                        isCheckingAuth = false,
-                        isLoggedIn = false,
-                        isLoading = false
-                    )
-                }
-            }
+            val authInfo = sessionStorage.observeAuthData().firstOrNull()
+            _uiState.update { it.copy(
+                isCheckingAuth = false,
+                isLoggedIn = authInfo != null
+            ) }
         }
+    }
+
+    private var previousRefreshToken: String? = null
+//    private var currentDeviceToken: String? = null
+//    private var previousDeviceToken: String? = null
+
+    fun observeAuthData() {
+        sessionStorage
+            .observeAuthData()
+            .onEach { authData ->
+                val currentRefreshToken = authData?.refreshToken
+                val isSessionExpired = previousRefreshToken != null && currentRefreshToken == null
+                if(isSessionExpired){
+                    sessionStorage.clearAuthData()
+                    _uiState.update {
+                        it.copy(
+                            isLoggedIn = false
+                        )
+                    }
+                    eventChannel.send(MainEvent.OnSessionExpired)
+                }
+                authData?.let { data ->
+                    _uiState.update {
+                        it.copy(
+                            isLoggedIn = true,
+                            userRole = data.user.getUserRole(),
+                            userId = data.user.id
+                        )
+                    }
+                }
+                previousRefreshToken = currentRefreshToken
+            }
+            .launchIn(viewModelScope)
     }
 
 }

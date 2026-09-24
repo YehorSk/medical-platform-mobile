@@ -1,5 +1,6 @@
 package com.yehorsk.medical_platform_mobile.core.ui.components.layouts
 
+import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.navigation.Screen
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.connect
@@ -19,35 +20,41 @@ import org.jetbrains.compose.resources.StringResource
 sealed class BottomBarScreen(
     val screen: Screen,
     val title: StringResource,
-    val icon: DrawableResource
+    val icon: DrawableResource,
+    val userRoles: List<UserRole>
 ) {
    object Home : BottomBarScreen(
        screen = Screen.Home,
        title = UiRes.string.home,
-       icon = UiRes.drawable.home_24px
+       icon = UiRes.drawable.home_24px,
+       userRoles = listOf(UserRole.PATIENT, UserRole.DOCTOR)
    )
 
     object Chat : BottomBarScreen(
         screen = Screen.Chat,
         title = UiRes.string.chat,
-        icon = UiRes.drawable.chat_24px
+        icon = UiRes.drawable.chat_24px,
+        userRoles = listOf(UserRole.PATIENT, UserRole.DOCTOR)
     )
 
     object Health : BottomBarScreen(
         screen = Screen.Health,
         title = UiRes.string.health,
-        icon = UiRes.drawable.health_and_safety_24px
+        icon = UiRes.drawable.health_and_safety_24px,
+        userRoles = listOf(UserRole.PATIENT)
     )
 
     object Connect : BottomBarScreen(
         screen = Screen.Connect,
         title = UiRes.string.connect,
-        icon = UiRes.drawable.group_24px
+        icon = UiRes.drawable.group_24px,
+        userRoles = listOf(UserRole.PATIENT, UserRole.DOCTOR)
     )
 
     object Profile : BottomBarScreen(
         screen = Screen.Settings,
         title = UiRes.string.settings,
-        icon = UiRes.drawable.settings_24px
+        icon = UiRes.drawable.settings_24px,
+        userRoles = listOf(UserRole.PATIENT, UserRole.DOCTOR)
     )
 }

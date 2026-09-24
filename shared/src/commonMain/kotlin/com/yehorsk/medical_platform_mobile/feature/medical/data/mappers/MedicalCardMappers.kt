@@ -19,7 +19,7 @@ fun MedicalCardResponseDto.toDomain(): MedicalCard =
         updatedAt = updatedAt,
         dateOfBirth = dateOfBirth.let { LocalDate.parse(it) },
         gender = getGender(gender),
-        insuranceProvider = getInsuranceProvider(insuranceCompany)
+        insuranceProvider = getInsuranceProvider(insuranceProvider)
     )
 
 fun MedicalCardPatientDto.toDomain(): MedicalCardPatient =

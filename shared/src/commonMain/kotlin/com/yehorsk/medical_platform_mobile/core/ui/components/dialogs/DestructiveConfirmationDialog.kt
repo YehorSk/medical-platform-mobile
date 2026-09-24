@@ -29,6 +29,8 @@ fun DestructiveConfirmationDialog(
     title: String,
     description: String,
     confirmButtonText: String,
+    isConfirmLoading: Boolean = false,
+    isConfirmEnabled: Boolean = true,
     cancelButtonText: String,
     onConfirmClick: () -> Unit,
     onCancelClick: () -> Unit,
@@ -84,7 +86,9 @@ fun DestructiveConfirmationDialog(
                     DefaultButton(
                         modifier = Modifier.weight(1f),
                         text = confirmButtonText,
-                        onClick = onConfirmClick
+                        onClick = onConfirmClick,
+                        isEnabled = isConfirmEnabled,
+                        isLoading = isConfirmLoading
                     )
                 }
             }
