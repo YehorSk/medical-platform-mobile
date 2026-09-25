@@ -10,15 +10,21 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
+import com.yehorsk.medical_platform_mobile.feature.medical.data.mappers.toCreateMedicalRecordRequestDto
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyHitRegion
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyRegion
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
+import com.yehorsk.medical_platform_mobile.feature.medical.domain.service.MedicalRecordService
+import com.yehorsk.medical_platform_mobile.util.getRole
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,8 +33,12 @@ class CreateMedicalRecordViewModel(
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver,
     private val appointmentService: AppointmentService,
+    private val medicalRecordService: MedicalRecordService,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val eventChannel = Channel<CreateRecordEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private var hasLoadedInitialData = false
 
@@ -62,7 +72,41 @@ class CreateMedicalRecordViewModel(
             is CreateRecordAction.OnDiagnosisUpdated -> onDiagnosisUpdated(action.diagnosis)
             is CreateRecordAction.OnRecommendationsUpdated -> onRecommendationsUpdated(action.recommendations)
             is CreateRecordAction.OnTitleUpdated -> onTitleUpdated(action.title)
+            CreateRecordAction.OnCreateMedicalRecordClicked -> createMedicalRecord()
             CreateRecordAction.OnGoBackClicked -> {}
+        }
+    }
+
+    private fun createMedicalRecord() {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+            medicalRecordService
+                .createMedicalRecord(_uiState.value.form.toCreateMedicalRecordRequestDto())
+                .onSuccess { response ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
+                    eventChannel.send(CreateRecordEvent.RecordCreatedSuccessfully)
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = response.message
+                        )
+                    )
+                }
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
+                    SnackbarController.sendEvent(
+                        SnackbarEvent(error = error)
+                    )
+                }
         }
     }
 
@@ -81,7 +125,8 @@ class CreateMedicalRecordViewModel(
                         _uiState.update { state ->
                             state.copy(
                                 form = state.form.copy(
-                                    patientId = patient.id
+                                    patientId = patient.id,
+                                    appointmentId = appointmentId
                                 )
                             )
                         }

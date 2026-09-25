@@ -89,7 +89,7 @@ fun DetailsPane(
         DefaultButton(
             modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(UiRes.string.record_save),
-            onClick = {}
+            onClick = { onAction(CreateRecordAction.OnCreateMedicalRecordClicked) }
         )
     }
 }

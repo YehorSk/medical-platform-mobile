@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreateMedicalRecordRequestDto(
     val appointmentId: String,
+    val patientId: String,
     val title: String,
     val diagnosis: String,
     val recommendations: String = "",

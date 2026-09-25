@@ -7,7 +7,7 @@ data class MedicalCardResponseDto(
     val id: String,
     val bloodType: String = "",
     val gender: String = "",
-    val insuranceProvider: String = "",
+    val insuranceProvider: String? = null,
     val insuranceNumber: String = "",
     val dateOfBirth: String = "",
     val patient: MedicalCardPatientDto? = null,

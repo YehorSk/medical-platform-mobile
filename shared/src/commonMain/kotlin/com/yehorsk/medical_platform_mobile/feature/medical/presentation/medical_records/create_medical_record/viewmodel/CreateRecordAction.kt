@@ -20,5 +20,7 @@ sealed interface CreateRecordAction {
 
     data class OnRecommendationsUpdated(val recommendations: String): CreateRecordAction
 
+    data object OnCreateMedicalRecordClicked: CreateRecordAction
+
     data object OnGoBackClicked: CreateRecordAction
 }

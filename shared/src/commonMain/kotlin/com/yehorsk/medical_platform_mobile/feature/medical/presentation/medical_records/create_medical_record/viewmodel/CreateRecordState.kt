@@ -16,6 +16,7 @@ data class CreateRecordScreenState(
 
 data class CreateRecordForm(
     val patientId: String = "",
+    val appointmentId: String = "",
     val selectedBodyParts: List<BodyHitRegion> = emptyList(),
     val medicalRecordType: MedicalRecordType = MedicalRecordType.VISIT,
     val title: String = "",

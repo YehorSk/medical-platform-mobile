@@ -150,7 +150,10 @@ fun AppointmentDetailsScreenRoot(
 
                         val doctor = appointment.doctor
                         val patient = appointment.patient
-
+                        Text(
+                            modifier = Modifier.padding(vertical = 12.dp),
+                            text = "UserRole : $userRole"
+                        )
                         when (userRole) {
                             UserRole.PATIENT if doctor != null -> {
                                 DefaultInfoCard(

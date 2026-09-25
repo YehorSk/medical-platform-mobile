@@ -9,9 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
+import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.component.CreateMedicalRecordScreenLayout
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateMedicalRecordViewModel
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordAction
+import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordEvent
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordScreenState
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -25,7 +28,14 @@ fun CreateMedicalRecordScreen(
     viewModel: CreateMedicalRecordViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
     goBack: () -> Unit,
+    onRecordCreatedSuccessfully: () -> Unit
 ){
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is CreateRecordEvent.RecordCreatedSuccessfully -> onRecordCreatedSuccessfully()
+        }
+    }
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 

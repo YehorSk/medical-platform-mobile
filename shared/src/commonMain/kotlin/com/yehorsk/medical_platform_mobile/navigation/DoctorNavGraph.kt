@@ -74,6 +74,9 @@ fun NavGraphBuilder.doctorNavGraph(
                 goBack = {
                     navController.popBackStack()
                 },
+                onRecordCreatedSuccessfully = {
+                    navController.popBackStack()
+                }
             )
         }
         composable<Screen.MyPatients> {
