@@ -167,6 +167,14 @@
     <string name="saturday_short">Sat</string>
     <string name="sunday_short">Sun</string>
 
+    <string name="monday_full">Monday</string>
+    <string name="tuesday_full">Tuesday</string>
+    <string name="wednesday_full">Wednesday</string>
+    <string name="thursday_full">Thursday</string>
+    <string name="friday_full">Friday</string>
+    <string name="saturday_full">Saturday</string>
+    <string name="sunday_full">Sunday</string>
+
     <!-- Book Appointment Screen -->
     <string name="select_date">Select Date</string>
     <string name="doctor">Doctor</string>

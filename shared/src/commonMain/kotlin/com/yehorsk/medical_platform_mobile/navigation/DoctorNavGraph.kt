@@ -19,6 +19,7 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.DoctorDashboardScreen
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.CreateMedicalRecordScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.doctor_schedule.DoctorScheduleScreen
 
 fun NavGraphBuilder.doctorNavGraph(
     modifier: Modifier = Modifier,
@@ -113,15 +114,13 @@ fun NavGraphBuilder.doctorNavGraph(
             )
         }
         composable<Screen.MySchedule> {
-            Box(
+            DoctorScheduleScreen(
                 modifier = modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ){
-                Text(
-                    text = "My Schedule"
-                )
-            }
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+            )
         }
         composable<Screen.MyAppointments> {
             AppointmentsListScreen(

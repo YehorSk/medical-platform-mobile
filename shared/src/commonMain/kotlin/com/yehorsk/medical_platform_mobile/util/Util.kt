@@ -30,6 +30,7 @@ import medicalplatformmobile.shared.generated.resources.confirm
 import medicalplatformmobile.shared.generated.resources.d_ago
 import medicalplatformmobile.shared.generated.resources.date
 import medicalplatformmobile.shared.generated.resources.doctor
+import medicalplatformmobile.shared.generated.resources.friday_full
 import medicalplatformmobile.shared.generated.resources.friday_short
 import medicalplatformmobile.shared.generated.resources.gender_female
 import medicalplatformmobile.shared.generated.resources.gender_male
@@ -40,6 +41,7 @@ import medicalplatformmobile.shared.generated.resources.insurance_union
 import medicalplatformmobile.shared.generated.resources.insurance_vszp
 import medicalplatformmobile.shared.generated.resources.just_now
 import medicalplatformmobile.shared.generated.resources.m_ago
+import medicalplatformmobile.shared.generated.resources.monday_full
 import medicalplatformmobile.shared.generated.resources.monday_short
 import medicalplatformmobile.shared.generated.resources.not_available
 import medicalplatformmobile.shared.generated.resources.record_type_clinical_note
@@ -49,11 +51,16 @@ import medicalplatformmobile.shared.generated.resources.record_type_prescription
 import medicalplatformmobile.shared.generated.resources.record_type_procedure
 import medicalplatformmobile.shared.generated.resources.record_type_vaccination
 import medicalplatformmobile.shared.generated.resources.record_type_visit
+import medicalplatformmobile.shared.generated.resources.saturday_full
 import medicalplatformmobile.shared.generated.resources.saturday_short
+import medicalplatformmobile.shared.generated.resources.sunday_full
 import medicalplatformmobile.shared.generated.resources.sunday_short
+import medicalplatformmobile.shared.generated.resources.thursday_full
 import medicalplatformmobile.shared.generated.resources.thursday_short
 import medicalplatformmobile.shared.generated.resources.time
+import medicalplatformmobile.shared.generated.resources.tuesday_full
 import medicalplatformmobile.shared.generated.resources.tuesday_short
+import medicalplatformmobile.shared.generated.resources.wednesday_full
 import medicalplatformmobile.shared.generated.resources.wednesday_short
 import org.jetbrains.compose.resources.stringResource
 import java.time.LocalTime
@@ -251,6 +258,18 @@ fun WeekDay.shortName(): String = when (this) {
     WeekDay.FRIDAY -> stringResource(UiRes.string.friday_short)
     WeekDay.SATURDAY -> stringResource(UiRes.string.saturday_short)
     WeekDay.SUNDAY -> stringResource(UiRes.string.sunday_short)
+    WeekDay.UNKNOWN -> "-"
+}
+
+@Composable
+fun WeekDay.fullName(): String = when (this) {
+    WeekDay.MONDAY -> stringResource(UiRes.string.monday_full)
+    WeekDay.TUESDAY -> stringResource(UiRes.string.tuesday_full)
+    WeekDay.WEDNESDAY -> stringResource(UiRes.string.wednesday_full)
+    WeekDay.THURSDAY -> stringResource(UiRes.string.thursday_full)
+    WeekDay.FRIDAY -> stringResource(UiRes.string.friday_full)
+    WeekDay.SATURDAY -> stringResource(UiRes.string.saturday_full)
+    WeekDay.SUNDAY -> stringResource(UiRes.string.sunday_full)
     WeekDay.UNKNOWN -> "-"
 }
 

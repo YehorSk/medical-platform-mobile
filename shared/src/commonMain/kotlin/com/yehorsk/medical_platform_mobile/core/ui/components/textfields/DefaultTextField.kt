@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.core.ui.components.textfields
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,73 +34,89 @@ fun DefaultTextField(
     trailingIcon: Painter? = null,
     trailingIconDescr: String = "",
     onTrailingIconClick: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
-    error: String = ""
+    error: String = "",
+    readOnly: Boolean = false,
+    enabled: Boolean = true,
 ) {
-    header?.let {
-        Text(it, fontWeight = FontWeight.Medium)
-        Spacer(modifier = Modifier.height(4.dp))
-    }
+    Column(
+        modifier = modifier
+    ) {
+        header?.let {
+            Text(it, fontWeight = FontWeight.Medium)
+            Spacer(modifier = Modifier.height(4.dp))
+        }
 
-    OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
-        value = value,
-        onValueChange = onValueChange,
-
-        leadingIcon = leadingIcon?.let { painter ->
-            {
-                Icon(
-                    painter = painter,
-                    contentDescription = leadingIconDescr
-                )
-            }
-        },
-
-        trailingIcon = trailingIcon?.let { painter ->
-            {
-                IconButton(
-                    onClick = { onTrailingIconClick?.invoke() }
-                ) {
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable { onClick() }
+                    } else {
+                        Modifier
+                    }
+                ),
+            value = value,
+            onValueChange = onValueChange,
+            readOnly = readOnly,
+            enabled = enabled,
+            leadingIcon = leadingIcon?.let { painter ->
+                {
                     Icon(
                         painter = painter,
-                        contentDescription = trailingIconDescr
+                        contentDescription = leadingIconDescr
                     )
                 }
-            }
-        },
+            },
 
-        placeholder = {
-            Text(text = placeholder)
-        },
+            trailingIcon = trailingIcon?.let { painter ->
+                {
+                    IconButton(
+                        onClick = { onTrailingIconClick?.invoke() }
+                    ) {
+                        Icon(
+                            painter = painter,
+                            contentDescription = trailingIconDescr
+                        )
+                    }
+                }
+            },
 
-        isError = error.isNotBlank(),
+            placeholder = {
+                Text(text = placeholder)
+            },
 
-        supportingText = {
-            if (error.isNotBlank()) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = error,
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-        },
+            isError = error.isNotBlank(),
 
-        shape = RoundedCornerShape(12.dp),
+            supportingText = {
+                if (error.isNotBlank()) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = error,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
 
-        colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor =
-                MaterialTheme.colorScheme.surfaceContainerHighest,
-            focusedContainerColor =
-                MaterialTheme.colorScheme.surfaceContainerHighest,
-            unfocusedBorderColor = Color.Transparent,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            errorBorderColor = MaterialTheme.colorScheme.error
-        ),
+            shape = RoundedCornerShape(12.dp),
 
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        singleLine = true
-    )
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor =
+                    MaterialTheme.colorScheme.surfaceContainerHighest,
+                focusedContainerColor =
+                    MaterialTheme.colorScheme.surfaceContainerHighest,
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                errorBorderColor = MaterialTheme.colorScheme.error
+            ),
+
+            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            singleLine = true
+        )
+    }
 }
 
 @Preview

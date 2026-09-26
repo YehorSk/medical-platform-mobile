@@ -25,9 +25,6 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
-import com.yehorsk.medical_platform_mobile.util.extractDate
-import com.yehorsk.medical_platform_mobile.util.extractTime
-import com.yehorsk.theme.AppTheme
 
 @Composable
 fun DashAppointmentItem(
