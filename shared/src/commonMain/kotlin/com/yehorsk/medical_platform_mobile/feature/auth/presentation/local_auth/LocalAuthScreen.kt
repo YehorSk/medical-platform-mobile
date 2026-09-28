@@ -62,13 +62,15 @@ import org.jetbrains.compose.resources.stringResource
 fun LocalAuthScreen(
     modifier: Modifier = Modifier,
     viewModel: LocalAuthScreenViewModel,
-    onPinIsCorrect: (UserRole) -> Unit
+    onPinIsCorrect: (UserRole) -> Unit,
+    onPinIsIncorrect: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             LocalAuthEvent.Success -> onPinIsCorrect(state.userRole!!)
+            LocalAuthEvent.TooManyFailedAttempts -> onPinIsIncorrect()
         }
     }
 

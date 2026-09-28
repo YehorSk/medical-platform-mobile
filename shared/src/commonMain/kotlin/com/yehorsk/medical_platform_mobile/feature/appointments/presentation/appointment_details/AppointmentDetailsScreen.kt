@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
@@ -57,6 +59,10 @@ fun AppointmentDetailsScreen(
     onRescheduleClicked: (String, String) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME){
+        viewModel.onResume()
+    }
 
     AppointmentDetailsScreenRoot(
         modifier = modifier,

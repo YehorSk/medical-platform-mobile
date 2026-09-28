@@ -5,6 +5,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.App
 data class AppointmentDetailsState(
     val isLoading: Boolean = false,
     val isConnected: Boolean = false,
+    val isRefreshing: Boolean = false,
     val appointment: Appointment? = null,
     val showBottomSheet: Boolean = false,
 )

@@ -6,4 +6,5 @@ data class AppointmentsListState(
     val appointments: List<Appointment> = emptyList(),
     val isConnected: Boolean = true,
     val isLoading: Boolean = false,
+    val isRefreshing: Boolean = false,
 )

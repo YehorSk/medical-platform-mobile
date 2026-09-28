@@ -11,7 +11,7 @@ import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.data.dto.request.CreateAppointmentRequestDto
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
-import com.yehorsk.medical_platform_mobile.feature.appointments.domain.ScheduleService
+import com.yehorsk.medical_platform_mobile.core.domain.service.ScheduleService
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.mappers.toDayScheduleUi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel

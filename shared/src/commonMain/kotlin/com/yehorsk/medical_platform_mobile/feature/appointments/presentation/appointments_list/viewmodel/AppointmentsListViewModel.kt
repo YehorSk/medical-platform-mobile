@@ -10,6 +10,7 @@ import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
@@ -30,19 +31,14 @@ class AppointmentsListViewModel(
     private val appointmentService: AppointmentService,
 ): ViewModel(){
 
-    private var hasLoadedInitialData = false
-
-    init {
-        observeConnectivity()
-    }
+    private var appointmentsJob: Job? = null
+    private var hasLoadedOnce: Boolean = false
+    private var hasResumedOnce: Boolean = false
 
     private val _uiState = MutableStateFlow(AppointmentsListState())
     val uiState = _uiState
         .onStart {
-            if(!hasLoadedInitialData){
-                getAllAppointments()
-                hasLoadedInitialData = true
-            }
+            loadInitialData()
         }
         .stateIn(
             scope = viewModelScope,
@@ -50,42 +46,71 @@ class AppointmentsListViewModel(
             initialValue = AppointmentsListState()
         )
 
+    init {
+        observeConnectivity()
+    }
+
     fun onAction(action: AppointmentsListAction) = Unit
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected
             .debounce(1.seconds)
             .distinctUntilChanged()
-            .drop(1)
             .onEach { connected ->
                 mainLogger.debug("Connectivity = $connected")
+                val wasConnected = _uiState.value.isConnected
                 _uiState.update { it.copy(isConnected = connected) }
-                if(connected) {
-                    mainLogger.debug("Get Appointments: wifi")
-                    getAllAppointments()
+                if (connected && !wasConnected && appointmentsJob?.isActive != true) {
+                    getAllAppointments(isRefresh = hasLoadedOnce)
                 }
             }
             .launchIn(viewModelScope)
     }
 
-    private fun getAllAppointments(){
-        viewModelScope.launch {
+    fun onResume() {
+        if (!hasResumedOnce) {
+            hasResumedOnce = true
+            return
+        }
+        refresh()
+    }
+
+    fun refresh() {
+        if (!hasLoadedOnce || appointmentsJob?.isActive == true) return
+        getAllAppointments(isRefresh = true)
+    }
+
+    private fun loadInitialData() {
+        if (hasLoadedOnce || appointmentsJob?.isActive == true) return
+        getAllAppointments(isRefresh = false)
+    }
+
+     private fun getAllAppointments(isRefresh: Boolean){
+         mainLogger.debug("getAllAppointments isRefresh=$isRefresh vm=${System.identityHashCode(this)}")
+         appointmentsJob?.cancel()
+
+         appointmentsJob = viewModelScope.launch {
             _uiState.update {
-                it.copy( isLoading = true )
+                if (isRefresh) it.copy(isRefreshing = true)
+                else it.copy(isLoading = true)
             }
             appointmentService
                 .getMyAppointments()
                 .onSuccess { response ->
+                    hasLoadedOnce = true
                     _uiState.update {
                         it.copy(
                             appointments = response.data,
-                            isLoading = false
+                            isLoading = false,
+                            isRefreshing = false,
                         )
                     }
                     mainLogger.debug("Doctors response: $response")
                 }
                 .onFailure { dataErrorRemote ->
-                    _uiState.update { it.copy(isLoading = false) }
+                    _uiState.update {
+                        it.copy(isLoading = false, isRefreshing = false)
+                    }
                     SnackbarController.sendEvent(SnackbarEvent(error = dataErrorRemote))
                 }
         }

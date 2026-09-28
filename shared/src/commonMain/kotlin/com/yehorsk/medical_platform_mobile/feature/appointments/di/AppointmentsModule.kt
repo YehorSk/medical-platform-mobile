@@ -2,7 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.di
 
 import com.yehorsk.medical_platform_mobile.feature.appointments.data.AppointmentServiceImpl
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
-import com.yehorsk.medical_platform_mobile.feature.appointments.domain.ScheduleService
+import com.yehorsk.medical_platform_mobile.core.domain.service.ScheduleService
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel.AppointmentDetailsViewModel
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.viewmodel.AppointmentsListViewModel
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentViewModel
@@ -16,5 +16,4 @@ val appointmentModule = module {
     viewModelOf(::AppointmentsListViewModel)
     viewModelOf(::AppointmentDetailsViewModel)
     singleOf(::AppointmentServiceImpl) bind AppointmentService::class
-    singleOf(::AppointmentServiceImpl) bind ScheduleService::class
 }

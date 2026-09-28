@@ -6,8 +6,15 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
+import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
+import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
+import com.yehorsk.medical_platform_mobile.core.util.onFailure
+import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginState
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsScreenEvent
 import com.yehorsk.medical_platform_mobile.util.UiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,11 +33,15 @@ import medicalplatformmobile.shared.generated.resources.error_pin_required
 
 class LocalAuthScreenViewModel(
     private val pinStorage: PinStorage,
-    private val mainLogger: MainLogger
+    private val mainLogger: MainLogger,
+    private val authService: AuthService,
+    private val sessionStorage: SessionStorage,
 ): ViewModel() {
 
     private val eventChannel = Channel<LocalAuthEvent>()
     val events = eventChannel.receiveAsFlow()
+
+    private var attempts: Int = 0
 
     private val _uiState = MutableStateFlow(LocalAuthState())
     val uiState: StateFlow<LocalAuthState> = _uiState
@@ -96,6 +107,32 @@ class LocalAuthScreenViewModel(
             )
         }
         onFormValidate()
+    }
+
+    private fun logout() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(
+                isLoading = true,
+            ) }
+            authService
+                .logout()
+                .onSuccess { response ->
+                    sessionStorage.clearAuthData()
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = response.message
+                        )
+                    )
+                    eventChannel.send(LocalAuthEvent.TooManyFailedAttempts)
+                }
+                .onFailure {  dataErrorRemote ->
+                    _uiState.update { it.copy(
+                        isLoading = false
+                    ) }
+                    sessionStorage.clearAuthData()
+                    eventChannel.send(LocalAuthEvent.TooManyFailedAttempts)
+                }
+        }
     }
 
     private fun checkPinExists() {
@@ -175,10 +212,15 @@ class LocalAuthScreenViewModel(
                                 LocalAuthEvent.Success
                             )
                         }else {
-                            _uiState.update {
-                                it.copy(
-                                    error = UiText.Resource(UiRes.string.error_pin_incorrect)
-                                )
+                            attempts++;
+                            if(attempts == 5){
+                                eventChannel.send(LocalAuthEvent.TooManyFailedAttempts)
+                            }else{
+                                _uiState.update {
+                                    it.copy(
+                                        error = UiText.Resource(UiRes.string.error_pin_incorrect)
+                                    )
+                                }
                             }
                         }
                     }

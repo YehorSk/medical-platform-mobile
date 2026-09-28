@@ -4,4 +4,6 @@ sealed interface LocalAuthEvent {
 
     data object Success: LocalAuthEvent
 
+    data object TooManyFailedAttempts: LocalAuthEvent
+
 }

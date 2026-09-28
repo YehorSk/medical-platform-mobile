@@ -97,6 +97,14 @@ fun NavGraphBuilder.authGraph(
                 viewModel = viewModel,
                 onPinIsCorrect = { role ->
                     navigateToMain(navController, role)
+                },
+                onPinIsIncorrect = {
+                    navController.navigate(Screen.Login) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
                 }
             )
         }

@@ -1,8 +1,9 @@
-package com.yehorsk.medical_platform_mobile.core.data.network
+package com.yehorsk.medical_platform_mobile.core.data.network.service
 
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toSpecialization
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.SpecializationResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.get
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.domain.service.SpecializationService
 import com.yehorsk.medical_platform_mobile.core.util.DataError

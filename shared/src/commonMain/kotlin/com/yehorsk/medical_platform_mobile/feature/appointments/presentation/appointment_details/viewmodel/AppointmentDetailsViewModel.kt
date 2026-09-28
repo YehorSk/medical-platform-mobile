@@ -10,8 +10,11 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -19,6 +22,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 class AppointmentDetailsViewModel(
     private val mainLogger: MainLogger,
@@ -27,7 +31,10 @@ class AppointmentDetailsViewModel(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private var hasLoadedInitialData = false
+    private var appointmentDetailsJob: Job? = null
+
+    private var hasLoadedOnce: Boolean = false
+    private var hasResumedOnce: Boolean = false
 
     private val appointmentId = savedStateHandle.get<String>("appointmentId")
         ?: throw IllegalStateException("Appointment id is missing")
@@ -35,10 +42,7 @@ class AppointmentDetailsViewModel(
     private val _uiState = MutableStateFlow(AppointmentDetailsState())
     val uiState = _uiState
         .onStart {
-            if(!hasLoadedInitialData){
-                getAppointment()
-                hasLoadedInitialData = true
-            }
+            loadInitialData()
         }
         .stateIn(
             scope = viewModelScope,
@@ -63,31 +67,51 @@ class AppointmentDetailsViewModel(
         }
     }
 
-    private fun getAppointment() {
-        viewModelScope.launch {
+    fun onResume() {
+        if (!hasResumedOnce) {
+            hasResumedOnce = true
+            return
+        }
+        refresh()
+    }
+
+
+    private fun refresh() {
+        if (!hasLoadedOnce || appointmentDetailsJob?.isActive == true) return
+        getAppointment(isRefresh = true)
+    }
+
+    private fun loadInitialData() {
+        if (hasLoadedOnce || appointmentDetailsJob?.isActive == true) return
+        getAppointment(isRefresh = false)
+    }
+
+    private fun getAppointment(isRefresh: Boolean) {
+        mainLogger.debug("getAppointment isRefresh=$isRefresh vm=${System.identityHashCode(this)}")
+        appointmentDetailsJob?.cancel()
+        appointmentDetailsJob = viewModelScope.launch {
             _uiState.update {
-                it.copy(
-                    isLoading = true
-                )
+                if (isRefresh) it.copy(isRefreshing = true)
+                else it.copy(isLoading = true)
             }
             appointmentService
                 .getAppointmentById(appointmentId)
                 .onSuccess { data ->
                     mainLogger.debug("Appointment ${data.data}")
+                    hasLoadedOnce = true
                     _uiState.update {
                         it.copy(
                             isLoading = false,
+                            isRefreshing = false,
                             appointment = data.data
                         )
                     }
                 }
                 .onFailure { error ->
                     _uiState.update {
-                        it.copy(isLoading = false)
+                        it.copy(isLoading = false, isRefreshing = false)
                     }
-                    SnackbarController.sendEvent(
-                        SnackbarEvent(error = error)
-                    )
+                    SnackbarController.sendEvent(SnackbarEvent(error = error))
                 }
         }
     }
@@ -121,12 +145,19 @@ class AppointmentDetailsViewModel(
         }
     }
 
+    @OptIn(FlowPreview::class)
     private fun observeConnectivity() {
+        var previous: Boolean? = null
         connectivityObserver.isConnected
+            .debounce(1.seconds)
             .distinctUntilChanged()
             .onEach { connected ->
                 mainLogger.debug("Connectivity = $connected")
                 _uiState.update { it.copy(isConnected = connected) }
+                if (previous == false && connected && appointmentDetailsJob?.isActive != true) {
+                    getAppointment(isRefresh = hasLoadedOnce)
+                }
+                previous = connected
             }
             .launchIn(viewModelScope)
     }

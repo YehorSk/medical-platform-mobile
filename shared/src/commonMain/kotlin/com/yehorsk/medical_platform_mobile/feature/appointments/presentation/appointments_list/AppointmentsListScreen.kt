@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
@@ -34,6 +36,10 @@ fun AppointmentsListScreen(
     role: UserRole
     ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME){
+        viewModel.onResume()
+    }
 
     AppointmentsListScreenRoot(
         modifier = modifier,
@@ -77,8 +83,7 @@ fun AppointmentsListScreenRoot(
                 ) {
                     CircularProgressIndicator()
                 }
-            }
-            if (!state.isConnected) {
+            }else if(!state.isConnected){
                 NoConnectionBanner(
                     modifier = Modifier.fillMaxSize()
                 )

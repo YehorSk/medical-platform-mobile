@@ -1,14 +1,15 @@
-package com.yehorsk.medical_platform_mobile.core.data.network
+package com.yehorsk.medical_platform_mobile.core.data.network.service
 
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toDoctor
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toDoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.data.mappers.toGetDoctorsWithFilterDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.GetDoctorsWithFilterDto
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorDetailsResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.DoctorResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.PagedResponseDto
+import com.yehorsk.medical_platform_mobile.core.data.network.get
+import com.yehorsk.medical_platform_mobile.core.data.network.post
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
 import com.yehorsk.medical_platform_mobile.core.domain.model.DoctorDetailsResponse
 import com.yehorsk.medical_platform_mobile.core.domain.service.DoctorService
