@@ -30,15 +30,15 @@ fun DefaultButton(
     textColor: Color = Color.Unspecified,
     text: String,
     leadingIcon: Painter? = null,
-    isLoading: Boolean = false,
-    isEnabled: Boolean = true
+    loading: Boolean = false,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = { onClick() },
         modifier = modifier
             .fillMaxWidth()
             .height(52.dp),
-        enabled = isEnabled,
+        enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(containerColor = color)
     ) {
@@ -52,7 +52,7 @@ fun DefaultButton(
                 modifier = Modifier
                     .size(15.dp)
                     .alpha(
-                        alpha = if (isLoading) 1f else 0f
+                        alpha = if (loading) 1f else 0f
                     ),
                 strokeWidth = 1.5.dp,
                 color = Color.Black
@@ -64,7 +64,7 @@ fun DefaultButton(
                 ),
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.alpha(
-                    if (isLoading) 0f else 1f
+                    if (loading) 0f else 1f
                 )
             ) {
                 if (leadingIcon != null) {

@@ -193,7 +193,7 @@ fun AppointmentDetailsScreenRoot(
                             DefaultButton(
                                 modifier = Modifier.padding(vertical = 12.dp),
                                 text = stringResource(UiRes.string.mark_completed),
-                                isEnabled = state.isConnected && isEnabled,
+                                enabled = state.isConnected && isEnabled,
                                 onClick = {
 //                                    onAction(
 //                                        AppointmentDetailsAction.ShowBottomSheet
@@ -207,7 +207,7 @@ fun AppointmentDetailsScreenRoot(
                                         AppointmentDetailsAction.OnCreateMedicalRecordClicked
                                     )
                                 },
-                                isEnabled = state.isConnected && isEnabled,
+                                enabled = state.isConnected && isEnabled,
                                 text = stringResource(UiRes.string.create_medical_record),
                                 leadingIcon = painterResource(UiRes.drawable.add_24px),
                                 color = MaterialTheme.colorScheme.primary,
@@ -217,7 +217,7 @@ fun AppointmentDetailsScreenRoot(
                         DefaultButton(
                             modifier = Modifier.padding(vertical = 12.dp),
                             text = stringResource(UiRes.string.reschedule_btn),
-                            isEnabled = state.isConnected && isEnabled,
+                            enabled = state.isConnected && isEnabled,
                             onClick = {
                                 onAction(
                                     AppointmentDetailsAction.OnRescheduleClicked
@@ -229,7 +229,7 @@ fun AppointmentDetailsScreenRoot(
                             text = stringResource(UiRes.string.cancel_btn),
                             textColor = MaterialTheme.colorScheme.onErrorContainer,
                             color = MaterialTheme.colorScheme.errorContainer,
-                            isEnabled = state.isConnected && isEnabled,
+                            enabled = state.isConnected && isEnabled,
                             onClick = {
                                 onAction(
                                     AppointmentDetailsAction.OnCancelClicked

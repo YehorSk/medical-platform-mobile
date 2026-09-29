@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyHitRegion
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyRegion
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
+import io.github.vinceglb.filekit.PlatformFile
 
 sealed interface CreateRecordAction {
 
@@ -23,4 +24,8 @@ sealed interface CreateRecordAction {
     data object OnCreateMedicalRecordClicked: CreateRecordAction
 
     data object OnGoBackClicked: CreateRecordAction
+
+    data class FilesPicked(val files: List<PlatformFile>) : CreateRecordAction
+    data class FileRemoved(val file: PlatformFile) : CreateRecordAction
+    data object ClearFiles : CreateRecordAction
 }

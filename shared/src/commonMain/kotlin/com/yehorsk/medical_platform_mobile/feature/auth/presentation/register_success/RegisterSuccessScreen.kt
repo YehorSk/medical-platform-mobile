@@ -143,8 +143,8 @@ fun RegisterSuccessScreenRoot(
                 DefaultButton(
                     onClick = { onAction(RegisterSuccessAction.OnResendVerificationEmailClick) },
                     text = stringResource(UiRes.string.resend_verification_email),
-                    isEnabled = !state.isLoading,
-                    isLoading = state.isLoading
+                    enabled = !state.isLoading,
+                    loading = state.isLoading
                 )
             }
         }

@@ -134,7 +134,7 @@ fun BookAppointmentScreenRoot(
                                 DefaultButton(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
-                                    isEnabled = (state.isConnected),
+                                    enabled = (state.isConnected),
                                     text = stringResource(UiRes.string.select_date),
                                     onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Time)) }
                                 )
@@ -158,7 +158,7 @@ fun BookAppointmentScreenRoot(
                                 DefaultButton(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
-                                    isEnabled = (state.form.selectedTime != null && state.isConnected),
+                                    enabled = (state.form.selectedTime != null && state.isConnected),
                                     text = stringResource(UiRes.string.select_a_time_slot),
                                     onClick = { onAction(BookAppointmentAction.OnGoToNextStateClicked(BookingStep.Confirm)) }
                                 )

@@ -1,6 +1,8 @@
 package com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -86,6 +88,30 @@ fun DetailsPane(
                 )
             }
         )
+        MultiFilePicker(
+            modifier = Modifier.padding(vertical = 12.dp),
+            files = state.files,
+            onFilesPicked = { onAction(CreateRecordAction.FilesPicked(it)) },
+            onFileRemoved = { onAction(CreateRecordAction.FileRemoved(it)) },
+            extensions = listOf("pdf", "png", "jpg"),
+            enabled = state.canAddMore && !state.isSubmitting,
+        )
+        Row(
+            modifier = Modifier.padding(vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            DefaultButton(
+                onClick = { onAction(CreateRecordAction.ClearFiles) },
+                enabled = state.files.isNotEmpty() && !state.isSubmitting,
+                text = "Clear"
+            )
+
+            DefaultButton(
+                onClick = {  },
+                enabled = state.canSubmit,
+                text = "Submit"
+            )
+        }
         DefaultButton(
             modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(UiRes.string.record_save),

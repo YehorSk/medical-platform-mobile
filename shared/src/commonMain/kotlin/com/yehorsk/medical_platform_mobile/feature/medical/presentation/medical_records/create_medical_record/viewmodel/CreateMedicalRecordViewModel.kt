@@ -17,6 +17,7 @@ import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyReg
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.service.MedicalRecordService
 import com.yehorsk.medical_platform_mobile.util.getRole
+import io.github.vinceglb.filekit.path
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -74,6 +75,22 @@ class CreateMedicalRecordViewModel(
             is CreateRecordAction.OnTitleUpdated -> onTitleUpdated(action.title)
             CreateRecordAction.OnCreateMedicalRecordClicked -> createMedicalRecord()
             CreateRecordAction.OnGoBackClicked -> {}
+            is CreateRecordAction.FilesPicked -> _uiState.update { current ->
+                current.copy(
+                    files = (current.files + action.files)
+                        .distinctBy { it.path }
+                        .take(current.maxFiles)
+                )
+            }
+
+            is CreateRecordAction.FileRemoved -> _uiState.update {
+                it.copy(files = it.files - action.file)
+            }
+
+            CreateRecordAction.ClearFiles -> _uiState.update {
+                it.copy(files = emptyList())
+            }
+
         }
     }
 

@@ -86,6 +86,11 @@ kotlin {
             implementation(libs.material3.adaptive.navigation.suite)
             implementation(libs.material3.window.size.class1)
             implementation(libs.material.icons)
+
+            implementation(libs.filekit.core)
+            implementation(libs.filekit.coil)
+            implementation(libs.filekit.dialogs)
+            implementation(libs.filekit.dialogs.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

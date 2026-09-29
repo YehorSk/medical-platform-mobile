@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.compose.uiToolingPreview)
+    implementation(libs.filekit.core)
+    implementation(libs.filekit.dialogs.compose)
     debugImplementation(libs.compose.uiTooling)
 }
 

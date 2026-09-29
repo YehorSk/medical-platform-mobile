@@ -46,7 +46,6 @@ import medicalplatformmobile.shared.generated.resources.insurance_provider
 import medicalplatformmobile.shared.generated.resources.insurance_title
 import medicalplatformmobile.shared.generated.resources.medical_card
 import medicalplatformmobile.shared.generated.resources.please_verify_medical_card
-import medicalplatformmobile.shared.generated.resources.save_btn
 import medicalplatformmobile.shared.generated.resources.save_medical_card
 import medicalplatformmobile.shared.generated.resources.save_medical_card_btn
 import medicalplatformmobile.shared.generated.resources.shield_24px
@@ -204,7 +203,7 @@ fun MedicalCardScreenRoot(
                     modifier = Modifier
                         .padding(vertical = 12.dp),
                     text = stringResource(UiRes.string.save_medical_card),
-                    isLoading = state.isLoading,
+                    loading = state.isLoading,
                     onClick = {
                         onAction(
                             MedicalCardAction.ShowSaveConfirmationDialog

@@ -9,11 +9,11 @@ androidx-core = "1.19.0"
 androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.11.0"
 androidx-testExt = "1.3.0"
-composeMultiplatform = "1.11.1"
+composeMultiplatform = "1.12.1"
 junit = "4.13.2"
 kotlin = "2.4.10"
 kotlinx-coroutines = "1.11.0"
-material3 = "1.11.0-alpha07"
+material3 = "1.12.0-alpha03"
 koin = "4.2.2"
 navigation-compose = "2.9.2"
 kotlinx-datetime = "0.8.0"
@@ -23,13 +23,13 @@ ktor = "3.6.0"
 datastoreCore = "1.2.1"
 kermit = "2.2.0"
 paging = "3.5.0"
-material3WindowSizeClass = "1.9.0"
-material3-adaptive = "1.2.0"
+material3-adaptive = "1.3.0-rc01"
 material-icons = "1.7.3"
 kizitonwose = "2.10.1"
 navigationevent = "1.1.0"
 firebase-bom = "34.19.0"
 google-services = "4.5.0"
+filekit = "0.16.0"
 
 
 [libraries]
@@ -50,8 +50,8 @@ compose-material3 = { module = "org.jetbrains.compose.material3:material3", vers
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
 compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
 compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
-material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "material3WindowSizeClass" }
-material3-window-size-class1 = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3WindowSizeClass" }
+material3-adaptive-navigation-suite = { module = "org.jetbrains.compose.material3:material3-adaptive-navigation-suite", version.ref = "material3" }
+material3-window-size-class1 = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "material3" }
 material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "material3-adaptive" }
 material-icons = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "material-icons" }
 
@@ -100,6 +100,12 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 kizitonwose-calendar = { module = "com.kizitonwose.calendar:compose-multiplatform", version.ref = "kizitonwose"}
+
+# Filekit
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekit-coil = { module = "io.github.vinceglb:filekit-coil", version.ref = "filekit" }
+filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
+filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

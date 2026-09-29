@@ -87,8 +87,8 @@ fun DestructiveConfirmationDialog(
                         modifier = Modifier.weight(1f),
                         text = confirmButtonText,
                         onClick = onConfirmClick,
-                        isEnabled = isConfirmEnabled,
-                        isLoading = isConfirmLoading
+                        enabled = isConfirmEnabled,
+                        loading = isConfirmLoading
                     )
                 }
             }
