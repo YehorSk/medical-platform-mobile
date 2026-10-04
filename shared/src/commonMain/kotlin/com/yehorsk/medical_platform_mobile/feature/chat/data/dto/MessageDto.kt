@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class MessageDto(
     val id: String,
     val conversationId: String,
-    val senderId: String,
+    val sender: ParticipantDto,
     val content: String,
     val createdAt: String
 )

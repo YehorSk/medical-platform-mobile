@@ -59,7 +59,7 @@ fun ChatListScreenRoot(
         )
         Box(modifier = Modifier.fillMaxSize()) {
             when {
-                state.isLoading -> {
+                state.isLoading || state.authData == null -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -81,6 +81,7 @@ fun ChatListScreenRoot(
                         ) { conversation ->
                             ConversationItem(
                                 conversation = conversation,
+                                localUser = state.authData,
                                 onClick = { onAction(ChatListAction.OnConversationClick(conversation)) }
                             )
                             HorizontalDivider(

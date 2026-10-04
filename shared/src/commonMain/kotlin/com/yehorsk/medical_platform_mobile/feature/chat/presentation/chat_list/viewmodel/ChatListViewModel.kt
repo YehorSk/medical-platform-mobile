@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
+import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -26,7 +27,8 @@ import kotlinx.coroutines.launch
 class ChatListViewModel(
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver,
-    private val conversationService: ConversationService
+    private val conversationService: ConversationService,
+    private val sessionStorage: SessionStorage
 ): ViewModel() {
 
     private var hasLoadedInitialData = false
@@ -46,6 +48,7 @@ class ChatListViewModel(
         )
 
     init {
+        observeAuthData()
         observeConnectivity()
     }
 
@@ -53,6 +56,17 @@ class ChatListViewModel(
         when (action) {
             ChatListAction.Refresh -> getConversations()
             is ChatListAction.OnConversationClick -> onConversationClick(action.conversation)
+        }
+    }
+
+    private fun observeAuthData() {
+        viewModelScope.launch {
+            sessionStorage.observeAuthData()
+                .collect { authData ->
+                    _uiState.update {
+                        it.copy(authData = authData)
+                    }
+                }
         }
     }
 

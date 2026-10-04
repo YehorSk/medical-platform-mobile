@@ -7,5 +7,5 @@ data class Conversation(
     val patient: Participant,
     val doctor: Participant,
     val lastMessageAt: Instant? = null,
-    val lastMessage: Message
+    val lastMessage: Message? = null
 )

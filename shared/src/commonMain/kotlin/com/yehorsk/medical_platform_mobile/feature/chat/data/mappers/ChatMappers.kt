@@ -14,7 +14,7 @@ fun ConversationDto.toDomain(): Conversation =
         patient = patient.toDomain(),
         doctor = doctor.toDomain(),
         lastMessageAt = lastMessageAt?.let(Instant::parse),
-        lastMessage = lastMessage.toDomain()
+        lastMessage = lastMessage?.toDomain()
     )
 
 fun ParticipantDto.toDomain(): Participant =
@@ -30,7 +30,7 @@ fun MessageDto.toDomain(): Message =
     Message(
         id = id,
         conversationId = conversationId,
-        senderId = senderId,
+        sender = sender.toDomain(),
         content = content,
         createdAt = Instant.parse(createdAt)
     )

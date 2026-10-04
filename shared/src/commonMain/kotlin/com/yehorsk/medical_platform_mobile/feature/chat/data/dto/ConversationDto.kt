@@ -8,5 +8,5 @@ data class ConversationDto(
     val patient: ParticipantDto,
     val doctor: ParticipantDto,
     val lastMessageAt: String? = null,
-    val lastMessage: MessageDto
+    val lastMessage: MessageDto? = null
 )

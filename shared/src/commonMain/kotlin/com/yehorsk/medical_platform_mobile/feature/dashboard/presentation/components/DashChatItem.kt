@@ -1,7 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
-import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
 import com.yehorsk.medical_platform_mobile.util.formatTimeAgo
 import com.yehorsk.medical_platform_mobile.util.toText
 
@@ -36,79 +34,79 @@ fun DashChatItem(
     conversation: Conversation,
     onClick: () -> Unit
 ) {
-    val lastMessage = conversation.lastMessage
-    val patient = conversation.patient
-    val doctor = conversation.doctor
-    val sender = if(lastMessage.senderId == patient.userId) {
-        patient
-    }else{
-        doctor
-    }
-    val senderName = "${sender.title} ${sender.firstName} ${sender.lastName}"
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(12.dp)
-            )
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(contentAlignment = Alignment.TopEnd) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Color(0xFFE0E0E0), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = sender.firstName.first().uppercaseChar().toString(),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    color = Color(0xFF717182)
-                )
-            }
-//            if (!lastMessage.isRead) {
-//                Box(
-//                    modifier = Modifier
-//                        .size(10.dp)
-//                        .background(Color(0xFF2B5CE6), CircleShape)
-//                        .border(2.dp, Color.White, CircleShape)
+//    val lastMessage = conversation.lastMessage
+//    val patient = conversation.patient
+//    val doctor = conversation.doctor
+//    val sender = if(lastMessage.sender.userId == patient.userId) {
+//        patient
+//    }else{
+//        doctor
+//    }
+//    val senderName = "${sender.title} ${sender.firstName} ${sender.lastName}"
+//    Row(
+//        modifier = modifier
+//            .fillMaxWidth()
+//            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
+//            .background(
+//                color = MaterialTheme.colorScheme.surface,
+//                shape = RoundedCornerShape(12.dp)
+//            )
+//            .clickable { onClick() }
+//            .padding(horizontal = 16.dp, vertical = 12.dp),
+//        verticalAlignment = Alignment.CenterVertically
+//    ) {
+//        Box(contentAlignment = Alignment.TopEnd) {
+//            Box(
+//                modifier = Modifier
+//                    .size(48.dp)
+//                    .background(Color(0xFFE0E0E0), CircleShape),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Text(
+//                    text = sender.firstName.first().uppercaseChar().toString(),
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 18.sp,
+//                    color = Color(0xFF717182)
 //                )
 //            }
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = senderName,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = lastMessage.content,
-                fontSize = 14.sp,
-                color = Color(0xFF717182),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        Text(
-            text = formatTimeAgo(lastMessage.createdAt.toString()).toText(),
-            fontSize = 12.sp,
-            color = Color(0xFF717182)
-        )
-    }
+////            if (!lastMessage.isRead) {
+////                Box(
+////                    modifier = Modifier
+////                        .size(10.dp)
+////                        .background(Color(0xFF2B5CE6), CircleShape)
+////                        .border(2.dp, Color.White, CircleShape)
+////                )
+////            }
+//        }
+//
+//        Spacer(modifier = Modifier.width(12.dp))
+//
+//        Column(modifier = Modifier.weight(1f)) {
+//            Text(
+//                text = senderName,
+//                fontWeight = FontWeight.SemiBold,
+//                fontSize = 16.sp,
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//            Spacer(modifier = Modifier.height(2.dp))
+//            Text(
+//                text = lastMessage.content,
+//                fontSize = 14.sp,
+//                color = Color(0xFF717182),
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
+//        }
+//
+//        Spacer(modifier = Modifier.width(8.dp))
+//
+//        Text(
+//            text = formatTimeAgo(lastMessage.createdAt.toString()).toText(),
+//            fontSize = 12.sp,
+//            color = Color(0xFF717182)
+//        )
+//    }
 }
 
 //@Preview

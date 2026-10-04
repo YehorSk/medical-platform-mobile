@@ -5,7 +5,7 @@ import kotlin.time.Instant
 data class Message(
     val id: String,
     val conversationId: String,
-    val senderId: String,
+    val sender: Participant,
     val content: String,
     val createdAt: Instant
 )

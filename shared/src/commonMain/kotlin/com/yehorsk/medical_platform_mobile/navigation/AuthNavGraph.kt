@@ -162,6 +162,5 @@ private fun navigateToMain(navController: NavController, role: UserRole){
                 inclusive = true
             }
         }
-        UserRole.ADMIN -> {}
     }
 }
