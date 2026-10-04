@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.User
 import com.yehorsk.medical_platform_mobile.core.ui.AppState
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.DashboardTopBar
-import com.yehorsk.medical_platform_mobile.util.conversations
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
@@ -102,7 +101,7 @@ fun PatientDashboardScreenRoot(
                 onAction(DashboardAction.OnNavigateToChatScreen)
             },
             content = {
-                if (conversations.isEmpty()) {
+//                if (conversations.isEmpty()) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -111,15 +110,15 @@ fun PatientDashboardScreenRoot(
                         text = stringResource(UiRes.string.no_recent_messages),
                         fontSize = 14.sp
                     )
-                }else{
-                    conversations.forEach { conversation ->
-                        DashChatItem(
-                            message = conversation.lastMessage,
-                            onClick = {  }
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
+//                }else{
+//                    conversations.forEach { conversation ->
+//                        DashChatItem(
+//                            conversation = conversation,
+//                            onClick = {  }
+//                        )
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                    }
+//                }
             }
         )
         ContentBlock(

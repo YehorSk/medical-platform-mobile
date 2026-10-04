@@ -23,21 +23,28 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Message
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
-import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
 import com.yehorsk.medical_platform_mobile.util.formatTimeAgo
 import com.yehorsk.medical_platform_mobile.util.toText
 
 @Composable
 fun DashChatItem(
     modifier: Modifier = Modifier,
-    message: Message,
+    conversation: Conversation,
     onClick: () -> Unit
 ) {
+    val lastMessage = conversation.lastMessage
+    val patient = conversation.patient
+    val doctor = conversation.doctor
+    val sender = if(lastMessage.senderId == patient.userId) {
+        patient
+    }else{
+        doctor
+    }
+    val senderName = "${sender.title} ${sender.firstName} ${sender.lastName}"
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -58,27 +65,27 @@ fun DashChatItem(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = message.sender.firstName.first().uppercaseChar().toString(),
+                    text = sender.firstName.first().uppercaseChar().toString(),
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = Color(0xFF717182)
                 )
             }
-            if (!message.isRead) {
-                Box(
-                    modifier = Modifier
-                        .size(10.dp)
-                        .background(Color(0xFF2B5CE6), CircleShape)
-                        .border(2.dp, Color.White, CircleShape)
-                )
-            }
+//            if (!lastMessage.isRead) {
+//                Box(
+//                    modifier = Modifier
+//                        .size(10.dp)
+//                        .background(Color(0xFF2B5CE6), CircleShape)
+//                        .border(2.dp, Color.White, CircleShape)
+//                )
+//            }
         }
 
         Spacer(modifier = Modifier.width(12.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "${message.sender.title} ${message.sender.firstName} ${message.sender.lastName}",
+                text = senderName,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 16.sp,
                 maxLines = 1,
@@ -86,7 +93,7 @@ fun DashChatItem(
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = message.content,
+                text = lastMessage.content,
                 fontSize = 14.sp,
                 color = Color(0xFF717182),
                 maxLines = 1,
@@ -97,7 +104,7 @@ fun DashChatItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = formatTimeAgo(message.createdAt.toString()).toText(),
+            text = formatTimeAgo(lastMessage.createdAt.toString()).toText(),
             fontSize = 12.sp,
             color = Color(0xFF717182)
         )

@@ -27,10 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.Clinic
 import com.yehorsk.medical_platform_mobile.core.domain.model.Doctor
-import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
-import com.yehorsk.medical_platform_mobile.core.domain.model.User
-import com.yehorsk.medical_platform_mobile.core.domain.model.Workplace
-import com.yehorsk.medical_platform_mobile.util.fakeDoctor
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.arrow_forward_ios_24px
 import medicalplatformmobile.shared.generated.resources.star_rate_24px
@@ -135,15 +131,15 @@ fun DoctorCard(
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun DoctorCardPreview() {
-    MaterialTheme {
-        DoctorCard(
-            doctor = fakeDoctor,
-            onClick = {},
-            rating = 10f,
-            reviewsCount = 10
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DoctorCardPreview() {
+//    MaterialTheme {
+//        DoctorCard(
+//            doctor = fakeDoctor,
+//            onClick = {},
+//            rating = 10f,
+//            reviewsCount = 10
+//        )
+//    }
+//}

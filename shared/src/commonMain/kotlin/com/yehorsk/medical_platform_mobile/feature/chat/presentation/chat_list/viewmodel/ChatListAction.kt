@@ -1,6 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel
 
-import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
 
 sealed interface ChatListAction {
     data object Refresh : ChatListAction

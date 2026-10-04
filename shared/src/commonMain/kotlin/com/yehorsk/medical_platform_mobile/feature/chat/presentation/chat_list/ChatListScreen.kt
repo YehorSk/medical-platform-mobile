@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.medical_platform_mobile.core.domain.model.Conversation
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.components.ConversationItem
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListAction
@@ -61,13 +61,6 @@ fun ChatListScreenRoot(
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                state.error != null -> {
-                    Text(
-                        text = state.error,
-                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
