@@ -10,7 +10,10 @@ interface ConversationService {
 
     suspend fun getAllConversations(): Result<ApiResponseWithData<List<Conversation>>, DataError.Remote>
 
-    suspend fun getConversationMessages(): Result<ApiResponseWithData<List<Message>>, DataError.Remote>
+    suspend fun getConversationMessages(
+        conversationId: String,
+        limit: Int = 50
+    ): Result<ApiResponseWithData<List<Message>>, DataError.Remote>
 
     suspend fun getConversationById(id: String): Result<ApiResponseWithData<Conversation>, DataError.Remote>
 

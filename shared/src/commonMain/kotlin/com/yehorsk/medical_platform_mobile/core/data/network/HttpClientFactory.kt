@@ -19,6 +19,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -54,6 +55,9 @@ class HttpClientFactory(
                     }
                 }
                 level = LogLevel.ALL
+            }
+            install(WebSockets) {
+                pingIntervalMillis = 20_000L
             }
             defaultRequest {
                 contentType(ContentType.Application.Json)

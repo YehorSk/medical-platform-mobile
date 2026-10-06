@@ -135,6 +135,6 @@ class ChatListViewModel(
     }
 
     companion object {
-        private const val POLL_INTERVAL_MS = 10_000L
+        private const val POLL_INTERVAL_MS = 10000_000L
     }
 }

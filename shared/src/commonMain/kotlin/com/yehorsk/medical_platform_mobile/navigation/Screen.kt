@@ -27,6 +27,7 @@ sealed interface Screen {
     @Serializable data object Connect : Screen
     @Serializable data object Health : Screen
     @Serializable data object Chat : Screen
+    @Serializable data class ChatDetails(val chatId: String) : Screen
     @Serializable data object Settings : Screen
     @Serializable data object Profile : Screen
     @Serializable data object UpdatePwd : Screen

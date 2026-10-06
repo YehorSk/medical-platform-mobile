@@ -4,6 +4,8 @@ import com.yehorsk.medical_platform_mobile.core.data.datastore.PinDataStore
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SessionDataStore
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SettingsDataStore
 import com.yehorsk.medical_platform_mobile.core.data.logger.KermitLogger
+import com.yehorsk.medical_platform_mobile.core.data.network.ConnectionRetryHandler
+import com.yehorsk.medical_platform_mobile.core.data.network.KtorWebSocketConnector
 import com.yehorsk.medical_platform_mobile.core.data.network.service.DoctorServiceImpl
 import com.yehorsk.medical_platform_mobile.core.data.network.service.ScheduleServiceImpl
 import com.yehorsk.medical_platform_mobile.core.data.network.service.SpecializationServiceImpl
@@ -15,6 +17,10 @@ import com.yehorsk.medical_platform_mobile.core.domain.service.DoctorService
 import com.yehorsk.medical_platform_mobile.core.domain.service.ScheduleService
 import com.yehorsk.medical_platform_mobile.core.domain.service.SpecializationService
 import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -24,8 +30,18 @@ expect val platformCoreDataModule: Module
 
 val coreDataModule = module {
     includes(platformCoreDataModule)
+    single {
+        CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    }
+    single {
+        Json {
+            ignoreUnknownKeys = true
+        }
+    }
     singleOf(::SessionDataStore) bind SessionStorage::class
     singleOf(::PinDataStore) bind PinStorage::class
+    singleOf(::KtorWebSocketConnector)
+    singleOf(::ConnectionRetryHandler)
     singleOf(::SettingsDataStore) bind SettingsStorage::class
     singleOf(::SpecializationServiceImpl) bind SpecializationService::class
     singleOf(::ScheduleServiceImpl) bind ScheduleService::class

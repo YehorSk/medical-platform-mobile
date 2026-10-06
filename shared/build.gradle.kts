@@ -38,6 +38,7 @@ kotlin {
             }
         }
         androidMain.dependencies {
+            implementation(libs.androidx.lifecycle.process)
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
