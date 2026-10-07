@@ -336,4 +336,8 @@
     <string name="insurance_union">UNION</string>
     <string name="insurance_policy_member_id">Policy / Member ID</string>
 
+    <string name="you">You</string>
+    <string name="no_messages">No messages</string>
+    <string name="no_messages_subtitle">Be the first one to send a message!</string>
+
 </resources>

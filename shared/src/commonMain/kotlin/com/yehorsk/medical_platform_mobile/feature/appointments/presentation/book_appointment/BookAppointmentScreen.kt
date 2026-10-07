@@ -22,6 +22,7 @@ import androidx.navigationevent.compose.NavigationEventHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultContentCard
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultMultilineTextField
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.component.AppointmentCalendar
@@ -177,10 +178,10 @@ fun BookAppointmentScreenRoot(
                                 DefaultMultilineTextField(
                                     modifier = Modifier
                                         .padding(vertical = 12.dp),
-                                    placeholder = "Describe your symptoms or reason for visit...",
-                                    header = "NOTE FOR DOCTOR (optional)",
+                                    minLines = 3,
+                                    placeholder = "NOTE FOR DOCTOR (optional)",
                                     value = state.form.note,
-                                    onValueChange = { 
+                                    onValueChange = {
                                         onAction(BookAppointmentAction.OnNoteChanged(it))
                                     }
                                 )

@@ -72,6 +72,7 @@ fun DetailsPane(
             content = {
                 DefaultMultilineTextField(
                     value = state.form.diagnosis,
+                    minLines = 3,
                     placeholder = stringResource(UiRes.string.record_diagnosis_placeholder),
                     onValueChange = { onAction(CreateRecordAction.OnDiagnosisUpdated(it)) }
                 )
@@ -83,6 +84,7 @@ fun DetailsPane(
             content = {
                 DefaultMultilineTextField(
                     value = state.form.recommendations,
+                    minLines = 3,
                     placeholder = stringResource(UiRes.string.record_recommendations_placeholder),
                     onValueChange = { onAction(CreateRecordAction.OnRecommendationsUpdated(it)) }
                 )

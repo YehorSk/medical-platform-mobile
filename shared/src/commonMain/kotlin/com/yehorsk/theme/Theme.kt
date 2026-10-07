@@ -35,7 +35,7 @@ data class ExtendedColors(
     val statusConfirmed: Color,
     val statusRejected: Color,
     val statusCancelled: Color,
-    val statusCompleted: Color,
+    val statusCompleted: Color
 
 )
 

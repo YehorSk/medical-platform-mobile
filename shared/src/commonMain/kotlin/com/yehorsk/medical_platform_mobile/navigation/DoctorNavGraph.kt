@@ -9,9 +9,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.ChatDetailScreen
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.FindPatientScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
@@ -63,8 +65,19 @@ fun NavGraphBuilder.doctorNavGraph(
         composable<Screen.Chat> {
             ChatListScreen(
                 modifier = modifier,
-                onConversationClick = {
-
+                onConversationClick = { conversation ->
+                    navController.navigate(Screen.ChatDetails(conversation.id))
+                },
+            )
+        }
+        composable<Screen.ChatDetails> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.ChatDetails>()
+            ChatDetailScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                chatId = args.chatId,
+                onGoBackClicked = {
+                    navController.popBackStack()
                 },
             )
         }
