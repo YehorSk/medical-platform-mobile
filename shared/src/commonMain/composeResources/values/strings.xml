@@ -358,6 +358,7 @@
     <string name="chat_role_patient">Patient</string>
     <string name="chat_participant_email">Email</string>
     <string name="chat_close">Close</string>
+    <string name="chat_you_prefix">You: </string>
 
     <string name="password_changed_relogin">Password changed, please log in again</string>
     <string name="error_reset_code_expired">The code has expired, please request a new one</string>
