@@ -30,6 +30,7 @@ import medicalplatformmobile.shared.generated.resources.error_pin_incorrect
 import medicalplatformmobile.shared.generated.resources.error_pin_invalid
 import medicalplatformmobile.shared.generated.resources.error_pin_mismatch
 import medicalplatformmobile.shared.generated.resources.error_pin_required
+import org.koin.viewmodel.resolveViewModel
 
 class LocalAuthScreenViewModel(
     private val pinStorage: PinStorage,
@@ -109,23 +110,22 @@ class LocalAuthScreenViewModel(
         onFormValidate()
     }
 
-    private fun logout() {
+    private fun auth() {
         viewModelScope.launch {
             _uiState.update { it.copy(
                 isLoading = true,
             ) }
             authService
-                .logout()
-                .onSuccess { response ->
-                    sessionStorage.clearAuthData()
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            message = response.message
-                        )
+                .me()
+                .onSuccess {
+                    _uiState.update { it.copy(
+                        isLoading = false
+                    ) }
+                    eventChannel.send(
+                        LocalAuthEvent.Success
                     )
-                    eventChannel.send(LocalAuthEvent.TooManyFailedAttempts)
                 }
-                .onFailure {  dataErrorRemote ->
+                .onFailure {
                     _uiState.update { it.copy(
                         isLoading = false
                     ) }
@@ -190,7 +190,7 @@ class LocalAuthScreenViewModel(
                             return@launch
                         }
                         pinStorage.setPin(id, _uiState.value.pinCode)
-                        eventChannel.send(LocalAuthEvent.Success)
+                        auth()
                     }
                     LocalAuthType.ENTER_PIN -> {
                         if (!isPinValid(_uiState.value.pinCode)) {
@@ -208,9 +208,7 @@ class LocalAuthScreenViewModel(
                         )
 
                         if (isCorrect) {
-                            eventChannel.send(
-                                LocalAuthEvent.Success
-                            )
+                            auth()
                         }else {
                             attempts++;
                             if(attempts == 5){

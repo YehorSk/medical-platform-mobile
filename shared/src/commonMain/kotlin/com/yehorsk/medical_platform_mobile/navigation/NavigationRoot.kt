@@ -1,7 +1,6 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -26,7 +25,7 @@ fun NavigationRoot(
         navController = navController,
         snackbarHostState = snackbarHostState,
         userRole = userRole,
-        content = { paddingValues ->
+        screenContent = {
             NavHost(
                 navController = navController,
                 startDestination = startDestination
@@ -38,11 +37,9 @@ fun NavigationRoot(
                     userRole = userRole
                 )
                 patientNavGraph(
-                    modifier = Modifier.padding(paddingValues),
                     navController = navController
                 )
                 doctorNavGraph(
-                    modifier = Modifier.padding(paddingValues),
                     navController = navController
                 )
             }

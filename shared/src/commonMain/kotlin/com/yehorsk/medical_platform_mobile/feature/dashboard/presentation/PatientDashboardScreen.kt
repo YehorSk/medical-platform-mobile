@@ -23,6 +23,7 @@ import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.DashboardT
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.ContentBlock
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.DashChatItem
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.FindDoctorsButton
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.RecentConversationsBlock
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardAction
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardState
 import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardViewModel
@@ -41,7 +42,8 @@ fun PatientDashboardScreen(
     viewModel: DashboardViewModel = koinViewModel(),
     navigateToDoctorsScreen: () -> Unit,
     navigateToChatScreen: () -> Unit,
-    navigateToAppointmentsScreen: () -> Unit
+    navigateToAppointmentsScreen: () -> Unit,
+    navigateToConversation: (String) -> Unit
 ){
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,6 +56,7 @@ fun PatientDashboardScreen(
                 DashboardAction.OnNavigateToAppointmentsScreen -> { navigateToAppointmentsScreen() }
                 DashboardAction.OnNavigateToChatScreen -> { navigateToChatScreen() }
                 DashboardAction.OnNavigateToDoctorsScreen -> { navigateToDoctorsScreen() }
+                is DashboardAction.OnConversationClick -> { navigateToConversation(action.conversationId) }
             }
         }
     )
@@ -93,32 +96,15 @@ fun PatientDashboardScreenRoot(
 //            content = {
 //            }
 //        )
-        ContentBlock(
+        RecentConversationsBlock(
             modifier = Modifier
                 .padding(horizontal = 12.dp),
-            title = stringResource(UiRes.string.recent_messages),
-            seeAllButtonClicked = {
+            state = state,
+            onSeeAllClick = {
                 onAction(DashboardAction.OnNavigateToChatScreen)
             },
-            content = {
-//                if (conversations.isEmpty()) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(UiRes.string.no_recent_messages),
-                        fontSize = 14.sp
-                    )
-//                }else{
-//                    conversations.forEach { conversation ->
-//                        DashChatItem(
-//                            conversation = conversation,
-//                            onClick = {  }
-//                        )
-//                        Spacer(modifier = Modifier.height(8.dp))
-//                    }
-//                }
+            onConversationClick = { id ->
+                onAction(DashboardAction.OnConversationClick(id))
             }
         )
         ContentBlock(

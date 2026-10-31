@@ -9,7 +9,9 @@ import com.yehorsk.medical_platform_mobile.core.util.map
 import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import com.yehorsk.medical_platform_mobile.feature.auth.data.mappers.toAuthData
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
+import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.ConversationAccessDto
 import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.ConversationDto
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ConversationAccess
 import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.MessageDto
 import com.yehorsk.medical_platform_mobile.feature.chat.data.mappers.toDomain
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
@@ -55,6 +57,14 @@ class ConversationServiceImpl(
                 data = response.data.toDomain(),
                 message = response.message
             )
+        }
+    }
+
+    override suspend fun getConversationAccess(): Result<List<ConversationAccess>, DataError.Remote> {
+        return httpClient.get<ApiResponseWithData<List<ConversationAccessDto>>>(
+            route = "/patient-doctor-access/all"
+        ).map { response ->
+            response.data.map { it.toDomain() }
         }
     }
 

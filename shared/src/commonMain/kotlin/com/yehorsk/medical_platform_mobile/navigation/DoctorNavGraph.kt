@@ -32,7 +32,9 @@ fun NavGraphBuilder.doctorNavGraph(
     ){
         composable<Screen.Home> {
             DoctorDashboardScreen(
-                modifier = modifier
+                modifier = modifier,
+                navigateToChatScreen = { navController.navigate(Screen.Chat) },
+                navigateToConversation = { id -> navController.navigate(Screen.ChatDetails(id)) }
             )
         }
         composable<Screen.Connect> {

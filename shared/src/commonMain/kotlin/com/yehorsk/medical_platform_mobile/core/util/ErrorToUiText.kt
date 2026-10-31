@@ -21,6 +21,8 @@ fun DataError.toUiText(): UiText {
         DataError.Remote.Status.SERVER_ERROR -> UiRes.string.error_server
         DataError.Remote.Status.SERVICE_UNAVAILABLE -> UiRes.string.error_service_unavailable
         DataError.Remote.Status.SERIALIZATION -> UiRes.string.error_serialization
+        DataError.Remote.Status.RESET_CODE_EXPIRED -> UiRes.string.error_reset_code_expired
+        DataError.Remote.Status.RESET_CODE_TOO_MANY_ATTEMPTS -> UiRes.string.error_reset_too_many_attempts
         DataError.Remote.Status.UNKNOWN -> UiRes.string.error_unknown
         DataError.Connection.NOT_CONNECTED -> UiRes.string.error_no_internet
         DataError.Connection.MESSAGE_SEND_FAILED -> UiRes.string.error_unable_to_send_message

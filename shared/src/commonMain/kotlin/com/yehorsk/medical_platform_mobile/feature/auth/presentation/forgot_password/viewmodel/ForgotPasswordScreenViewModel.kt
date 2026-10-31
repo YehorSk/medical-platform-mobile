@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_pas
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -76,6 +77,7 @@ class ForgotPasswordScreenViewModel(
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
+                        backToRequestCodeIfInvalidated(dataErrorRemote)
                     }
             }
         }
@@ -113,6 +115,7 @@ class ForgotPasswordScreenViewModel(
                         _uiState.update { it.copy(
                             isLoading = false
                         ) }
+                        backToRequestCodeIfInvalidated(dataErrorRemote)
                     }
             }
         }
@@ -153,6 +156,22 @@ class ForgotPasswordScreenViewModel(
                     }
             }
         }
+    }
+
+    // verify-reset-code and reset-password share 5 attempts; after that (or once the code
+    // expires) the server deletes it, so the only way forward is requesting a new one
+    private fun backToRequestCodeIfInvalidated(error: DataError.Remote) {
+        if (error != DataError.Remote.Status.RESET_CODE_EXPIRED &&
+            error != DataError.Remote.Status.RESET_CODE_TOO_MANY_ATTEMPTS
+        ) return
+
+        _uiState.update {
+            it.copy(
+                currentStep = PasswordResetStep.Email,
+                form = it.form.copy(code = "", password = "", passwordConfirm = "")
+            )
+        }
+        validateForm()
     }
 
     private fun updatePwdConfirm(pwd: String) {

@@ -8,4 +8,6 @@ sealed interface DashboardAction {
 
     data object OnNavigateToAppointmentsScreen: DashboardAction
 
+    data class OnConversationClick(val conversationId: String): DashboardAction
+
 }

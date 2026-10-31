@@ -1,8 +1,16 @@
 package com.yehorsk.medical_platform_mobile.core.ui.components.layouts
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,7 +39,7 @@ fun MainScaffold(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
-    content: @Composable (PaddingValues) -> Unit,
+    screenContent: @Composable () -> Unit,
     userRole: UserRole?
 ) {
     val screens = listOf(
@@ -96,9 +104,24 @@ fun MainScaffold(
             },
         ) {
             Scaffold(
-                snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-            ) { paddingValues ->
-                content(paddingValues)
+                snackbarHost = { SnackbarHost(snackbarHostState) },
+                contentWindowInsets = WindowInsets(0)
+            ) { contentPadding ->
+                // The navigation bar / rail already pads its own side; everything else (status bar,
+                // camera cutout, system buttons on screens without the bar, keyboard) is padded here
+                val barInsets = when (layoutType) {
+                    NavigationSuiteType.NavigationBar ->
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
+                    NavigationSuiteType.NavigationRail ->
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                    else -> WindowInsets(0)
+                }
+                Box(
+                    Modifier
+                        .padding(contentPadding)
+                        .consumeWindowInsets(barInsets)
+                        .windowInsetsPadding(WindowInsets.safeDrawing)
+                ) { screenContent() }
             }
         }
     }

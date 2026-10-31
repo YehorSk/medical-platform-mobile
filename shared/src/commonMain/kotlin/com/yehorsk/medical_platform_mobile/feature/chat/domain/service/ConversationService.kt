@@ -4,6 +4,7 @@ import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiRes
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ConversationAccess
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
 
 interface ConversationService {
@@ -16,5 +17,8 @@ interface ConversationService {
     ): Result<ApiResponseWithData<List<Message>>, DataError.Remote>
 
     suspend fun getConversationById(id: String): Result<ApiResponseWithData<Conversation>, DataError.Remote>
+
+    /** All patient–doctor relations of the current user (works for both roles). */
+    suspend fun getConversationAccess(): Result<List<ConversationAccess>, DataError.Remote>
 
 }

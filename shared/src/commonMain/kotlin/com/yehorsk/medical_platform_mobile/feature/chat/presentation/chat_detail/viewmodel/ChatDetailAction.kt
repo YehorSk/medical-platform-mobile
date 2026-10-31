@@ -5,5 +5,6 @@ sealed interface ChatDetailAction {
     data class OnMessageChange(val text: String) : ChatDetailAction
     data object OnSendMessageClick : ChatDetailAction
     data object OnRetryClick : ChatDetailAction
-    data class OnFirstVisibleIndexChanged(val index: Int) : ChatDetailAction
+    data class OnRetryMessageClick(val localId: String) : ChatDetailAction
+    data class OnDiscardMessageClick(val localId: String) : ChatDetailAction
 }

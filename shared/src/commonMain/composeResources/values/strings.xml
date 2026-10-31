@@ -339,5 +339,28 @@
     <string name="you">You</string>
     <string name="no_messages">No messages</string>
     <string name="no_messages_subtitle">Be the first one to send a message!</string>
+    <string name="send_message">Send</string>
+    <string name="chat_sending">Sending…</string>
+    <string name="chat_retry">Retry</string>
+    <string name="chat_discard">Delete</string>
+    <string name="chat_send_error_not_active">Not delivered: you can chat once access is approved</string>
+    <string name="chat_send_error_forbidden">Not delivered: this conversation is not available</string>
+    <string name="chat_send_error_invalid_content">Not delivered: the message is empty or longer than 2000 characters</string>
+    <string name="chat_send_error_server">Not delivered, tap retry to send again</string>
+    <string name="chat_notice_access_revoked">Access to this chat has been revoked</string>
+    <string name="chat_notice_not_approved">You can chat once access is approved</string>
+    <string name="chat_notice_unavailable">This conversation is unavailable</string>
+    <string name="chat_message_too_long">Message is too long (max 2000 characters)</string>
+    <string name="chat_scroll_to_latest">Scroll to latest message</string>
+    <string name="chat_back">Back</string>
+    <string name="chat_connecting">Connecting…</string>
+    <string name="chat_role_doctor">Doctor</string>
+    <string name="chat_role_patient">Patient</string>
+    <string name="chat_participant_email">Email</string>
+    <string name="chat_close">Close</string>
+
+    <string name="password_changed_relogin">Password changed, please log in again</string>
+    <string name="error_reset_code_expired">The code has expired, please request a new one</string>
+    <string name="error_reset_too_many_attempts">Too many attempts, please request a new code</string>
 
 </resources>

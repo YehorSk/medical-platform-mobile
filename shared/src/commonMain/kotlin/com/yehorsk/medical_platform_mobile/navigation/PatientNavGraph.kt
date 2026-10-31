@@ -47,6 +47,7 @@ fun NavGraphBuilder.patientNavGraph(
                 navigateToDoctorsScreen = { navController.navigate(Screen.FindDoctor) },
                 navigateToChatScreen = { navController.navigate(Screen.Chat) },
                 navigateToAppointmentsScreen = { navController.navigate(Screen.MyAppointments) },
+                navigateToConversation = { id -> navController.navigate(Screen.ChatDetails(id)) },
             )
         }
         composable<Screen.Connect> {

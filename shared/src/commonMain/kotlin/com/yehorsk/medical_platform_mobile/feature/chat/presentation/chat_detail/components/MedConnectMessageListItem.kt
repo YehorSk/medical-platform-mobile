@@ -11,6 +11,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.m
 fun MedConnectMessageListItem(
     messageUi: MessageUi,
     onRetryClick: (MessageUi.LocalUserMessage) -> Unit,
+    onDiscardClick: (MessageUi.LocalUserMessage) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -29,6 +30,9 @@ fun MedConnectMessageListItem(
                     message = messageUi,
                     onRetryClick = {
                         onRetryClick(messageUi)
+                    },
+                    onDiscardClick = {
+                        onDiscardClick(messageUi)
                     }
                 )
             }

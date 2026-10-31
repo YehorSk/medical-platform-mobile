@@ -13,6 +13,8 @@ import com.yehorsk.medical_platform_mobile.feature.settings.domain.SettingsServi
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePwdForm
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.ProfileForm
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.auth.authProvider
+import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 
 class SettingsServiceImpl(
     private val httpClient: HttpClient
@@ -35,6 +37,8 @@ class SettingsServiceImpl(
             route = "/user/change-password",
             body = form
         ).map { response ->
+            // All refresh tokens are revoked server-side; drop the plugin's cached pair too
+            httpClient.authProvider<BearerAuthProvider>()?.clearToken()
             ApiResponseDto(
                 message = response.message
             )

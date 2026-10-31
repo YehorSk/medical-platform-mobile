@@ -1,14 +1,8 @@
 package com.yehorsk.medical_platform_mobile.core.data.network
 
 import co.touchlab.kermit.Logger
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.RefreshRequestDto
-import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
-import com.yehorsk.medical_platform_mobile.core.util.AuthEventManager
-import com.yehorsk.medical_platform_mobile.core.util.onFailure
-import com.yehorsk.medical_platform_mobile.core.util.onSuccess
-import com.yehorsk.medical_platform_mobile.feature.auth.data.dto.AuthDataDto
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
@@ -30,7 +24,7 @@ import kotlinx.serialization.json.Json
 
 class HttpClientFactory(
     private val sessionStorage: SessionStorage,
-    private val authEventManager: AuthEventManager,
+    private val tokenRefresher: TokenRefresher,
     private val logger: MainLogger
 ) {
 
@@ -75,39 +69,25 @@ class HttpClientFactory(
                                 )
                             }
                     }
+                    // The chat socket sets its own header from SessionStorage (see KtorWebSocketConnector),
+                    // the plugin's cached token may already be expired there.
                     sendWithoutRequest { request ->
-                        !request.url.encodedPath.contains("auth/")
+                        !request.url.encodedPath.contains("auth/") &&
+                                !request.url.encodedPath.contains("/ws/")
                     }
                     refreshTokens {
                         if(response.request.url.encodedPath.contains("auth/")) {
                             return@refreshTokens null
                         }
-                        val authInfo = sessionStorage.observeAuthData().firstOrNull()
-                        logger.debug("HttpClientFactory refresh, user data -> ${authInfo?.user ?: "Empty data"}, refresh token -> ${ authInfo?.refreshToken ?: "Empty data"}")
-                        if(authInfo?.refreshToken.isNullOrBlank()) {
-                            sessionStorage.clearAuthData()
-                            return@refreshTokens null
+                        logger.debug("HttpClientFactory refresh after ${response.status} on ${response.request.url.encodedPath}")
+                        val result = tokenRefresher.refresh(client, oldTokens?.accessToken) {
+                            markAsRefreshTokenRequest()
                         }
-                        var bearerTokens: BearerTokens? = null
-                        client.post<RefreshRequestDto, ApiResponseWithData<AuthDataDto>>(
-                            route = "/auth/refresh",
-                            body = RefreshRequestDto(
-                                refreshToken = authInfo.refreshToken
-                            ),
-                            builder = {
-                                markAsRefreshTokenRequest()
-                            }
-                        ).onSuccess { response ->
-                            sessionStorage.setAuthData(response.data)
-                            bearerTokens = BearerTokens(
-                                accessToken = response.data.accessToken,
-                                refreshToken = response.data.refreshToken
-                            )
-                        }.onFailure { _ ->
-                            sessionStorage.clearAuthData()
-                            authEventManager.triggerLogout()
+                        when (result) {
+                            is RefreshResult.Refreshed -> result.tokens
+                            RefreshResult.LoggedOut,
+                            RefreshResult.Failed -> null
                         }
-                        bearerTokens
                     }
                 }
             }

@@ -1,6 +1,7 @@
 package com.yehorsk.medical_platform_mobile.core.data.network
 
 import co.touchlab.kermit.Logger
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiErrorDto
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
@@ -16,6 +17,7 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
+import kotlinx.coroutines.CancellationException
 
 expect suspend fun <T> platformSafeCall(
     execute: suspend () -> HttpResponse,
@@ -107,7 +109,12 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
                 Result.Failure(DataError.Remote.Status.SERIALIZATION)
             }
         }
-        400 -> Result.Failure(DataError.Remote.Status.BAD_REQUEST)
+        400 -> Result.Failure(
+            when (errorCodeOf(response)) {
+                "EXPIRED_RESET_CODE" -> DataError.Remote.Status.RESET_CODE_EXPIRED
+                else -> DataError.Remote.Status.BAD_REQUEST
+            }
+        )
         401 -> Result.Failure(DataError.Remote.Status.UNAUTHORIZED)
         403 -> Result.Failure(DataError.Remote.Status.FORBIDDEN)
         404 -> Result.Failure(DataError.Remote.Status.NOT_FOUND)
@@ -122,9 +129,25 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
             }
             Result.Failure(DataError.Remote.ValidationError(errors))
         }
-        429 -> Result.Failure(DataError.Remote.Status.TOO_MANY_REQUESTS)
+        429 -> Result.Failure(
+            when (errorCodeOf(response)) {
+                "TOO_MANY_ATTEMPTS" -> DataError.Remote.Status.RESET_CODE_TOO_MANY_ATTEMPTS
+                else -> DataError.Remote.Status.TOO_MANY_REQUESTS
+            }
+        )
         in 500..599 -> Result.Failure(DataError.Remote.Status.SERVER_ERROR)
         else -> Result.Failure(DataError.Remote.Status.UNKNOWN)
+    }
+}
+
+// `errorCode` of an AppException body, null for empty bodies (e.g. 403 from role checks)
+suspend fun errorCodeOf(response: HttpResponse): String? {
+    return try {
+        response.body<ApiErrorDto>().errorCode
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        null
     }
 }
 

@@ -1,6 +1,9 @@
 package com.yehorsk.medical_platform_mobile.feature.chat.data.mappers
 
+import com.yehorsk.medical_platform_mobile.core.domain.model.AccessStatus
+import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.ConversationAccessDto
 import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.ConversationDto
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ConversationAccess
 import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.MessageDto
 import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.ParticipantDto
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
@@ -33,4 +36,12 @@ fun MessageDto.toDomain(): Message =
         sender = sender.toDomain(),
         content = content,
         createdAt = Instant.parse(createdAt)
+    )
+
+fun ConversationAccessDto.toDomain(): ConversationAccess =
+    ConversationAccess(
+        doctorId = doctor.id,
+        patientId = medicalCard.patient?.id,
+        status = AccessStatus.entries.firstOrNull { it.name == status } ?: AccessStatus.UNKNOWN,
+        createdAt = runCatching { Instant.parse(createdAt) }.getOrNull()
     )

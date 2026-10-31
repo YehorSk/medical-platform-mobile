@@ -26,11 +26,11 @@ fun MedConnectDateDivider(
             .background(
                 color = MaterialTheme.colorScheme.surface
             )
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-                shape = shape
-            )
+//            .border(
+//                width = 1.dp,
+//                color = MaterialTheme.colorScheme.outline,
+//                shape = shape
+//            )
             .padding(
                 horizontal = 12.dp,
                 vertical = 4.dp

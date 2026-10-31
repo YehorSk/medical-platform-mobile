@@ -28,7 +28,7 @@ fun DefaultButton(
     onClick: () -> Unit,
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = Color.Unspecified,
-    text: String,
+    text: String?  = null,
     leadingIcon: Painter? = null,
     loading: Boolean = false,
     enabled: Boolean = true
@@ -72,14 +72,16 @@ fun DefaultButton(
                         painter = leadingIcon,
                         contentDescription = null,
                         tint = textColor,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
-                Text(
-                    text = text,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = textColor
-                )
+                if(text != null){
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = textColor
+                    )
+                }
             }
         }
     }

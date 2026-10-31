@@ -2,6 +2,10 @@ package com.yehorsk.medical_platform_mobile.feature.dashboard.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.components.RecentConversationsBlock
+import com.yehorsk.medical_platform_mobile.feature.dashboard.presentation.viewmodel.DashboardAction
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -22,21 +26,33 @@ import kotlin.time.Clock
 @Composable
 fun DoctorDashboardScreen(
     modifier: Modifier = Modifier,
-    viewModel: DashboardViewModel = koinViewModel()
+    viewModel: DashboardViewModel = koinViewModel(),
+    navigateToChatScreen: () -> Unit = {},
+    navigateToConversation: (String) -> Unit = {}
 ){
 
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     DoctorDashboardScreenRoot(
         modifier = modifier,
-        state = state
+        state = state,
+        onAction = { action ->
+            when (action) {
+                DashboardAction.OnNavigateToChatScreen -> navigateToChatScreen()
+                is DashboardAction.OnConversationClick -> navigateToConversation(action.conversationId)
+                // Patient-only entries
+                DashboardAction.OnNavigateToDoctorsScreen,
+                DashboardAction.OnNavigateToAppointmentsScreen -> Unit
+            }
+        }
     )
 }
 
 @Composable
 fun DoctorDashboardScreenRoot(
     modifier: Modifier = Modifier,
-    state: DashboardState
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit = {}
 ){
     Column(
         modifier = modifier
@@ -49,6 +65,17 @@ fun DoctorDashboardScreenRoot(
                 notificationCount = 23
             ),
             navigateToNotifications = {}
+        )
+        RecentConversationsBlock(
+            modifier = Modifier
+                .padding(top = 12.dp, start = 12.dp, end = 12.dp),
+            state = state,
+            onSeeAllClick = {
+                onAction(DashboardAction.OnNavigateToChatScreen)
+            },
+            onConversationClick = { id ->
+                onAction(DashboardAction.OnConversationClick(id))
+            }
         )
     }
 }

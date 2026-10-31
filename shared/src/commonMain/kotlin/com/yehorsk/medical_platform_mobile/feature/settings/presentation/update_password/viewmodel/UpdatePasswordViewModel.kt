@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.settings.presentation.update
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -12,9 +13,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.password_changed_relogin
+import org.jetbrains.compose.resources.getString
 
 class UpdatePasswordViewModel(
-    private val settingsService: SettingsService
+    private val settingsService: SettingsService,
+    private val sessionStorage: SessionStorage
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(UpdatePasswordState())
@@ -76,7 +81,7 @@ class UpdatePasswordViewModel(
             ) }
             settingsService
                 .updatePassword(_uiState.value.form)
-                .onSuccess { response ->
+                .onSuccess { _ ->
                     _uiState.update {
                         it.copy(
                             form = UpdatePwdForm(),
@@ -84,9 +89,13 @@ class UpdatePasswordViewModel(
                             isLoading = false
                         )
                     }
+                    // The server revoked every refresh token, this device's too: the session would die
+                    // at the next refresh anyway. Clearing it closes the chat socket and MainViewModel
+                    // sends the user to login.
+                    sessionStorage.clearAuthData()
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
-                            message = response.message
+                            message = getString(UiRes.string.password_changed_relogin)
                         )
                     )
                 }.onFailure { dataErrorRemote ->

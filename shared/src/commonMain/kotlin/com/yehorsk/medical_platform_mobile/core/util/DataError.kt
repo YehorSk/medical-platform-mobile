@@ -17,6 +17,9 @@ sealed interface DataError : Error {
             SERVER_ERROR,
             SERVICE_UNAVAILABLE,
             SERIALIZATION,
+            // Password reset: the code is gone, the user has to request a new one
+            RESET_CODE_EXPIRED,
+            RESET_CODE_TOO_MANY_ATTEMPTS,
             UNKNOWN
         }
 

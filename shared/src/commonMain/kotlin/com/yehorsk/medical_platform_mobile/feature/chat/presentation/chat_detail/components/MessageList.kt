@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.components
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -31,9 +34,10 @@ fun MessageList(
     isPaginationLoading: Boolean,
     listState: LazyListState,
     onMessageRetryClick: (MessageUi.LocalUserMessage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onMessageDiscardClick: (MessageUi.LocalUserMessage) -> Unit = {}
 ) {
-    if(messages.isEmpty()) {
+    if(messages.isEmpty() && !isPaginationLoading) {
         Box(
             modifier = modifier
                 .padding(vertical = 32.dp),
@@ -45,6 +49,10 @@ fun MessageList(
             )
         }
     } else {
+        // Ids this list has already displayed. Bubbles that come back into view (e.g. after the
+        // jump-to-latest scroll) must not fade in again as if they had just arrived.
+        val shownIds = remember { mutableSetOf<String>() }
+
         LazyColumn(
             modifier = modifier,
             state = listState,
@@ -56,12 +64,17 @@ fun MessageList(
                 items = messages,
                 key = { it.id }
             ) { message ->
+                // Decided once per composition of the item: true only the first time this id shows up
+                val isFirstAppearance = remember(message.id) { shownIds.add(message.id) }
                 MedConnectMessageListItem(
                     messageUi = message,
                     onRetryClick = onMessageRetryClick,
+                    onDiscardClick = onMessageDiscardClick,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem()
+                        .animateItem(
+                            fadeInSpec = if (isFirstAppearance) spring(stiffness = Spring.StiffnessMediumLow) else null
+                        )
                 )
             }
 
