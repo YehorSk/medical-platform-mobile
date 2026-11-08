@@ -109,17 +109,28 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
                 Result.Failure(DataError.Remote.Status.SERIALIZATION)
             }
         }
-        400 -> Result.Failure(
-            when (errorCodeOf(response)) {
-                "EXPIRED_RESET_CODE" -> DataError.Remote.Status.RESET_CODE_EXPIRED
-                else -> DataError.Remote.Status.BAD_REQUEST
-            }
-        )
+        400 -> {
+            val error = apiErrorOf(response)
+            Result.Failure(
+                when (error?.errorCode) {
+                    "EXPIRED_RESET_CODE" -> DataError.Remote.Status.RESET_CODE_EXPIRED
+                    "INVALID_SCHEDULE" -> error.message
+                        ?.let { DataError.Remote.ServerMessage(it) }
+                        ?: DataError.Remote.Status.BAD_REQUEST
+                    else -> DataError.Remote.Status.BAD_REQUEST
+                }
+            )
+        }
         401 -> Result.Failure(DataError.Remote.Status.UNAUTHORIZED)
         403 -> Result.Failure(DataError.Remote.Status.FORBIDDEN)
         404 -> Result.Failure(DataError.Remote.Status.NOT_FOUND)
         408 -> Result.Failure(DataError.Remote.Status.REQUEST_TIMEOUT)
-        409 -> Result.Failure(DataError.Remote.Status.CONFLICT)
+        409 -> Result.Failure(
+            when (errorCodeOf(response)) {
+                "SCHEDULE_CONFLICTS_WITH_APPOINTMENTS" -> DataError.Remote.Status.SCHEDULE_CONFLICTS_WITH_APPOINTMENTS
+                else -> DataError.Remote.Status.CONFLICT
+            }
+        )
         413 -> Result.Failure(DataError.Remote.Status.PAYLOAD_TOO_LARGE)
         422 -> {
             val errors = try {
@@ -141,9 +152,11 @@ suspend inline fun <reified T> responseToResult(response: HttpResponse): Result<
 }
 
 // `errorCode` of an AppException body, null for empty bodies (e.g. 403 from role checks)
-suspend fun errorCodeOf(response: HttpResponse): String? {
+suspend fun errorCodeOf(response: HttpResponse): String? = apiErrorOf(response)?.errorCode
+
+suspend fun apiErrorOf(response: HttpResponse): ApiErrorDto? {
     return try {
-        response.body<ApiErrorDto>().errorCode
+        response.body<ApiErrorDto>()
     } catch (e: CancellationException) {
         throw e
     } catch (e: Exception) {

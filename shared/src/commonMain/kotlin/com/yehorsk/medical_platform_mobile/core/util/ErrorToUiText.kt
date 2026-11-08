@@ -5,6 +5,7 @@ import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.*
 
 fun DataError.toUiText(): UiText {
+    if (this is DataError.Remote.ServerMessage) return UiText.DynamicString(message)
     val resource = when(this) {
         DataError.Local.DISK_FULL -> UiRes.string.error_disk_full
         DataError.Local.NOT_FOUND -> UiRes.string.error_not_found
@@ -23,10 +24,12 @@ fun DataError.toUiText(): UiText {
         DataError.Remote.Status.SERIALIZATION -> UiRes.string.error_serialization
         DataError.Remote.Status.RESET_CODE_EXPIRED -> UiRes.string.error_reset_code_expired
         DataError.Remote.Status.RESET_CODE_TOO_MANY_ATTEMPTS -> UiRes.string.error_reset_too_many_attempts
+        DataError.Remote.Status.SCHEDULE_CONFLICTS_WITH_APPOINTMENTS -> UiRes.string.error_schedule_conflicts_with_appointments
         DataError.Remote.Status.UNKNOWN -> UiRes.string.error_unknown
         DataError.Connection.NOT_CONNECTED -> UiRes.string.error_no_internet
         DataError.Connection.MESSAGE_SEND_FAILED -> UiRes.string.error_unable_to_send_message
         is DataError.Remote.ValidationError -> UiRes.string.validation_error
+        is DataError.Remote.ServerMessage -> UiRes.string.error_unknown
     }
     return UiText.Resource(resource)
 }

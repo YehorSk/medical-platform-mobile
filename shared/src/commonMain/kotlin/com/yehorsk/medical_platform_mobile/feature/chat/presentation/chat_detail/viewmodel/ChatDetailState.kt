@@ -7,6 +7,8 @@ import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.m
 import com.yehorsk.medical_platform_mobile.util.UiText
 
 data class ChatDetailState(
+    // The chat this state was built for; lets the screen skip a stale state right after switching chats
+    val chatId: String? = null,
     val conversation: Conversation ?= null,
     val isLoading: Boolean = false,
     val messages: List<MessageUi> = emptyList(),

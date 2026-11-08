@@ -13,8 +13,10 @@ import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
-import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.ChatDetailScreen
-import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
+import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.UpdatePasswordScreen
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list_detail.ChatListDetailAdaptiveLayout
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_patient.FindPatientScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
@@ -25,7 +27,8 @@ import com.yehorsk.medical_platform_mobile.feature.settings.presentation.doctor_
 
 fun NavGraphBuilder.doctorNavGraph(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    onChatFullScreenChange: (Boolean) -> Unit = {}
 ){
     navigation<Graph.Doctor>(
         startDestination = Screen.Home
@@ -65,22 +68,18 @@ fun NavGraphBuilder.doctorNavGraph(
             }
         }
         composable<Screen.Chat> {
-            ChatListScreen(
+            ChatListDetailAdaptiveLayout(
                 modifier = modifier,
-                onConversationClick = { conversation ->
-                    navController.navigate(Screen.ChatDetails(conversation.id))
-                },
+                initialChatId = null,
+                onFullScreenDetailChange = onChatFullScreenChange
             )
         }
         composable<Screen.ChatDetails> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.ChatDetails>()
-            ChatDetailScreen(
+            ChatListDetailAdaptiveLayout(
                 modifier = modifier
                     .fillMaxSize(),
-                chatId = args.chatId,
-                onGoBackClicked = {
-                    navController.popBackStack()
-                },
+                initialChatId = args.chatId
             )
         }
         composable<Screen.CreateMedicalRecord> {
@@ -116,15 +115,45 @@ fun NavGraphBuilder.doctorNavGraph(
                     navController.navigate(Screen.UpdatePwd)
                 },
                 onLogoutClicked = {
-                    navController.navigate(Screen.Login) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.navigateToLogin()
                 },
                 navigateToMySchedulePage = {
                     navController.navigate(Screen.MySchedule)
+                }
+            )
+        }
+        composable<Screen.Profile>{
+            ProfileScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<Screen.UpdatePwd>{
+            UpdatePasswordScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<Screen.BookAppointment> {
+            BookAppointmentScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+                goToAppointmentsScreen = {
+                    navController.navigate(Screen.MyAppointments) {
+                        popUpTo<Screen.Home> {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
                 }
             )
         }

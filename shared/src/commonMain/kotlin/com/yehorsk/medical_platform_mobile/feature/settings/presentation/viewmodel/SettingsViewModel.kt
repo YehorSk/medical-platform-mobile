@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 
 class SettingsViewModel(
     private val sessionStorage: SessionStorage,
+    private val pinStorage: PinStorage,
     private val authService: AuthService,
     private val settingsService: SettingsService
 ): ViewModel() {
@@ -134,6 +136,7 @@ class SettingsViewModel(
                 .logout()
                 .onSuccess { response ->
                     sessionStorage.clearAuthData()
+                    pinStorage.clearPin()
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = response.message
@@ -146,6 +149,7 @@ class SettingsViewModel(
                         isLoading = false
                     ) }
                     sessionStorage.clearAuthData()
+                    pinStorage.clearPin()
                     eventChannel.send(SettingsScreenEvent.OnLogoutSuccess)
                 }
         }

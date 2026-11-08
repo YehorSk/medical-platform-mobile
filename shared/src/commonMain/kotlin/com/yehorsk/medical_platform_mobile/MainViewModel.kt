@@ -49,9 +49,13 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             val authInfo = sessionStorage.observeAuthData().firstOrNull()
+            // Set everything in one update: NavigationRoot picks its start destination from
+            // the first state where isCheckingAuth == false, so userId/userRole must be ready then
             _uiState.update { it.copy(
                 isCheckingAuth = false,
-                isLoggedIn = authInfo != null
+                isLoggedIn = authInfo != null,
+                userId = authInfo?.user?.id,
+                userRole = authInfo?.user?.getUserRole()
             ) }
         }
     }

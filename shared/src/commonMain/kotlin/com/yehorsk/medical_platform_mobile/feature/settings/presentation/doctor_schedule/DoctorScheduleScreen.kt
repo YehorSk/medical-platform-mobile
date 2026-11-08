@@ -80,6 +80,8 @@ fun DoctorScheduleScreenRoot(
                     .fillMaxWidth()
                     .padding(8.dp),
                 text = "Save schedule",
+                loading = state.isSaving,
+                enabled = !state.isSaving,
                 onClick = {
                     onAction(DoctorScheduleAction.OnSaveClicked)
                 }

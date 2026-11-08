@@ -13,8 +13,8 @@ import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.toUiText
-import com.yehorsk.medical_platform_mobile.navigation.Graph
 import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
+import com.yehorsk.medical_platform_mobile.navigation.navigateToLogin
 import com.yehorsk.theme.AppTheme
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -38,25 +38,13 @@ fun App(
 
     ObserveAsEvents(authEventManager.authEvents){event ->
         when(event) {
-            AuthEvent.NavigateToLogin -> {
-                navController.navigate(Graph.Authentication) {
-                    popUpTo(Graph.Authentication) {
-                        inclusive = false
-                    }
-                }
-            }
+            AuthEvent.NavigateToLogin -> navController.navigateToLogin()
         }
     }
 
     ObserveAsEvents(viewModel.events){event ->
         when(event) {
-            is MainEvent.OnSessionExpired -> {
-                navController.navigate(Graph.Authentication) {
-                    popUpTo(Graph.Authentication) {
-                        inclusive = false
-                    }
-                }
-            }
+            is MainEvent.OnSessionExpired -> navController.navigateToLogin()
         }
     }
 

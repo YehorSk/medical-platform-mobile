@@ -24,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,8 +68,14 @@ fun LocalAuthScreen(
     onPinIsIncorrect: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     ObserveAsEvents(viewModel.events) { event ->
+        // Close the keyboard before leaving: otherwise it stays up through the exit
+        // transition, and MainScaffold keeps the nav bar hidden while it is visible
+        focusManager.clearFocus()
+        keyboardController?.hide()
         when (event) {
             LocalAuthEvent.Success -> onPinIsCorrect(state.userRole!!)
             LocalAuthEvent.TooManyFailedAttempts -> onPinIsIncorrect()
@@ -88,6 +96,21 @@ fun LocalAuthScreenRoot(
     state: LocalAuthState,
     onAction: (LocalAuthAction) -> Unit
 ) {
+    // Until we know whether a PIN exists, show no form at all, so a "create PIN"
+    // form can never appear for an account that already has one.
+    val authType = state.localAuthType
+    if (authType == null) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
     Scaffold(
         modifier = modifier.fillMaxSize()
     ) { paddingValues ->
@@ -130,7 +153,7 @@ fun LocalAuthScreenRoot(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = when (state.localAuthType) {
+                        text = when (authType) {
                             LocalAuthType.CREATE_PIN ->
                                 stringResource(UiRes.string.pin_create_title)
 
@@ -146,7 +169,7 @@ fun LocalAuthScreenRoot(
                     )
 
                     Text(
-                        text = when (state.localAuthType) {
+                        text = when (authType) {
                             LocalAuthType.CREATE_PIN ->
                                 stringResource(
                                     UiRes.string.pin_create_description
@@ -179,7 +202,7 @@ fun LocalAuthScreenRoot(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                when (state.localAuthType) {
+                when (authType) {
 
                     LocalAuthType.CREATE_PIN -> {
                         DefaultTextField(
@@ -271,7 +294,7 @@ fun LocalAuthScreenRoot(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
-                        text = when (state.localAuthType) {
+                        text = when (authType) {
                             LocalAuthType.CREATE_PIN,
                             LocalAuthType.ENTER_PIN ->
                                 stringResource(

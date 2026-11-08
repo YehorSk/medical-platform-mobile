@@ -1,17 +1,14 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import androidx.navigation.toRoute
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.EmailVerificationScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.ForgotPasswordScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.LocalAuthScreen
-import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel.LocalAuthAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel.LocalAuthScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.LoginScreen
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.RegisterScreen
@@ -23,23 +20,10 @@ import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.authGraph(
     navController: NavController,
-    isAuthenticated: Boolean,
-    userId: String?,
-    userRole: UserRole?
+    startDestination: Screen
 ){
     navigation<Graph.Authentication>(
-        startDestination = when {
-            !isAuthenticated -> Screen.Login
-
-            userId != null && userRole != null -> {
-                Screen.LocalAuth(
-                    userId = userId,
-                    userRole = userRole
-                )
-            }
-
-            else -> Screen.Login
-        }
+        startDestination = startDestination
     ){
         composable<Screen.Login> {
             LoginScreen(
@@ -84,27 +68,16 @@ fun NavGraphBuilder.authGraph(
             typeMap = mapOf(
                 typeOf<UserRole>() to serializableType<UserRole>()
             )
-        ) { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.LocalAuth>()
+        ) {
+            // The ViewModel reads userId/userRole from its SavedStateHandle (the route args)
             val viewModel: LocalAuthScreenViewModel = koinViewModel()
-            LaunchedEffect(args.userId){
-                viewModel.onAction(LocalAuthAction.SetUserData(
-                    userId = args.userId,
-                    userRole = args.userRole
-                ))
-            }
             LocalAuthScreen(
                 viewModel = viewModel,
                 onPinIsCorrect = { role ->
                     navigateToMain(navController, role)
                 },
                 onPinIsIncorrect = {
-                    navController.navigate(Screen.Login) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.navigateToLogin()
                 }
             )
         }

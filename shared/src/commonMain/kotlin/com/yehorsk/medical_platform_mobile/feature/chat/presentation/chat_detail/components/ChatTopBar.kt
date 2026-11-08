@@ -38,6 +38,7 @@ fun ChatTopBar(
     subtitle: String?,
     onGoBackClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    showGoBackButton: Boolean = true,
     onParticipantClick: () -> Unit = {}
 ) {
     Row(
@@ -48,12 +49,14 @@ fun ChatTopBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        IconButton(onClick = onGoBackClicked) {
-            Icon(
-                painter = painterResource(UiRes.drawable.arrow_back_24px),
-                contentDescription = stringResource(UiRes.string.chat_back),
-                tint = Color.White
-            )
+        if (showGoBackButton) {
+            IconButton(onClick = onGoBackClicked) {
+                Icon(
+                    painter = painterResource(UiRes.drawable.arrow_back_24px),
+                    contentDescription = stringResource(UiRes.string.chat_back),
+                    tint = Color.White
+                )
+            }
         }
 
         if (participant != null) Row(

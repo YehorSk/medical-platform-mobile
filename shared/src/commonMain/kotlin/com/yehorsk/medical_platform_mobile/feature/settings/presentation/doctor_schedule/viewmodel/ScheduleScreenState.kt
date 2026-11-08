@@ -7,6 +7,7 @@ import java.time.LocalTime
 data class DoctorScheduleUiState(
     val schedule: List<DayScheduleUiState> = defaultWeekSchedule(),
     val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
 )
 
 @Stable

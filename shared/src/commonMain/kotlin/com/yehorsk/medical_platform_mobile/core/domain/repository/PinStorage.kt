@@ -14,5 +14,14 @@ interface PinStorage {
         pin: String
     ): Boolean
 
+    /** Failed attempts persisted across app restarts. */
+    suspend fun getFailedAttempts(): Int
+
+    /** Records one failed attempt and returns the new total. */
+    suspend fun registerFailedAttempt(): Int
+
+    suspend fun resetFailedAttempts()
+
+    /** Removes the PIN and the failed-attempt counter. */
     suspend fun clearPin()
 }

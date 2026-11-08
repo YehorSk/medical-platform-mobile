@@ -84,6 +84,8 @@ kotlin {
             implementation(libs.jetbrains.navigationevent)
 
             implementation(libs.material3.adaptive)
+            implementation(libs.material3.adaptive.layout)
+            implementation(libs.material3.adaptive.navigation)
             implementation(libs.material3.adaptive.navigation.suite)
             implementation(libs.material3.window.size.class1)
             implementation(libs.material.icons)

@@ -31,12 +31,14 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ChatListScreen(
     modifier: Modifier = Modifier,
     viewModel: ChatListViewModel = koinViewModel(),
+    selectedChatId: String? = null,
     onConversationClick: (Conversation) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     ChatListScreenRoot(
         modifier = modifier,
         state = state,
+        selectedChatId = selectedChatId,
         onAction = { action ->
             when (action) {
                 is ChatListAction.OnConversationClick -> onConversationClick(action.conversation)
@@ -50,6 +52,7 @@ fun ChatListScreen(
 fun ChatListScreenRoot(
     modifier: Modifier = Modifier,
     state: ChatListState,
+    selectedChatId: String? = null,
     onAction: (ChatListAction) -> Unit
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -82,6 +85,7 @@ fun ChatListScreenRoot(
                             ConversationItem(
                                 conversation = conversation,
                                 localUser = state.authData,
+                                isSelected = conversation.id == selectedChatId,
                                 onClick = { onAction(ChatListAction.OnConversationClick(conversation)) }
                             )
                             HorizontalDivider(

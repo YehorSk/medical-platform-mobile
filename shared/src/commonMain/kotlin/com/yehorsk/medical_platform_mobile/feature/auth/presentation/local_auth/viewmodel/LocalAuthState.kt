@@ -11,7 +11,8 @@ data class LocalAuthState(
     val pinCodeConfirm: String = "",
     val error: UiText? = null,
     val isFormValid: Boolean = false,
-    val localAuthType: LocalAuthType = LocalAuthType.CREATE_PIN
+    /** null until we know whether a PIN exists; never default to CREATE_PIN. */
+    val localAuthType: LocalAuthType? = null
 )
 
 enum class LocalAuthType {

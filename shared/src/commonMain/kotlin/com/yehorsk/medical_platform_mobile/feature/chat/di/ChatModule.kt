@@ -6,6 +6,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.domain.service.ChatConne
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.service.ConversationService
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.viewmodel.ChatDetailViewModel
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.viewmodel.ChatListViewModel
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list_detail.ChatListDetailViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -14,6 +15,7 @@ import org.koin.dsl.module
 val chatModule = module {
     viewModelOf(::ChatListViewModel)
     viewModelOf(::ChatDetailViewModel)
+    viewModelOf(::ChatListDetailViewModel)
     singleOf(::ConversationServiceImpl) bind ConversationService::class
     singleOf(::WebSocketChatConnectionClient) bind ChatConnectionClient::class
 }

@@ -11,6 +11,8 @@ import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.viewmodel.BookAppointmentState
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Conversation
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.service.ChatConnectionClient
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.service.ConversationService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
@@ -35,7 +37,8 @@ class ChatListViewModel(
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver,
     private val conversationService: ConversationService,
-    private val sessionStorage: SessionStorage
+    private val sessionStorage: SessionStorage,
+    private val connectionClient: ChatConnectionClient
 ): ViewModel() {
 
     private var hasLoadedInitialData = false
@@ -59,6 +62,7 @@ class ChatListViewModel(
     init {
         observeAuthData()
         observeConnectivity()
+        observeIncomingMessages()
     }
 
     fun onAction(action: ChatListAction) {
@@ -124,6 +128,34 @@ class ChatListViewModel(
     private fun onConversationClick(conversation: Conversation) {
     }
 
+    // New messages (including the echo of our own) move their conversation to the top with a fresh preview
+    private fun observeIncomingMessages() {
+        connectionClient.chatMessages
+            .onEach { message ->
+                val isKnown = _uiState.value.conversations.any { it.id == message.conversationId }
+                if (!isKnown) {
+                    // A conversation we haven't loaded yet, e.g. a newly created one
+                    getConversations()
+                    return@onEach
+                }
+                _uiState.update { state ->
+                    state.copy(conversations = state.conversations.withNewMessage(message))
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun List<Conversation>.withNewMessage(message: Message): List<Conversation> {
+        val conversation = first { it.id == message.conversationId }
+        val previous = conversation.lastMessage
+        // Ignore duplicates and messages older than the current preview
+        if (previous != null && (previous.id == message.id || previous.createdAt > message.createdAt)) {
+            return this
+        }
+        val updated = conversation.copy(lastMessage = message, lastMessageAt = message.createdAt)
+        return listOf(updated) + filter { it.id != message.conversationId }
+    }
+
     private fun observeConnectivity() {
         connectivityObserver.isConnected
             .distinctUntilChanged()
@@ -135,6 +167,7 @@ class ChatListViewModel(
     }
 
     companion object {
-        private const val POLL_INTERVAL_MS = 10000_000L
+        // Backup for when the socket is down; live updates come from chatMessages
+        private const val POLL_INTERVAL_MS = 30_000L
     }
 }

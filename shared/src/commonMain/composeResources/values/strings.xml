@@ -213,7 +213,8 @@
 
     <!-- PIN SCREEN -->
 
-    <string name="error_pin_invalid">PIN must contain 4</string>
+    <string name="error_pin_invalid">PIN must contain 4 to 6 digits</string>
+    <string name="error_pin_weak">This PIN is too easy to guess. Avoid repeated or sequential digits</string>
     <string name="error_pin_mismatch">PIN codes do not match</string>
     <string name="error_pin_incorrect">Incorrect PIN</string>
     <string name="error_pin_required">Please enter your PIN</string>
@@ -359,9 +360,12 @@
     <string name="chat_participant_email">Email</string>
     <string name="chat_close">Close</string>
     <string name="chat_you_prefix">You: </string>
+    <string name="chat_select_conversation">Select a conversation to start messaging</string>
 
     <string name="password_changed_relogin">Password changed, please log in again</string>
     <string name="error_reset_code_expired">The code has expired, please request a new one</string>
     <string name="error_reset_too_many_attempts">Too many attempts, please request a new code</string>
+    <string name="error_schedule_conflicts_with_appointments">This change conflicts with upcoming appointments. Cancel or reschedule them first.</string>
+    <string name="schedule_updated">Schedule updated</string>
 
 </resources>

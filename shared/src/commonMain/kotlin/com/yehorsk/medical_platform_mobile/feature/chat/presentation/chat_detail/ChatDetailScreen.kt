@@ -42,18 +42,23 @@ fun ChatDetailScreen(
     modifier: Modifier = Modifier,
     chatId: String?,
     onGoBackClicked: () -> Unit,
+    showGoBackButton: Boolean = true,
     viewModel: ChatDetailViewModel = koinViewModel()
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
     LaunchedEffect(chatId) {
         viewModel.switchChat(chatId)
     }
+    // The ViewModel outlives the chat pane, so for a few frames after opening another chat
+    // it still holds the previous one; show a loading state instead of that
+    val shownState = if (state.chatId == chatId) state else ChatDetailState(chatId = chatId, isLoading = true)
 
     ChatDetailScreenRoot(
         modifier = modifier,
-        state = state,
+        state = shownState,
         onAction = { viewModel.onAction(it) },
-        onGoBackClicked = { onGoBackClicked() }
+        onGoBackClicked = { onGoBackClicked() },
+        showGoBackButton = showGoBackButton
     )
 }
 
@@ -63,6 +68,7 @@ fun ChatDetailScreenRoot(
     state: ChatDetailState,
     onAction: (ChatDetailAction) -> Unit,
     onGoBackClicked: () -> Unit,
+    showGoBackButton: Boolean = true,
 ) {
     val messageListState = rememberLazyListState()
     val scrollState = rememberChatScrollState(
@@ -105,6 +111,7 @@ fun ChatDetailScreenRoot(
             participant = otherParticipant,
             subtitle = subtitle,
             onGoBackClicked = onGoBackClicked,
+            showGoBackButton = showGoBackButton,
             onParticipantClick = { showParticipantDetails = true }
         )
         Box(

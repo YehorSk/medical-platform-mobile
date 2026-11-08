@@ -2,11 +2,14 @@ package com.yehorsk.medical_platform_mobile.core.ui.components.layouts
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -21,16 +24,17 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.other.AutoResizedText
 import com.yehorsk.medical_platform_mobile.navigation.Graph
+import com.yehorsk.medical_platform_mobile.navigation.Screen
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -40,7 +44,8 @@ fun MainScaffold(
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
     screenContent: @Composable () -> Unit,
-    userRole: UserRole?
+    userRole: UserRole?,
+    hideNavigation: Boolean = false
 ) {
     val screens = listOf(
         BottomBarScreen.Home,
@@ -65,24 +70,29 @@ fun MainScaffold(
     BoxWithConstraints(modifier.fillMaxSize()) {
         val suiteType = navigationSuiteTypeFor(maxWidth)
 
+        val isImeVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+
         val layoutType = when {
             isAuthGraph -> NavigationSuiteType.None
             suiteType == NavigationSuiteType.NavigationRail -> NavigationSuiteType.NavigationRail
-            showNavigation -> suiteType
+            showNavigation && !hideNavigation && !isImeVisible -> suiteType
             else -> NavigationSuiteType.None
         }
         NavigationSuiteScaffold(
             layoutType = layoutType,
             navigationSuiteItems = {
                 screens.forEach { screen ->
-                    val isSelected = currentDestination?.hierarchy?.any{ it.route == screen.screen::class.qualifiedName} == true
+                    val isSelected = currentDestination?.hierarchy?.any{ it.hasRoute(screen.screen::class) } == true
                     item(
                         selected = isSelected,
                         onClick = {
                             if(!isSelected){
                                 navController.navigate(screen.screen){
-                                    popUpTo(navController.graph.findStartDestination().id)
+                                    popUpTo<Screen.Home> {
+                                        saveState = true
+                                    }
                                     launchSingleTop = true
+                                    restoreState = true
                                 }
                             }
                         },
@@ -103,19 +113,26 @@ fun MainScaffold(
                 }
             },
         ) {
+            val barInsets = when (layoutType) {
+                NavigationSuiteType.NavigationBar ->
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
+                NavigationSuiteType.NavigationRail ->
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
+                else -> WindowInsets(0)
+            }
             Scaffold(
-                snackbarHost = { SnackbarHost(snackbarHostState) },
+                snackbarHost = {
+                    SnackbarHost(
+                        hostState = snackbarHostState,
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.safeDrawing
+                                .only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
+                                .exclude(barInsets)
+                        )
+                    )
+                },
                 contentWindowInsets = WindowInsets(0)
             ) { contentPadding ->
-                // The navigation bar / rail already pads its own side; everything else (status bar,
-                // camera cutout, system buttons on screens without the bar, keyboard) is padded here
-                val barInsets = when (layoutType) {
-                    NavigationSuiteType.NavigationBar ->
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)
-                    NavigationSuiteType.NavigationRail ->
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Start)
-                    else -> WindowInsets(0)
-                }
                 Box(
                     Modifier
                         .padding(contentPadding)
@@ -129,7 +146,6 @@ fun MainScaffold(
 }
 
 private fun navigationSuiteTypeFor(width: Dp): NavigationSuiteType = when {
-//    width >= 1240.dp -> NavigationSuiteType.NavigationDrawer
     width >= 600.dp  -> NavigationSuiteType.NavigationRail
     else             -> NavigationSuiteType.NavigationBar
 }

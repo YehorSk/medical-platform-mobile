@@ -20,11 +20,18 @@ sealed interface DataError : Error {
             // Password reset: the code is gone, the user has to request a new one
             RESET_CODE_EXPIRED,
             RESET_CODE_TOO_MANY_ATTEMPTS,
+            // Schedule edit would leave upcoming appointments outside working hours
+            SCHEDULE_CONFLICTS_WITH_APPOINTMENTS,
             UNKNOWN
         }
 
         data class ValidationError(
             val errors: ValidationErrorsDto?
+        ) : Remote
+
+        // Business-rule failure whose server message is meant for the user (e.g. INVALID_SCHEDULE)
+        data class ServerMessage(
+            val message: String
         ) : Remote
     }
 

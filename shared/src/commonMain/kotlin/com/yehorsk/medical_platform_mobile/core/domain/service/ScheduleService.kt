@@ -1,5 +1,7 @@
 package com.yehorsk.medical_platform_mobile.core.domain.service
 
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.request.UpdateScheduleRequestDto
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiResponseWithData
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
@@ -11,4 +13,8 @@ interface ScheduleService {
     suspend fun getSchedule(doctorId: String): Result<ApiResponseWithData<DoctorSchedule>, DataError.Remote>
 
     suspend fun getScheduleAvailableTimes(doctorId: String, date: String): Result<ApiResponseWithData<AvailableTimesResponseDto>, DataError.Remote>
+
+    suspend fun getMySchedule(): Result<ApiResponseWithData<DoctorSchedule>, DataError.Remote>
+
+    suspend fun updateMySchedule(request: UpdateScheduleRequestDto): Result<ApiResponseDto, DataError.Remote>
 }

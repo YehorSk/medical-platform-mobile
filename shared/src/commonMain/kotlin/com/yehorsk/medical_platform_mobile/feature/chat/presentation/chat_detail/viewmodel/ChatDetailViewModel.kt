@@ -166,7 +166,7 @@ class ChatDetailViewModel(
         _conversation.value = null
         _messages.value = emptyList()
         _restBlock.value = null
-        _state.value = ChatDetailState(isLoading = chatId != null)
+        _state.value = ChatDetailState(chatId = chatId, isLoading = chatId != null)
 
         if (chatId != null) startLoading(chatId)
         else cancelLoading()

@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.core.data.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
@@ -22,6 +23,9 @@ class PinDataStore(
 
     private val pinHashKey =
         stringPreferencesKey("KEY_PIN_HASH")
+
+    private val failedAttemptsKey =
+        intPreferencesKey("KEY_PIN_FAILED_ATTEMPTS")
 
     override suspend fun hasPin(accountId: String): Boolean {
         val preferences = dataStore.data.first()
@@ -51,6 +55,7 @@ class PinDataStore(
             preferences[pinAccountIdKey] = accountId
             preferences[pinSaltKey] = Base64.encode(salt)
             preferences[pinHashKey] = Base64.encode(hash)
+            preferences.remove(failedAttemptsKey)
         }
 
         logger.debug("PIN saved")
@@ -98,11 +103,31 @@ class PinDataStore(
         }
     }
 
+    override suspend fun getFailedAttempts(): Int {
+        return dataStore.data.first()[failedAttemptsKey] ?: 0
+    }
+
+    override suspend fun registerFailedAttempt(): Int {
+        var attempts = 0
+        dataStore.edit { preferences ->
+            attempts = (preferences[failedAttemptsKey] ?: 0) + 1
+            preferences[failedAttemptsKey] = attempts
+        }
+        return attempts
+    }
+
+    override suspend fun resetFailedAttempts() {
+        dataStore.edit { preferences ->
+            preferences.remove(failedAttemptsKey)
+        }
+    }
+
     override suspend fun clearPin() {
         dataStore.edit { preferences ->
             preferences.remove(pinAccountIdKey)
             preferences.remove(pinSaltKey)
             preferences.remove(pinHashKey)
+            preferences.remove(failedAttemptsKey)
         }
 
         logger.debug("PIN cleared")

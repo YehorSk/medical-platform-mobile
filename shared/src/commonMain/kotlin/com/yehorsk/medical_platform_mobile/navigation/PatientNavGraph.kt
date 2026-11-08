@@ -1,10 +1,7 @@
 package com.yehorsk.medical_platform_mobile.navigation
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -15,8 +12,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.AppointmentDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
-import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.ChatDetailScreen
-import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
+import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list_detail.ChatListDetailAdaptiveLayout
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.DoctorDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
@@ -36,7 +32,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.patientNavGraph(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    onChatFullScreenChange: (Boolean) -> Unit = {}
 ){
     navigation<Graph.Patient>(
         startDestination = Screen.Home
@@ -103,7 +100,7 @@ fun NavGraphBuilder.patientNavGraph(
                 },
                 goToAppointmentsScreen = {
                     navController.navigate(Screen.MyAppointments) {
-                        popUpTo<Screen.Connect> {
+                        popUpTo<Screen.Home> {
                             inclusive = false
                         }
                         launchSingleTop = true
@@ -112,22 +109,18 @@ fun NavGraphBuilder.patientNavGraph(
             )
         }
         composable<Screen.Chat> {
-            ChatListScreen(
+            ChatListDetailAdaptiveLayout(
                 modifier = modifier,
-                onConversationClick = { conversation ->
-                    navController.navigate(Screen.ChatDetails(conversation.id))
-                },
+                initialChatId = null,
+                onFullScreenDetailChange = onChatFullScreenChange
             )
         }
         composable<Screen.ChatDetails> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.ChatDetails>()
-            ChatDetailScreen(
+            ChatListDetailAdaptiveLayout(
                 modifier = modifier
                     .fillMaxSize(),
-                chatId = args.chatId,
-                onGoBackClicked = {
-                    navController.popBackStack()
-                },
+                initialChatId = args.chatId
             )
         }
         composable<Screen.Settings> {
@@ -141,12 +134,7 @@ fun NavGraphBuilder.patientNavGraph(
                     navController.navigate(Screen.UpdatePwd)
                 },
                 onLogoutClicked = {
-                    navController.navigate(Screen.Login) {
-                        popUpTo(0) {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
+                    navController.navigateToLogin()
                 }
             )
         }
@@ -166,7 +154,9 @@ fun NavGraphBuilder.patientNavGraph(
         }
         composable<Screen.PatientDoctors>{
             val viewModel: FindDoctorViewModel = koinViewModel()
-            viewModel.onAction(FindDoctorAction.ShowMyDoctors)
+            LaunchedEffect(Unit) {
+                viewModel.onAction(FindDoctorAction.ShowMyDoctors)
+            }
             FindDoctorScreen(
                 modifier = modifier
                     .fillMaxSize(),

@@ -35,7 +35,8 @@ fun ConversationItem(
     modifier: Modifier = Modifier,
     conversation: Conversation,
     localUser: AuthData,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isSelected: Boolean = false
 ) {
     val lastMessage = conversation.lastMessage
 
@@ -54,7 +55,10 @@ fun ConversationItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.primaryContainer
+                else MaterialTheme.colorScheme.surface
+            )
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
