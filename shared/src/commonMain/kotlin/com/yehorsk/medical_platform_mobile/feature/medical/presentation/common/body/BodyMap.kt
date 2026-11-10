@@ -16,7 +16,8 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,11 +25,10 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.LayoutDirection
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyHitRegion
 import com.yehorsk.theme.AppTheme
+import kotlin.math.roundToInt
 
 private fun indexToColor(index: Int): Color {
     // index 0 is reserved for "background / no hit"
@@ -42,9 +42,10 @@ private fun indexToColor(index: Int): Color {
 }
 
 private fun colorToIndex(color: Color): Int {
-    val id = (color.red * 255).toInt() or
-            ((color.green * 255).toInt() shl 8) or
-            ((color.blue * 255).toInt() shl 16)
+    if (color.alpha < 1f) return -1
+    val id = (color.red * 255).roundToInt() or
+            ((color.green * 255).roundToInt() shl 8) or
+            ((color.blue * 255).roundToInt() shl 16)
     return id - 1 // -1 means "no hit"
 }
 
@@ -72,18 +73,15 @@ fun BodyMap(
         )
         val bitmap = ImageBitmap(canvasSize.width, canvasSize.height)
         val canvas = Canvas(bitmap)
-        val drawScope = CanvasDrawScope()
-        drawScope.draw(
-            density = Density(1f),
-            layoutDirection = LayoutDirection.Ltr,
-            canvas = canvas,
-            size = Size(canvasSize.width.toFloat(), canvasSize.height.toFloat())
-        ) {
-            scale(scale, scale, pivot = Offset.Zero) {
-                regions.forEachIndexed { index, region ->
-                    drawPath(region.path, color = indexToColor(index))
-                }
-            }
+        // no antialias, edge colors break the index lookup
+        val paint = Paint().apply {
+            isAntiAlias = false
+            style = PaintingStyle.Fill
+        }
+        canvas.scale(scale, scale)
+        regions.forEachIndexed { index, region ->
+            paint.color = indexToColor(index)
+            canvas.drawPath(region.path, paint)
         }
         hitMap = bitmap
     }

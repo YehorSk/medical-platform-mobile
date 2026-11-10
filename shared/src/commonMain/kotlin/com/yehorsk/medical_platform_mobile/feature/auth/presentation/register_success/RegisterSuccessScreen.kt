@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessScreenViewModel
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register_success.viewmodel.RegisterSuccessState
@@ -69,7 +72,8 @@ fun RegisterSuccessScreen(
 fun RegisterSuccessScreenRoot(
     modifier: Modifier = Modifier,
     state: RegisterSuccessState,
-    onAction: (RegisterSuccessAction) -> Unit
+    onAction: (RegisterSuccessAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ){
     Scaffold(
         modifier = modifier
@@ -114,7 +118,8 @@ fun RegisterSuccessScreenRoot(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(horizontal = 24.dp, vertical = 32.dp),
                 verticalArrangement = Arrangement.spacedBy(
                     16.dp,

@@ -27,6 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.components.ForgotPwdHeader
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.components.StepIndicator
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.forgot_password.viewmodel.ForgotPasswordAction
@@ -72,7 +75,8 @@ fun ForgotPasswordScreen(
 fun ForgotPasswordScreenRoot(
     modifier: Modifier= Modifier,
     state: ForgotPasswordState,
-    onAction: (ForgotPasswordAction) -> Unit
+    onAction: (ForgotPasswordAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ) {
     Scaffold(
         modifier = modifier
@@ -96,7 +100,8 @@ fun ForgotPasswordScreenRoot(
             )
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))

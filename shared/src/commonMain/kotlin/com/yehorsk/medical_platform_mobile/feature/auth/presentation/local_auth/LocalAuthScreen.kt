@@ -35,6 +35,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel.LocalAuthAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel.LocalAuthEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel.LocalAuthScreenViewModel
@@ -94,7 +97,8 @@ fun LocalAuthScreen(
 fun LocalAuthScreenRoot(
     modifier: Modifier = Modifier,
     state: LocalAuthState,
-    onAction: (LocalAuthAction) -> Unit
+    onAction: (LocalAuthAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ) {
     // Until we know whether a PIN exists, show no form at all, so a "create PIN"
     // form can never appear for an account that already has one.
@@ -193,7 +197,8 @@ fun LocalAuthScreenRoot(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(
                         horizontal = 24.dp,
                         vertical = 32.dp

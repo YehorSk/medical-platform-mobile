@@ -39,6 +39,9 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.PwdTextField
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginEvent
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.login.viewmodel.LoginForm
@@ -91,7 +94,8 @@ fun LoginScreen(
 fun LoginScreenRoot(
     modifier: Modifier = Modifier,
     state: LoginState,
-    onAction: (LoginAction) -> Unit
+    onAction: (LoginAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ){
     Scaffold(
         modifier = modifier
@@ -141,7 +145,8 @@ fun LoginScreenRoot(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))

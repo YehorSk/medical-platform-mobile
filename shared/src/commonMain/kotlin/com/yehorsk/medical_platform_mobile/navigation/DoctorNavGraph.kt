@@ -79,7 +79,8 @@ fun NavGraphBuilder.doctorNavGraph(
             ChatListDetailAdaptiveLayout(
                 modifier = modifier
                     .fillMaxSize(),
-                initialChatId = args.chatId
+                initialChatId = args.chatId,
+                onExitChat = { navController.popBackStack() }
             )
         }
         composable<Screen.CreateMedicalRecord> {

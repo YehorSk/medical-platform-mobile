@@ -32,6 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationAction
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationState
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.email_verification.viewmodel.EmailVerificationViewModel
@@ -78,7 +81,8 @@ fun EmailVerificationScreenRoot(
     modifier: Modifier = Modifier,
     state: EmailVerificationState,
     token: String = "Empty",
-    onAction: (EmailVerificationAction) -> Unit
+    onAction: (EmailVerificationAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ){
     Scaffold(
         modifier = modifier
@@ -128,7 +132,8 @@ fun EmailVerificationScreenRoot(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 AnimatedVisibility(state.isVerifying){

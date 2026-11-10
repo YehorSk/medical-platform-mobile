@@ -41,6 +41,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
+import com.yehorsk.medical_platform_mobile.core.util.WindowLayout
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
+import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.authFormWidth
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.component.RoleToggle
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.DoctorRegisterForm
 import com.yehorsk.medical_platform_mobile.feature.auth.presentation.register.component.PatientRegisterForm
@@ -99,7 +102,8 @@ fun RegisterScreen(
 fun RegisterScreenRoot(
     modifier: Modifier = Modifier,
     state: RegisterState,
-    onAction: (RegisterAction) -> Unit
+    onAction: (RegisterAction) -> Unit,
+    windowLayout: WindowLayout = currentWindowLayout()
 ){
     Scaffold(
         modifier = modifier
@@ -149,7 +153,8 @@ fun RegisterScreenRoot(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .authFormWidth(windowLayout)
                     .padding(horizontal = 24.dp, vertical = 32.dp)
             ) {
                 RoleToggle(

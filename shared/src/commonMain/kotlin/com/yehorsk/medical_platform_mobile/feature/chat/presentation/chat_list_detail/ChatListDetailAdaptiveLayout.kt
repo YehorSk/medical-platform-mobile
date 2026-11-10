@@ -47,6 +47,12 @@ fun ChatListDetailAdaptiveLayout(
     initialChatId: String?,
     modifier: Modifier = Modifier,
     onFullScreenDetailChange: (Boolean) -> Unit = {},
+    /**
+     * Set when the chat was opened from outside the chat tab (e.g. from Home).
+     * Back from the open chat then leaves the whole screen instead of revealing the chat list,
+     * which would otherwise show up without the bottom bar.
+     */
+    onExitChat: (() -> Unit)? = null,
     chatListDetailViewModel: ChatListDetailViewModel = koinViewModel()
 ) {
     val sharedState by chatListDetailViewModel.state.collectAsStateWithLifecycle()
@@ -63,11 +69,21 @@ fun ChatListDetailAdaptiveLayout(
         }
     }
 
-    BackHandler(enabled = scaffoldNavigator.canNavigateBack()) {
+    fun goBackFromChat() {
+        if (onExitChat != null) {
+            onExitChat()
+            return
+        }
         scope.launch {
-            scaffoldNavigator.navigateBack()
+            if (scaffoldNavigator.canNavigateBack()) {
+                scaffoldNavigator.navigateBack()
+            }
             chatListDetailViewModel.onAction(ChatListDetailAction.OnSelectChat(null))
         }
+    }
+
+    BackHandler(enabled = scaffoldNavigator.canNavigateBack()) {
+        goBackFromChat()
     }
 
     // On a phone the detail pane gets hidden on back: drop the selection so the chat isn't reopened later
@@ -133,13 +149,7 @@ fun ChatListDetailAdaptiveLayout(
                         modifier = Modifier.fillMaxSize(),
                         chatId = chatId,
                         showGoBackButton = !isListVisible,
-                        onGoBackClicked = {
-                            scope.launch {
-                                if (scaffoldNavigator.canNavigateBack()) {
-                                    scaffoldNavigator.navigateBack()
-                                }
-                            }
-                        }
+                        onGoBackClicked = { goBackFromChat() }
                     )
                 }
             }
