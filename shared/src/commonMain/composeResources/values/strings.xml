@@ -66,7 +66,7 @@
     <string name="error_unknown">An unknown error happened</string>
     <string name="error_bad_request">Bad request</string>
     <string name="error_request_timeout">Your request has timed out</string>
-    <string name="error_unauthorized">Invalid credentials</string>
+    <string name="error_unauthorized">Your session has expired, please log in again</string>
     <string name="error_forbidden">You're not allowed to do that</string>
     <string name="error_conflict">A conflict happened</string>
     <string name="error_too_many_requests">You've hit the rate limit</string>
@@ -367,5 +367,16 @@
     <string name="error_reset_too_many_attempts">Too many attempts, please request a new code</string>
     <string name="error_schedule_conflicts_with_appointments">This change conflicts with upcoming appointments. Cancel or reschedule them first.</string>
     <string name="schedule_updated">Schedule updated</string>
+
+    <string name="appointments_view_calendar">Calendar</string>
+    <string name="appointments_view_list">List</string>
+    <string name="calendar_previous">Previous</string>
+    <string name="calendar_next">Next</string>
+    <string name="calendar_mode_month">Month</string>
+    <string name="calendar_mode_week">Week</string>
+    <string name="calendar_mode_day">Day</string>
+    <string name="calendar_more">+%1$d more</string>
+    <string name="calendar_no_patient">Patient</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

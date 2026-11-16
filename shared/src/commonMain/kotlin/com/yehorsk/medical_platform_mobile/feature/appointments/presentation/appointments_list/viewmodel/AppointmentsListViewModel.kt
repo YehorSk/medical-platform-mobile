@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
+import com.yehorsk.medical_platform_mobile.core.domain.service.ScheduleService
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
@@ -29,9 +30,12 @@ class AppointmentsListViewModel(
     private val mainLogger: MainLogger,
     private val connectivityObserver: ConnectivityObserver,
     private val appointmentService: AppointmentService,
+    private val scheduleService: ScheduleService,
 ): ViewModel(){
 
     private var appointmentsJob: Job? = null
+    private var scheduleJob: Job? = null
+    private var scheduleRequested: Boolean = false
     private var hasLoadedOnce: Boolean = false
     private var hasResumedOnce: Boolean = false
 
@@ -50,7 +54,49 @@ class AppointmentsListViewModel(
         observeConnectivity()
     }
 
-    fun onAction(action: AppointmentsListAction) = Unit
+    fun onAction(action: AppointmentsListAction) {
+        when (action) {
+            AppointmentsListAction.OnCalendarShown -> loadDoctorSchedule(force = false)
+            AppointmentsListAction.OnRefreshClicked -> {
+                refresh()
+                // The schedule may have been changed in settings since it was loaded
+                if (scheduleRequested) loadDoctorSchedule(force = true)
+            }
+            is AppointmentsListAction.OnViewModeChanged -> _uiState.update {
+                it.copy(viewMode = action.mode)
+            }
+            is AppointmentsListAction.OnCalendarModeChanged -> _uiState.update {
+                it.copy(calendarMode = action.mode)
+            }
+            is AppointmentsListAction.OnSelectedDateChanged -> _uiState.update {
+                it.copy(selectedDate = action.date)
+            }
+            is AppointmentsListAction.OnDayClicked -> _uiState.update {
+                it.copy(selectedDate = action.date, calendarMode = CalendarMode.DAY)
+            }
+            // Navigation is handled by the screen
+            AppointmentsListAction.OnGoBackClicked,
+            is AppointmentsListAction.OnAppointmentClicked -> Unit
+        }
+    }
+
+    // Only doctors can call /schedules/me, so this runs when the doctor calendar is shown
+    private fun loadDoctorSchedule(force: Boolean) {
+        if (scheduleJob?.isActive == true) return
+        if (!force && _uiState.value.daySchedules.isNotEmpty()) return
+        scheduleRequested = true
+        scheduleJob = viewModelScope.launch {
+            scheduleService
+                .getMySchedule()
+                .onSuccess { response ->
+                    _uiState.update { it.copy(daySchedules = response.data.daySchedule) }
+                }
+                .onFailure { error ->
+                    // The calendar still works with default hours and slot length
+                    mainLogger.debug("loadDoctorSchedule failed: $error")
+                }
+        }
+    }
 
     private fun observeConnectivity() {
         connectivityObserver.isConnected

@@ -45,8 +45,8 @@ fun DoctorResponseDto.toDoctor() = Doctor(
     specialization = specialization?.toSpecialization(),
     workplace = workplace?.toWorkplace(),
     createdAt = Instant.parse(createdAt),
-    updatedAt = Instant.parse(updatedAt),
-    approvedAt = Instant.parse(approvedAt),
+    updatedAt = updatedAt?.let(Instant::parse),
+    approvedAt = approvedAt?.let(Instant::parse),
     currentPatientHasDoctor = currentPatientHasDoctor
 )
 

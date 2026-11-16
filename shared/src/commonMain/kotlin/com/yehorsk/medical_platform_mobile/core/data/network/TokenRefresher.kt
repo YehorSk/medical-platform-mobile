@@ -35,6 +35,10 @@ class TokenRefresher(
 ) {
     private val mutex = Mutex()
 
+    // True while the last refresh hit a network/server error. The session is kept in that case,
+    // so a 401 that comes back meanwhile must not log the user out. Only touched under the mutex.
+    private var lastRefreshFailed = false
+
     /**
      * @param staleAccessToken the access token that was rejected. If storage already holds a different
      * one, another caller refreshed in the meantime and that token is returned without a new request.
@@ -53,6 +57,7 @@ class TokenRefresher(
         }
 
         if (staleAccessToken != null && authInfo.accessToken != staleAccessToken) {
+            lastRefreshFailed = false
             return@withLock RefreshResult.Refreshed(
                 BearerTokens(authInfo.accessToken, authInfo.refreshToken)
             )
@@ -66,6 +71,7 @@ class TokenRefresher(
 
         when (result) {
             is Result.Success -> {
+                lastRefreshFailed = false
                 sessionStorage.setAuthData(result.data.data)
                 RefreshResult.Refreshed(
                     BearerTokens(
@@ -81,10 +87,25 @@ class TokenRefresher(
                     authEventManager.triggerLogout()
                     RefreshResult.LoggedOut
                 } else {
+                    lastRefreshFailed = true
                     RefreshResult.Failed
                 }
             }
         }
+    }
+
+    /**
+     * Called with the final response of a request, after the Auth plugin already tried to refresh
+     * and retry. A 401 at that point means the server rejects even the current token, so the session
+     * is unusable: clear it and go to login. Skipped while refreshing fails for network/server reasons.
+     */
+    suspend fun onUnauthorizedAfterRefresh(path: String) = mutex.withLock {
+        if (lastRefreshFailed) return@withLock
+        // Already logged out (e.g. the refresh itself was rejected and handled above)
+        sessionStorage.observeAuthData().firstOrNull() ?: return@withLock
+        logger.debug("TokenRefresher 401 on $path after refresh, ending session")
+        sessionStorage.clearAuthData()
+        authEventManager.triggerLogout()
     }
 
     private fun DataError.Remote.isSessionRejected(): Boolean = when (this) {

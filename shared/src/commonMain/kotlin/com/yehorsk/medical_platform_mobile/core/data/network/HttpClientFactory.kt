@@ -6,6 +6,8 @@ import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.api.Send
+import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -16,6 +18,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.statement.request
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
@@ -56,6 +59,7 @@ class HttpClientFactory(
             defaultRequest {
                 contentType(ContentType.Application.Json)
             }
+            install(createSessionGuard())
             install(Auth){
                 bearer {
                     loadTokens {
@@ -69,8 +73,6 @@ class HttpClientFactory(
                                 )
                             }
                     }
-                    // The chat socket sets its own header from SessionStorage (see KtorWebSocketConnector),
-                    // the plugin's cached token may already be expired there.
                     sendWithoutRequest { request ->
                         !request.url.encodedPath.contains("auth/") &&
                                 !request.url.encodedPath.contains("/ws/")
@@ -91,6 +93,20 @@ class HttpClientFactory(
                     }
                 }
             }
+        }
+    }
+
+    private fun createSessionGuard() = createClientPlugin("SessionGuard") {
+        on(Send) { request ->
+            val call = proceed(request)
+            val path = call.request.url.encodedPath
+            val isExcluded = path.contains("auth/") ||
+                    path.contains("/ws/") ||
+                    path.contains("change-password")
+            if (call.response.status == HttpStatusCode.Unauthorized && !isExcluded) {
+                tokenRefresher.onUnauthorizedAfterRefresh(path)
+            }
+            call
         }
     }
 

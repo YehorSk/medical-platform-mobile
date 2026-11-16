@@ -15,7 +15,7 @@ data class Doctor(
     val daySchedules: List<DaySchedule> = emptyList(),
     val workplace: Workplace? = null,
     val createdAt: Instant,
-    val updatedAt: Instant,
-    val approvedAt: Instant,
-    val currentPatientHasDoctor: Boolean
+    val updatedAt: Instant? = null,
+    val approvedAt: Instant? = null,
+    val currentPatientHasDoctor: Boolean = false
 )

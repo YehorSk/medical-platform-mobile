@@ -14,7 +14,7 @@ data class DoctorResponseDto(
     val workplace: WorkplaceResponseDto? = null,
     val schedules: List<DayScheduleResponseDto> = emptyList(),
     val createdAt: String,
-    val updatedAt: String,
-    val approvedAt: String,
-    val currentPatientHasDoctor: Boolean
+    val updatedAt: String? = null,
+    val approvedAt: String? = null,
+    val currentPatientHasDoctor: Boolean = false
 )
