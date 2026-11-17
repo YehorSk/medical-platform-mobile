@@ -13,6 +13,7 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.app
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointments_list.AppointmentsListScreen
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list_detail.ChatListDetailAdaptiveLayout
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.data_access.DataAccessScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.DoctorDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
@@ -55,7 +56,7 @@ fun NavGraphBuilder.patientNavGraph(
                     when(destination){
                         ConnectionsMainDestination.Back -> navController.popBackStack()
                         ConnectionsMainDestination.Appointments -> navController.navigate(Screen.MyAppointments)
-                        ConnectionsMainDestination.DataAccess -> {}
+                        ConnectionsMainDestination.DataAccess -> navController.navigate(Screen.DataAccessGDPR)
                         ConnectionsMainDestination.FindDoctor -> navController.navigate(Screen.FindDoctor)
                         ConnectionsMainDestination.MyDoctors -> navController.navigate(Screen.PatientDoctors)
                         ConnectionsMainDestination.PendingRequests -> {}
@@ -214,6 +215,15 @@ fun NavGraphBuilder.patientNavGraph(
         }
         composable<Screen.UpdatePwd>{
             UpdatePasswordScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable<Screen.DataAccessGDPR>{
+            DataAccessScreen(
                 modifier = modifier
                     .fillMaxSize(),
                 onGoBackClicked = {

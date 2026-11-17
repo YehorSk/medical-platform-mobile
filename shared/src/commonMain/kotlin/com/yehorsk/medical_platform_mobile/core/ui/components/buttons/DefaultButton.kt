@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
@@ -67,11 +69,18 @@ fun DefaultButton(
                     if (loading) 0f else 1f
                 )
             ) {
+                // When disabled, fall back to the Button's disabled content color
+                // so custom text colors (e.g. error red) don't look clickable.
+                val contentColor = if (enabled && textColor.isSpecified) {
+                    textColor
+                } else {
+                    LocalContentColor.current
+                }
                 if (leadingIcon != null) {
                     Icon(
                         painter = leadingIcon,
                         contentDescription = null,
-                        tint = textColor,
+                        tint = contentColor,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -79,7 +88,7 @@ fun DefaultButton(
                     Text(
                         text = text,
                         style = MaterialTheme.typography.titleSmall,
-                        color = textColor
+                        color = contentColor
                     )
                 }
             }

@@ -2,6 +2,9 @@ package com.yehorsk.medical_platform_mobile.feature.connections.di
 
 import com.yehorsk.medical_platform_mobile.feature.medical.data.service.MedicalCardServiceImpl
 import com.yehorsk.medical_platform_mobile.feature.connections.data.network.service.PatientHasDoctorServiceImpl
+import com.yehorsk.medical_platform_mobile.feature.connections.data.network.service.AuditLogServiceImpl
+import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.AuditLogService
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.data_access.viewmodel.DataAccessViewModel
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.service.MedicalCardService
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.service.PatientHasDoctorService
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
@@ -20,5 +23,7 @@ val connectionsModule = module {
     viewModelOf(::FindPatientViewModel)
     viewModelOf(::DoctorDetailsViewModel)
     viewModelOf(::PatientDetailsViewModel)
+    viewModelOf(::DataAccessViewModel)
     singleOf(::PatientHasDoctorServiceImpl) bind PatientHasDoctorService::class
+    singleOf(::AuditLogServiceImpl) bind AuditLogService::class
 }

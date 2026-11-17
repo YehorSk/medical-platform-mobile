@@ -379,4 +379,20 @@
     <string name="calendar_no_patient">Patient</string>
     <string name="refresh">Refresh</string>
 
+    <string name="audit_viewed_card">%1$s viewed your medical card</string>
+    <string name="audit_tried_view_card">%1$s tried to view your medical card (blocked)</string>
+    <string name="audit_you_viewed_card">You viewed your medical card</string>
+    <string name="audit_you_updated_card">You updated your medical card</string>
+    <string name="audit_you_update_failed">Update of your medical card failed</string>
+    <string name="audit_added_files">%1$s added files to your medical record</string>
+    <string name="audit_generic_activity">%1$s accessed your medical data</string>
+    <string name="audit_you">You</string>
+    <string name="audit_role_doctor">Doctor</string>
+    <string name="audit_role_patient">Patient</string>
+    <string name="audit_role_admin">Administrator</string>
+    <string name="audit_outcome_blocked">Blocked</string>
+    <string name="audit_outcome_failed">Failed</string>
+    <string name="audit_empty">No one has accessed your medical card yet</string>
+    <string name="audit_no_medical_card">You don't have a medical card yet</string>
+
 </resources>

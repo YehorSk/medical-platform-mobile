@@ -1,14 +1,21 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +30,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultInfoCard
+import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
@@ -143,100 +151,68 @@ fun AppointmentDetailsScreenRoot(
                 }
                 else -> {
                     val appointment = state.appointment
+                    val isTwoPane = currentWindowLayout().isExpanded
 
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        AppointmentInfoCard(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            appointment = appointment
-                        )
-
-                        val doctor = appointment.doctor
-                        val patient = appointment.patient
-                        Text(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            text = "UserRole : $userRole"
-                        )
-                        when (userRole) {
-                            UserRole.PATIENT if doctor != null -> {
-                                DefaultInfoCard(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    title = stringResource(UiRes.string.doctor),
-                                    content = "${doctor.title} ${doctor.firstName} ${doctor.lastName}"
+                    if (isTwoPane) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.TopCenter
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .widthIn(max = MaxTwoPaneWidth)
+                                    .fillMaxSize(),
+                                horizontalArrangement = Arrangement.spacedBy(24.dp)
+                            ) {
+                                AppointmentDetailsContent(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(vertical = 12.dp),
+                                    appointment = appointment,
+                                    userRole = userRole
                                 )
-                            }
-                            UserRole.DOCTOR if patient != null -> {
-                                AppointmentPatientCard(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    appointment = appointment
-                                )
-                            }
-                            else -> {
-                                DefaultInfoCard(
-                                    modifier = Modifier.padding(vertical = 12.dp),
-                                    title = "No Data",
-                                    content = "No Data"
-                                )
-                            }
-                        }
-
-                        DefaultInfoCard(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            title = stringResource(UiRes.string.notes),
-                            content = appointment.note
-                        )
-                        val isEnabled = (appointment.status != AppointmentStatus.CANCELLED) && (appointment.status != AppointmentStatus.COMPLETED)
-                        if(userRole == UserRole.DOCTOR){
-                            DefaultButton(
-                                modifier = Modifier.padding(vertical = 12.dp),
-                                text = stringResource(UiRes.string.mark_completed),
-                                enabled = state.isConnected && isEnabled,
-                                onClick = {
-//                                    onAction(
-//                                        AppointmentDetailsAction.ShowBottomSheet
-//                                    )
+                                if (appointment.availableActions(userRole).isNotEmpty()) {
+                                    Surface(
+                                        modifier = Modifier
+                                            .width(ActionsPaneWidth)
+                                            .padding(vertical = 12.dp),
+                                        shape = RoundedCornerShape(16.dp),
+                                        color = MaterialTheme.colorScheme.surfaceContainerLow
+                                    ) {
+                                        AppointmentDetailsActions(
+                                            modifier = Modifier
+                                                .verticalScroll(rememberScrollState())
+                                                .padding(16.dp),
+                                            appointment = appointment,
+                                            userRole = userRole,
+                                            isConnected = state.isConnected,
+                                            onAction = onAction
+                                        )
+                                    }
                                 }
+                            }
+                        }
+                    } else {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(vertical = 12.dp),
+                            verticalArrangement = Arrangement.spacedBy(24.dp)
+                        ) {
+                            AppointmentDetailsContent(
+                                appointment = appointment,
+                                userRole = userRole
                             )
-                            DefaultButton(
-                                modifier = Modifier.padding(vertical = 12.dp),
-                                onClick = {
-                                    onAction(
-                                        AppointmentDetailsAction.OnCreateMedicalRecordClicked
-                                    )
-                                },
-                                enabled = state.isConnected && isEnabled,
-                                text = stringResource(UiRes.string.create_medical_record),
-                                leadingIcon = painterResource(UiRes.drawable.add_24px),
-                                color = MaterialTheme.colorScheme.primary,
-                                textColor = MaterialTheme.colorScheme.onPrimary,
+                            AppointmentDetailsActions(
+                                appointment = appointment,
+                                userRole = userRole,
+                                isConnected = state.isConnected,
+                                onAction = onAction
                             )
                         }
-                        DefaultButton(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            text = stringResource(UiRes.string.reschedule_btn),
-                            enabled = state.isConnected && isEnabled,
-                            onClick = {
-                                onAction(
-                                    AppointmentDetailsAction.OnRescheduleClicked
-                                )
-                            }
-                        )
-                        DefaultButton(
-                            modifier = Modifier.padding(vertical = 12.dp),
-                            text = stringResource(UiRes.string.cancel_btn),
-                            textColor = MaterialTheme.colorScheme.onErrorContainer,
-                            color = MaterialTheme.colorScheme.errorContainer,
-                            enabled = state.isConnected && isEnabled,
-                            onClick = {
-                                onAction(
-                                    AppointmentDetailsAction.OnCancelClicked
-                                )
-                            }
-                        )
-
                     }
                 }
             }
@@ -258,6 +234,135 @@ fun AppointmentDetailsScreenRoot(
 //            }
 //        )
 //    }
+}
+
+private val MaxTwoPaneWidth = 1200.dp
+private val ActionsPaneWidth = 340.dp
+
+@Composable
+private fun AppointmentDetailsContent(
+    modifier: Modifier = Modifier,
+    appointment: Appointment,
+    userRole: UserRole
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        AppointmentInfoCard(appointment = appointment)
+
+        val doctor = appointment.doctor
+        val patient = appointment.patient
+        when (userRole) {
+            UserRole.PATIENT if doctor != null -> {
+                DefaultInfoCard(
+                    title = stringResource(UiRes.string.doctor),
+                    content = "${doctor.title} ${doctor.firstName} ${doctor.lastName}"
+                )
+            }
+            UserRole.DOCTOR if patient != null -> {
+                AppointmentPatientCard(appointment = appointment)
+            }
+            else -> {
+                DefaultInfoCard(
+                    title = "No Data",
+                    content = "No Data"
+                )
+            }
+        }
+
+        DefaultInfoCard(
+            title = stringResource(UiRes.string.notes),
+            content = appointment.note
+        )
+    }
+}
+
+@Composable
+private fun AppointmentDetailsActions(
+    modifier: Modifier = Modifier,
+    appointment: Appointment,
+    userRole: UserRole,
+    isConnected: Boolean,
+    onAction: (AppointmentDetailsAction) -> Unit
+) {
+    val actions = appointment.availableActions(userRole)
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        if (AppointmentDetailsUiAction.MARK_COMPLETED in actions) {
+            DefaultButton(
+                text = stringResource(UiRes.string.mark_completed),
+                enabled = isConnected,
+                onClick = {
+//                    onAction(
+//                        AppointmentDetailsAction.ShowBottomSheet
+//                    )
+                }
+            )
+        }
+        if (AppointmentDetailsUiAction.CREATE_MEDICAL_RECORD in actions) {
+            DefaultButton(
+                onClick = {
+                    onAction(AppointmentDetailsAction.OnCreateMedicalRecordClicked)
+                },
+                enabled = isConnected,
+                text = stringResource(UiRes.string.create_medical_record),
+                leadingIcon = painterResource(UiRes.drawable.add_24px),
+                color = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+            )
+        }
+        if (AppointmentDetailsUiAction.RESCHEDULE in actions) {
+            DefaultButton(
+                text = stringResource(UiRes.string.reschedule_btn),
+                enabled = isConnected,
+                onClick = {
+                    onAction(AppointmentDetailsAction.OnRescheduleClicked)
+                }
+            )
+        }
+        if (AppointmentDetailsUiAction.CANCEL in actions) {
+            DefaultButton(
+                text = stringResource(UiRes.string.cancel_btn),
+                textColor = MaterialTheme.colorScheme.onErrorContainer,
+                color = MaterialTheme.colorScheme.errorContainer,
+                enabled = isConnected,
+                onClick = {
+                    onAction(AppointmentDetailsAction.OnCancelClicked)
+                }
+            )
+        }
+    }
+}
+
+private enum class AppointmentDetailsUiAction {
+    MARK_COMPLETED, CREATE_MEDICAL_RECORD, RESCHEDULE, CANCEL
+}
+
+/**
+ * Which actions the UI offers for this appointment. This is usability only;
+ * the backend must still enforce the allowed status transitions.
+ */
+private fun Appointment.availableActions(userRole: UserRole): Set<AppointmentDetailsUiAction> {
+    val isDoctor = userRole == UserRole.DOCTOR
+    val isUpcoming = status == AppointmentStatus.PENDING || status == AppointmentStatus.CONFIRMED
+    return buildSet {
+        if (isDoctor && status == AppointmentStatus.CONFIRMED) {
+            add(AppointmentDetailsUiAction.MARK_COMPLETED)
+        }
+        if (isDoctor && (status == AppointmentStatus.CONFIRMED || status == AppointmentStatus.COMPLETED)) {
+            add(AppointmentDetailsUiAction.CREATE_MEDICAL_RECORD)
+        }
+        if (isUpcoming && doctor?.id != null) {
+            add(AppointmentDetailsUiAction.RESCHEDULE)
+        }
+        if (isUpcoming) {
+            add(AppointmentDetailsUiAction.CANCEL)
+        }
+    }
 }
 
 @Preview(showBackground = true)
