@@ -2,4 +2,5 @@ package com.yehorsk.medical_platform_mobile.feature.connections.presentation.dat
 
 sealed interface DataAccessAction {
     data object OnGoBackClicked : DataAccessAction
+    data class OnLogClicked(val logId: String) : DataAccessAction
 }

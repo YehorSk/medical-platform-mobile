@@ -1,10 +1,13 @@
 package com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response
 
+import com.yehorsk.medical_platform_mobile.core.domain.model.AuditLogOutcome
 import kotlin.time.Instant
 
+/** Someone else accessing (or trying to access) the patient's medical card */
 data class AuditLog(
     val id: String,
-    val action: AuditLogAction,
+    /** Raw backend action; see [AuditLogActions] for the values this feed uses */
+    val action: String,
     val outcome: AuditLogOutcome,
     val detail: String,
     val createdAt: Instant?,
@@ -12,15 +15,20 @@ data class AuditLog(
 )
 
 data class AuditLogActor(
+    /** User id */
     val id: String,
+    /** Doctor id for opening the doctor's profile; null when the actor isn't a doctor */
+    val doctorId: String?,
     val name: String,
-    val role: AuditLogActorRole,
-    val isMe: Boolean
+    val role: AuditLogActorRole
 )
 
-enum class AuditLogAction { CREATE, READ, UPDATE, DELETE, UNKNOWN }
-
-enum class AuditLogOutcome { SUCCESS, DENIED, FAILED, UNKNOWN }
+object AuditLogActions {
+    /** Medical card viewed */
+    const val READ = "READ"
+    /** Files added to a medical record */
+    const val UPDATE = "UPDATE"
+}
 
 // Separate from UserRole: audit actors can also be ADMIN
 enum class AuditLogActorRole { PATIENT, DOCTOR, ADMIN, UNKNOWN }

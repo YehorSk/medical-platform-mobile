@@ -89,10 +89,10 @@ fun MainScaffold(
                             if(!isSelected){
                                 navController.navigate(screen.screen){
                                     popUpTo<Screen.Home> {
-                                        saveState = true
+                                        saveState = showNavigation
                                     }
                                     launchSingleTop = true
-                                    restoreState = true
+                                    restoreState = showNavigation
                                 }
                             }
                         },

@@ -23,9 +23,6 @@ fun NavigationRoot(
     userId: String?,
     userRole: UserRole?
 ){
-    // Decided once, on first composition. If it followed live auth state, every login/logout
-    // would change the graph, and NavHost would rebuild it and reset the back stack.
-    // Later auth changes navigate explicitly (see navigateToLogin / navigateToMain).
     val authStartDestination = remember {
         if (isAuthenticated && userId != null && userRole != null) {
             Screen.LocalAuth(userId = userId, userRole = userRole)
@@ -34,7 +31,6 @@ fun NavigationRoot(
         }
     }
     val snackbarHostState = LocalSnackbarHostState.current
-    // A chat opened inside the Chat tab on a phone stays on the tab's route, so the bar is hidden explicitly
     var isChatFullScreen by remember { mutableStateOf(false) }
     MainScaffold(
         modifier = Modifier
@@ -65,10 +61,6 @@ fun NavigationRoot(
     )
 }
 
-/**
- * Opens the login screen and clears the whole back stack, so Back can't return
- * to screens that need a session (logout, session expiry, failed PIN, 401).
- */
 fun NavController.navigateToLogin() {
     navigate(Screen.Login) {
         popUpTo(0) {

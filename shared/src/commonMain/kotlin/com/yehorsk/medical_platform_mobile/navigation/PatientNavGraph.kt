@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -14,6 +15,8 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.app
 import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.book_appointment.BookAppointmentScreen
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list_detail.ChatListDetailAdaptiveLayout
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.data_access.DataAccessScreen
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.data_access.viewmodel.DataAccessViewModel
+import com.yehorsk.medical_platform_mobile.feature.connections.presentation.data_access_details.DataAccessDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.DoctorDetailsScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
@@ -28,6 +31,7 @@ import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_main.MedicalMainScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.ProfileScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.SettingsScreen
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.account_activity.AccountActivityScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.UpdatePasswordScreen
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -135,8 +139,20 @@ fun NavGraphBuilder.patientNavGraph(
                 navigateToUpdatePwdPage = {
                     navController.navigate(Screen.UpdatePwd)
                 },
+                navigateToAccountActivityPage = {
+                    navController.navigate(Screen.AccountActivity)
+                },
                 onLogoutClicked = {
                     navController.navigateToLogin()
+                }
+            )
+        }
+        composable<Screen.AccountActivity>{
+            AccountActivityScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                onGoBackClicked = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -228,6 +244,28 @@ fun NavGraphBuilder.patientNavGraph(
                     .fillMaxSize(),
                 onGoBackClicked = {
                     navController.popBackStack()
+                },
+                onLogClicked = { logId ->
+                    navController.navigate(Screen.DataAccessDetails(logId))
+                }
+            )
+        }
+        composable<Screen.DataAccessDetails>{ backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.DataAccessDetails>()
+            val listEntry = remember(backStackEntry) {
+                navController.getBackStackEntry<Screen.DataAccessGDPR>()
+            }
+            val viewModel: DataAccessViewModel = koinViewModel(viewModelStoreOwner = listEntry)
+            DataAccessDetailsScreen(
+                modifier = modifier
+                    .fillMaxSize(),
+                logId = args.logId,
+                viewModel = viewModel,
+                onGoBackClicked = {
+                    navController.popBackStack()
+                },
+                onManageAccessClicked = { doctorId ->
+                    navController.navigate(Screen.DoctorDetails(doctorId))
                 }
             )
         }

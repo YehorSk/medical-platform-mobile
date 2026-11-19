@@ -1,6 +1,7 @@
 package com.yehorsk.medical_platform_mobile.feature.auth.presentation.local_auth.viewmodel
 
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.util.UiText
 
 data class LocalAuthState(
@@ -12,7 +13,8 @@ data class LocalAuthState(
     val error: UiText? = null,
     val isFormValid: Boolean = false,
     /** null until we know whether a PIN exists; never default to CREATE_PIN. */
-    val localAuthType: LocalAuthType? = null
+    val localAuthType: LocalAuthType? = null,
+    val sessionCheckError: DataError? = null
 )
 
 enum class LocalAuthType {

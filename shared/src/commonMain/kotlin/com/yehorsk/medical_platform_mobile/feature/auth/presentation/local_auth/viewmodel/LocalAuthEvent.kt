@@ -6,4 +6,6 @@ sealed interface LocalAuthEvent {
 
     data object TooManyFailedAttempts: LocalAuthEvent
 
+    data object SessionExpired: LocalAuthEvent
+
 }

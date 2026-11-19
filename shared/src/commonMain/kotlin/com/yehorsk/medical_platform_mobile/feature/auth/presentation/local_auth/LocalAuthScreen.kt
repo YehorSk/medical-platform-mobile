@@ -60,6 +60,12 @@ import medicalplatformmobile.shared.generated.resources.pin_enter_title
 import medicalplatformmobile.shared.generated.resources.pin_input
 import medicalplatformmobile.shared.generated.resources.pin_input_placeholder
 import medicalplatformmobile.shared.generated.resources.stethoscope_24px
+import medicalplatformmobile.shared.generated.resources.pin_session_check_failed
+import medicalplatformmobile.shared.generated.resources.try_again
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.other.NoConnectionBanner
+import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.toUiText
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -81,7 +87,8 @@ fun LocalAuthScreen(
         keyboardController?.hide()
         when (event) {
             LocalAuthEvent.Success -> onPinIsCorrect(state.userRole!!)
-            LocalAuthEvent.TooManyFailedAttempts -> onPinIsIncorrect()
+            LocalAuthEvent.TooManyFailedAttempts,
+            LocalAuthEvent.SessionExpired -> onPinIsIncorrect()
         }
     }
 
@@ -110,7 +117,38 @@ fun LocalAuthScreenRoot(
                 .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center
         ) {
-            CircularProgressIndicator()
+            val error = state.sessionCheckError
+            if (error == null) {
+                CircularProgressIndicator()
+            } else {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (error == DataError.Remote.Status.NO_INTERNET ||
+                        error == DataError.Connection.NOT_CONNECTED
+                    ) {
+                        NoConnectionBanner()
+                    } else {
+                        Text(
+                            text = stringResource(UiRes.string.pin_session_check_failed),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = error.toUiText().asString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                    DefaultButton(
+                        onClick = { onAction(LocalAuthAction.OnRetrySessionCheck) },
+                        text = stringResource(UiRes.string.try_again)
+                    )
+                }
+            }
         }
         return
     }

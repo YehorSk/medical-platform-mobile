@@ -46,6 +46,8 @@ sealed interface Screen {
 
     @Serializable data object DataAccessGDPR: Screen
 
+    @Serializable data class DataAccessDetails(val logId: String): Screen
+
     @Serializable data class CreateMedicalRecord(val appointmentId: String): Screen
 
     @Serializable data object PatientMedicalCard: Screen
@@ -59,5 +61,7 @@ sealed interface Screen {
     ): Screen
 
     @Serializable data object MySchedule: Screen
+
+    @Serializable data object AccountActivity: Screen
 
 }

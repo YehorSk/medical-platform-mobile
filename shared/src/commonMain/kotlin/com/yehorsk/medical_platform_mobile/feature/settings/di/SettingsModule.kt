@@ -1,7 +1,10 @@
 package com.yehorsk.medical_platform_mobile.feature.settings.di
 
+import com.yehorsk.medical_platform_mobile.feature.settings.data.AccountActivityServiceImpl
 import com.yehorsk.medical_platform_mobile.feature.settings.data.SettingsServiceImpl
+import com.yehorsk.medical_platform_mobile.feature.settings.domain.AccountActivityService
 import com.yehorsk.medical_platform_mobile.feature.settings.domain.SettingsService
+import com.yehorsk.medical_platform_mobile.feature.settings.presentation.account_activity.viewmodel.AccountActivityViewModel
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.doctor_schedule.viewmodel.DoctorScheduleViewModel
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.viewmodel.UpdatePasswordViewModel
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsViewModel
@@ -14,5 +17,7 @@ val settingsModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::UpdatePasswordViewModel)
     viewModelOf(::DoctorScheduleViewModel)
+    viewModelOf(::AccountActivityViewModel)
     singleOf(::SettingsServiceImpl) bind SettingsService::class
+    singleOf(::AccountActivityServiceImpl) bind AccountActivityService::class
 }

@@ -8,4 +8,6 @@ sealed interface LocalAuthAction {
 
     data object OnCheckPinClicked: LocalAuthAction
 
+    data object OnRetrySessionCheck: LocalAuthAction
+
 }

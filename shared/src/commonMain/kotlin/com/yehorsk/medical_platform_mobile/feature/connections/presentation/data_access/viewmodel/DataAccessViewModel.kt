@@ -56,6 +56,7 @@ class DataAccessViewModel(
     fun onAction(action: DataAccessAction) {
         when (action) {
             DataAccessAction.OnGoBackClicked -> {}
+            is DataAccessAction.OnLogClicked -> {}
         }
     }
 

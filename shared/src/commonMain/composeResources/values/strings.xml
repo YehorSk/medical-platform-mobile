@@ -214,6 +214,8 @@
     <!-- PIN SCREEN -->
 
     <string name="error_pin_invalid">PIN must contain 4 to 6 digits</string>
+    <string name="pin_session_check_failed">Couldn\'t verify your session</string>
+    <string name="try_again">Try again</string>
     <string name="error_pin_weak">This PIN is too easy to guess. Avoid repeated or sequential digits</string>
     <string name="error_pin_mismatch">PIN codes do not match</string>
     <string name="error_pin_incorrect">Incorrect PIN</string>
@@ -381,12 +383,8 @@
 
     <string name="audit_viewed_card">%1$s viewed your medical card</string>
     <string name="audit_tried_view_card">%1$s tried to view your medical card (blocked)</string>
-    <string name="audit_you_viewed_card">You viewed your medical card</string>
-    <string name="audit_you_updated_card">You updated your medical card</string>
-    <string name="audit_you_update_failed">Update of your medical card failed</string>
     <string name="audit_added_files">%1$s added files to your medical record</string>
     <string name="audit_generic_activity">%1$s accessed your medical data</string>
-    <string name="audit_you">You</string>
     <string name="audit_role_doctor">Doctor</string>
     <string name="audit_role_patient">Patient</string>
     <string name="audit_role_admin">Administrator</string>
@@ -394,5 +392,43 @@
     <string name="audit_outcome_failed">Failed</string>
     <string name="audit_empty">No one has accessed your medical card yet</string>
     <string name="audit_no_medical_card">You don't have a medical card yet</string>
+    <string name="audit_details_title">Access details</string>
+    <string name="audit_section_who">Who</string>
+    <string name="audit_section_when">When</string>
+    <string name="audit_section_what">What happened</string>
+    <string name="audit_section_reference">Reference ID</string>
+    <string name="audit_reference_hint">Mention this ID if you contact support about this entry.</string>
+    <string name="audit_action_read">Viewed</string>
+    <string name="audit_action_update">Files added</string>
+    <string name="audit_action_unknown">Other activity</string>
+    <string name="audit_outcome_allowed">Allowed</string>
+    <string name="audit_resource_medical_card">Your medical card</string>
+    <string name="audit_resource_medical_record">Your medical record</string>
+    <string name="audit_time_zone">Time zone: %1$s</string>
+    <string name="audit_note_denied">This person did not have approved access, so none of your data was shown. If you don't recognize them, check who has access to your medical card.</string>
+    <string name="audit_note_doctor_access">This doctor has approved access to your medical card. You can revoke it at any time.</string>
+    <string name="audit_manage_access">View doctor profile</string>
+    <string name="audit_log_not_found">This entry is no longer available</string>
+
+    <string name="account_activity">Account activity</string>
+    <string name="account_activity_empty">No account activity yet</string>
+    <string name="account_activity_hint">Failed and blocked attempts are highlighted. If you don't recognize one, change your password.</string>
+    <string name="auth_signed_in">Signed in</string>
+    <string name="auth_failed_wrong_password">Failed sign-in: wrong password</string>
+    <string name="auth_blocked_email_not_verified">Sign-in blocked: email not verified</string>
+    <string name="auth_blocked_doctor_not_approved">Sign-in blocked: doctor account not approved</string>
+    <string name="auth_failed_sign_in">Failed sign-in</string>
+    <string name="auth_signed_out">Signed out</string>
+    <string name="auth_reset_requested">Password reset code requested</string>
+    <string name="auth_reset_code_wrong">Wrong reset code</string>
+    <string name="auth_reset_code_expired">Expired reset code</string>
+    <string name="auth_reset_code_too_many">Too many reset code attempts</string>
+    <string name="auth_reset_code_confirmed">Reset code confirmed</string>
+    <string name="auth_reset_code_failed">Reset code check failed</string>
+    <string name="auth_password_changed">Password changed</string>
+    <string name="auth_password_change_failed">Password change failed</string>
+    <string name="auth_ip_address">IP: %1$s</string>
+    <string name="auth_device_app">Medical Platform app</string>
+    <string name="auth_device_browser">%1$s on %2$s</string>
 
 </resources>

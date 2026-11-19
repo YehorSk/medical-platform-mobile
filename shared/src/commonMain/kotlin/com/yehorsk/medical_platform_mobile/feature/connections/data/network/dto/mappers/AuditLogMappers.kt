@@ -1,31 +1,28 @@
 package com.yehorsk.medical_platform_mobile.feature.connections.data.network.dto.mappers
 
+import com.yehorsk.medical_platform_mobile.core.data.mappers.enumOrUnknown
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toAuditLogOutcome
+import com.yehorsk.medical_platform_mobile.core.data.mappers.toInstantOrNull
 import com.yehorsk.medical_platform_mobile.feature.connections.data.network.dto.response.AuditLogActorDto
 import com.yehorsk.medical_platform_mobile.feature.connections.data.network.dto.response.AuditLogDto
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.AuditLog
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.AuditLogAction
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.AuditLogActor
 import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.AuditLogActorRole
-import com.yehorsk.medical_platform_mobile.feature.connections.domain.models.response.AuditLogOutcome
-import kotlin.time.Instant
 
 fun AuditLogDto.toDomain(): AuditLog =
     AuditLog(
         id = id,
-        action = enumOrUnknown(action, AuditLogAction.UNKNOWN),
-        outcome = enumOrUnknown(outcome, AuditLogOutcome.UNKNOWN),
+        action = action.uppercase(),
+        outcome = outcome.toAuditLogOutcome(),
         detail = detail,
-        createdAt = runCatching { Instant.parse(createdAt) }.getOrNull(),
+        createdAt = createdAt.toInstantOrNull(),
         actor = actor.toDomain()
     )
 
 fun AuditLogActorDto.toDomain(): AuditLogActor =
     AuditLogActor(
         id = id,
+        doctorId = doctorId?.takeIf { it.isNotBlank() },
         name = name,
-        role = enumOrUnknown(role, AuditLogActorRole.UNKNOWN),
-        isMe = isMe
+        role = enumOrUnknown(role, AuditLogActorRole.UNKNOWN)
     )
-
-private inline fun <reified E : Enum<E>> enumOrUnknown(value: String, unknown: E): E =
-    enumValues<E>().find { it.name.equals(value, ignoreCase = true) } ?: unknown

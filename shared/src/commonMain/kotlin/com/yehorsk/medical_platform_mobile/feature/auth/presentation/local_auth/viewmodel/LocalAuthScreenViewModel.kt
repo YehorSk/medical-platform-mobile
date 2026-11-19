@@ -8,8 +8,8 @@ import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
-import com.yehorsk.medical_platform_mobile.core.util.onFailure
-import com.yehorsk.medical_platform_mobile.core.util.onSuccess
+import com.yehorsk.medical_platform_mobile.core.util.DataError
+import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.feature.auth.domain.AuthService
 import com.yehorsk.medical_platform_mobile.navigation.Screen
 import com.yehorsk.medical_platform_mobile.navigation.navTypes.serializableType
@@ -67,6 +67,7 @@ class LocalAuthScreenViewModel(
             is LocalAuthAction.OnPinChanged -> onPinChanged(action.value)
             is LocalAuthAction.OnConfirmPinChanged -> onConfirmPinChanged(action.value)
             LocalAuthAction.OnCheckPinClicked -> onCheckClicked()
+            LocalAuthAction.OnRetrySessionCheck -> checkPinExists()
         }
     }
 
@@ -105,38 +106,42 @@ class LocalAuthScreenViewModel(
         onFormValidate()
     }
 
-    // Runs inside the submit coroutine, so the double-tap guard covers it too
-    private suspend fun auth() {
-        _uiState.update { it.copy(
-            isLoading = true,
-        ) }
-        authService
-            .me()
-            .onSuccess {
-                _uiState.update { it.copy(
-                    isLoading = false
-                ) }
-                eventChannel.send(
-                    LocalAuthEvent.Success
-                )
-            }
-            .onFailure {
-                _uiState.update { it.copy(
-                    isLoading = false
-                ) }
-                sessionStorage.clearAuthData()
-                eventChannel.send(LocalAuthEvent.TooManyFailedAttempts)
-            }
+    private suspend fun unlock() {
+        eventChannel.send(LocalAuthEvent.Success)
     }
+
+    private fun DataError.Remote.isSessionRejected(): Boolean =
+        this == DataError.Remote.Status.UNAUTHORIZED ||
+                this == DataError.Remote.Status.FORBIDDEN
 
     private fun checkPinExists() {
         val id = route.userId
 
         _uiState.update {
-            it.copy(isLoading = true)
+            it.copy(
+                isLoading = true,
+                sessionCheckError = null
+            )
         }
 
         viewModelScope.launch {
+            val sessionCheck = authService.me()
+            if (sessionCheck is Result.Failure) {
+                if (sessionCheck.error.isSessionRejected()) {
+                    sessionStorage.clearAuthData()
+                    _uiState.update { it.copy(isLoading = false) }
+                    eventChannel.send(LocalAuthEvent.SessionExpired)
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            sessionCheckError = sessionCheck.error
+                        )
+                    }
+                }
+                return@launch
+            }
+
             val hasPin = pinStorage.hasPin(id)
 
             // A lockout interrupted earlier (e.g. app killed mid-way) must still apply
@@ -160,7 +165,7 @@ class LocalAuthScreenViewModel(
 
     private fun onCheckClicked() {
         // A fast double tap would otherwise run two checks at once: two failed
-        // attempts counted for one wrong PIN, or auth() called twice
+        // attempts counted for one wrong PIN, or unlock() called twice
         if (isSubmitting) return
         isSubmitting = true
 
@@ -232,7 +237,7 @@ class LocalAuthScreenViewModel(
                     return
                 }
                 pinStorage.setPin(id, _uiState.value.pinCode)
-                auth()
+                unlock()
             }
             LocalAuthType.ENTER_PIN -> {
                 if (!isPinValid(_uiState.value.pinCode)) {
@@ -251,7 +256,7 @@ class LocalAuthScreenViewModel(
 
                 if (isCorrect) {
                     pinStorage.resetFailedAttempts()
-                    auth()
+                    unlock()
                 } else {
                     val attempts = pinStorage.registerFailedAttempt()
                     if (attempts >= MAX_PIN_ATTEMPTS) {

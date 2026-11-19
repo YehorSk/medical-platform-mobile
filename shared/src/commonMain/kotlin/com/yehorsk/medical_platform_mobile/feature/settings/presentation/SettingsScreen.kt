@@ -20,6 +20,7 @@ import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmod
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmodel.SettingsViewModel
 import com.yehorsk.medical_platform_mobile.util.getRole
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.account_activity
 import medicalplatformmobile.shared.generated.resources.cancel_btn
 import medicalplatformmobile.shared.generated.resources.do_you_want_to_logout
 import medicalplatformmobile.shared.generated.resources.do_you_want_to_logout_desc
@@ -37,6 +38,7 @@ fun SettingsScreen(
     navigateToProfilePage: () -> Unit,
     navigateToUpdatePwdPage: () -> Unit,
     navigateToMySchedulePage: () -> Unit = {},
+    navigateToAccountActivityPage: () -> Unit,
     onLogoutClicked: () -> Unit,
 ){
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -60,6 +62,9 @@ fun SettingsScreen(
                 }
                 is SettingsAction.GoToMyScheduleClicked -> {
                     navigateToMySchedulePage()
+                }
+                is SettingsAction.GoToAccountActivityClicked -> {
+                    navigateToAccountActivityPage()
                 }
                 else -> viewModel.onAction(action)
             }
@@ -128,6 +133,12 @@ fun SettingsList(
             SettingsListItem(
                 text = stringResource(UiRes.string.settings_change_password),
                 onClick = { onAction(SettingsAction.GoToUpdatePwdScreen) }
+            )
+        }
+        item {
+            SettingsListItem(
+                text = stringResource(UiRes.string.account_activity),
+                onClick = { onAction(SettingsAction.GoToAccountActivityClicked) }
             )
         }
         if(userRole == UserRole.DOCTOR){
