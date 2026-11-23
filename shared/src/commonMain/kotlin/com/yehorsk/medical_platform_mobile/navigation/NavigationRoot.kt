@@ -70,6 +70,15 @@ fun NavController.navigateToLogin() {
     }
 }
 
+fun NavController.navigateToLocalAuth(userId: String, userRole: UserRole) {
+    navigate(Screen.LocalAuth(userId = userId, userRole = userRole)) {
+        popUpTo(0) {
+            inclusive = true
+        }
+        launchSingleTop = true
+    }
+}
+
 @Serializable
 sealed class Graph{
     @Serializable data object Root: Graph()

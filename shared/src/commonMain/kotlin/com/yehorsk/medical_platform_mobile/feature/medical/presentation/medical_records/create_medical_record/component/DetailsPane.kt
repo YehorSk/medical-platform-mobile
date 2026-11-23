@@ -17,7 +17,12 @@ import com.yehorsk.medical_platform_mobile.feature.appointments.presentation.app
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordAction
 import com.yehorsk.medical_platform_mobile.feature.medical.presentation.medical_records.create_medical_record.viewmodel.CreateRecordScreenState
 import com.yehorsk.medical_platform_mobile.util.UiText
+import com.yehorsk.medical_platform_mobile.feature.medical.data.mappers.MedicalAttachmentTypes
 import medicalplatformmobile.shared.generated.resources.UiRes
+import medicalplatformmobile.shared.generated.resources.record_add_files
+import medicalplatformmobile.shared.generated.resources.record_attachments
+import medicalplatformmobile.shared.generated.resources.record_clear_files
+import medicalplatformmobile.shared.generated.resources.record_remove_file
 import medicalplatformmobile.shared.generated.resources.record_diagnosis
 import medicalplatformmobile.shared.generated.resources.record_diagnosis_placeholder
 import medicalplatformmobile.shared.generated.resources.record_recommendations
@@ -91,32 +96,30 @@ fun DetailsPane(
             }
         )
         MultiFilePicker(
-            modifier = Modifier.padding(vertical = 12.dp),
+            modifier = Modifier.padding(top = 12.dp),
             files = state.files,
             onFilesPicked = { onAction(CreateRecordAction.FilesPicked(it)) },
             onFileRemoved = { onAction(CreateRecordAction.FileRemoved(it)) },
-            extensions = listOf("pdf", "png", "jpg"),
-            enabled = state.canAddMore && !state.isSubmitting,
+            label = stringResource(UiRes.string.record_attachments),
+            buttonText = stringResource(UiRes.string.record_add_files),
+            removeText = stringResource(UiRes.string.record_remove_file),
+            extensions = MedicalAttachmentTypes.extensions,
+            canAddMore = state.canAddMore,
+            enabled = !state.isSubmitting,
         )
-        Row(
-            modifier = Modifier.padding(vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        if (state.files.isNotEmpty()) {
             DefaultButton(
+                modifier = Modifier.padding(top = 12.dp),
                 onClick = { onAction(CreateRecordAction.ClearFiles) },
-                enabled = state.files.isNotEmpty() && !state.isSubmitting,
-                text = "Clear"
-            )
-
-            DefaultButton(
-                onClick = {  },
-                enabled = state.canSubmit,
-                text = "Submit"
+                enabled = !state.isSubmitting,
+                text = stringResource(UiRes.string.record_clear_files)
             )
         }
         DefaultButton(
             modifier = Modifier.padding(vertical = 12.dp),
             text = stringResource(UiRes.string.record_save),
+            loading = state.isSubmitting,
+            enabled = state.canSubmit,
             onClick = { onAction(CreateRecordAction.OnCreateMedicalRecordClicked) }
         )
     }

@@ -3,6 +3,7 @@ package com.yehorsk.medical_platform_mobile.core.di
 import com.yehorsk.medical_platform_mobile.core.data.datastore.PinDataStore
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SessionDataStore
 import com.yehorsk.medical_platform_mobile.core.data.datastore.SettingsDataStore
+import com.yehorsk.medical_platform_mobile.core.data.lifecycle.AppLockManager
 import com.yehorsk.medical_platform_mobile.core.data.logger.KermitLogger
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectionRetryHandler
 import com.yehorsk.medical_platform_mobile.core.data.network.KtorWebSocketConnector
@@ -40,6 +41,7 @@ val coreDataModule = module {
     }
     singleOf(::SessionDataStore) bind SessionStorage::class
     singleOf(::PinDataStore) bind PinStorage::class
+    singleOf(::AppLockManager)
     singleOf(::KtorWebSocketConnector)
     singleOf(::ConnectionRetryHandler)
     singleOf(::SettingsDataStore) bind SettingsStorage::class

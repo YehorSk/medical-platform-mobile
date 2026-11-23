@@ -5,6 +5,7 @@ import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.BodyReg
 import com.yehorsk.medical_platform_mobile.feature.medical.domain.models.MedicalRecordType
 import kotlinx.serialization.Serializable
 
+// Sent as the `data` part of the multipart create request
 @Serializable
 data class CreateMedicalRecordRequestDto(
     val appointmentId: String,
@@ -13,7 +14,7 @@ data class CreateMedicalRecordRequestDto(
     val diagnosis: String,
     val recommendations: String = "",
     val type: MedicalRecordType,
-    val bodyParts: Set<BodyPartSelectionDto> = mutableSetOf()
+    val bodyParts: Set<BodyPartSelectionDto> = emptySet()
 )
 
 @Serializable

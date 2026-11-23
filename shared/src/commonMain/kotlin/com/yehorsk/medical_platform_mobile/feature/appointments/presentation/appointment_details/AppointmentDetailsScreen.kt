@@ -30,6 +30,7 @@ import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultInfoCard
+import com.yehorsk.medical_platform_mobile.core.ui.components.dialogs.DestructiveConfirmationDialog
 import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentDoctor
@@ -47,11 +48,24 @@ import medicalplatformmobile.shared.generated.resources.add_24px
 import medicalplatformmobile.shared.generated.resources.appointment
 import medicalplatformmobile.shared.generated.resources.appointment_doesnt_exist
 import medicalplatformmobile.shared.generated.resources.cancel_btn
+import medicalplatformmobile.shared.generated.resources.cancel_appointment_btn
+import medicalplatformmobile.shared.generated.resources.cancel_status_description
+import medicalplatformmobile.shared.generated.resources.cancel_status_title
+import medicalplatformmobile.shared.generated.resources.complete_status_description
+import medicalplatformmobile.shared.generated.resources.complete_status_title
+import medicalplatformmobile.shared.generated.resources.confirm
+import medicalplatformmobile.shared.generated.resources.confirm_status_description
+import medicalplatformmobile.shared.generated.resources.confirm_status_title
+import medicalplatformmobile.shared.generated.resources.go_back_btn
+import medicalplatformmobile.shared.generated.resources.reject_appointment_description
+import medicalplatformmobile.shared.generated.resources.reject_appointment_title
+import medicalplatformmobile.shared.generated.resources.reject_btn
 import medicalplatformmobile.shared.generated.resources.create_medical_record
 import medicalplatformmobile.shared.generated.resources.doctor
 import medicalplatformmobile.shared.generated.resources.mark_completed
 import medicalplatformmobile.shared.generated.resources.notes
 import medicalplatformmobile.shared.generated.resources.reschedule_btn
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -218,6 +232,21 @@ fun AppointmentDetailsScreenRoot(
             }
         }
     }
+    state.pendingStatusChange?.let { status ->
+        val texts = status.confirmationTexts()
+        if (texts != null) {
+            DestructiveConfirmationDialog(
+                title = stringResource(texts.title),
+                description = stringResource(texts.description),
+                confirmButtonText = stringResource(texts.confirmButton),
+                cancelButtonText = stringResource(UiRes.string.go_back_btn),
+                isConfirmEnabled = state.isConnected,
+                onConfirmClick = { onAction(AppointmentDetailsAction.OnStatusChangeConfirmed) },
+                onCancelClick = { onAction(AppointmentDetailsAction.OnStatusChangeDismissed) },
+                onDismiss = { onAction(AppointmentDetailsAction.OnStatusChangeDismissed) }
+            )
+        }
+    }
 //    if(state.showBottomSheet){
 //        CompleteAppointmentBottomSheet(
 //            onDismiss = {
@@ -292,14 +321,34 @@ private fun AppointmentDetailsActions(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        if (AppointmentDetailsUiAction.CONFIRM in actions) {
+            DefaultButton(
+                text = stringResource(UiRes.string.confirm),
+                enabled = isConnected,
+                color = MaterialTheme.colorScheme.primary,
+                textColor = MaterialTheme.colorScheme.onPrimary,
+                onClick = {
+                    onAction(AppointmentDetailsAction.OnStatusChangeRequested(AppointmentStatus.CONFIRMED))
+                }
+            )
+        }
+        if (AppointmentDetailsUiAction.REJECT in actions) {
+            DefaultButton(
+                text = stringResource(UiRes.string.reject_btn),
+                enabled = isConnected,
+                textColor = MaterialTheme.colorScheme.onErrorContainer,
+                color = MaterialTheme.colorScheme.errorContainer,
+                onClick = {
+                    onAction(AppointmentDetailsAction.OnStatusChangeRequested(AppointmentStatus.REJECTED))
+                }
+            )
+        }
         if (AppointmentDetailsUiAction.MARK_COMPLETED in actions) {
             DefaultButton(
                 text = stringResource(UiRes.string.mark_completed),
                 enabled = isConnected,
                 onClick = {
-//                    onAction(
-//                        AppointmentDetailsAction.ShowBottomSheet
-//                    )
+                    onAction(AppointmentDetailsAction.OnStatusChangeRequested(AppointmentStatus.COMPLETED))
                 }
             )
         }
@@ -331,15 +380,45 @@ private fun AppointmentDetailsActions(
                 color = MaterialTheme.colorScheme.errorContainer,
                 enabled = isConnected,
                 onClick = {
-                    onAction(AppointmentDetailsAction.OnCancelClicked)
+                    onAction(AppointmentDetailsAction.OnStatusChangeRequested(AppointmentStatus.CANCELLED))
                 }
             )
         }
     }
 }
 
+private class StatusChangeTexts(
+    val title: StringResource,
+    val description: StringResource,
+    val confirmButton: StringResource
+)
+
+private fun AppointmentStatus.confirmationTexts(): StatusChangeTexts? = when (this) {
+    AppointmentStatus.CONFIRMED -> StatusChangeTexts(
+        UiRes.string.confirm_status_title,
+        UiRes.string.confirm_status_description,
+        UiRes.string.confirm
+    )
+    AppointmentStatus.REJECTED -> StatusChangeTexts(
+        UiRes.string.reject_appointment_title,
+        UiRes.string.reject_appointment_description,
+        UiRes.string.reject_btn
+    )
+    AppointmentStatus.COMPLETED -> StatusChangeTexts(
+        UiRes.string.complete_status_title,
+        UiRes.string.complete_status_description,
+        UiRes.string.mark_completed
+    )
+    AppointmentStatus.CANCELLED -> StatusChangeTexts(
+        UiRes.string.cancel_status_title,
+        UiRes.string.cancel_status_description,
+        UiRes.string.cancel_appointment_btn
+    )
+    else -> null
+}
+
 private enum class AppointmentDetailsUiAction {
-    MARK_COMPLETED, CREATE_MEDICAL_RECORD, RESCHEDULE, CANCEL
+    CONFIRM, REJECT, MARK_COMPLETED, CREATE_MEDICAL_RECORD, RESCHEDULE, CANCEL
 }
 
 /**
@@ -350,6 +429,10 @@ private fun Appointment.availableActions(userRole: UserRole): Set<AppointmentDet
     val isDoctor = userRole == UserRole.DOCTOR
     val isUpcoming = status == AppointmentStatus.PENDING || status == AppointmentStatus.CONFIRMED
     return buildSet {
+        if (isDoctor && status == AppointmentStatus.PENDING) {
+            add(AppointmentDetailsUiAction.CONFIRM)
+            add(AppointmentDetailsUiAction.REJECT)
+        }
         if (isDoctor && status == AppointmentStatus.CONFIRMED) {
             add(AppointmentDetailsUiAction.MARK_COMPLETED)
         }

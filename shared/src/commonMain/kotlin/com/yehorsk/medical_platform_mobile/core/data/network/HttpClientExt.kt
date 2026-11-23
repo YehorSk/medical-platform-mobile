@@ -8,7 +8,10 @@ import com.yehorsk.medical_platform_mobile.core.util.ValidationErrorsDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.NoTransformationFoundException
 import io.ktor.client.call.body
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.http.content.PartData
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
@@ -37,6 +40,30 @@ suspend inline fun <reified Request, reified Response: Any> HttpClient.post(
                 parameter(key, value)
             }
             setBody(body)
+            builder()
+        }
+    }
+}
+
+const val UPLOAD_REQUEST_TIMEOUT_MILLIS = 180_000L
+const val UPLOAD_SOCKET_TIMEOUT_MILLIS = 60_000L
+
+// multipart/form-data POST. File uploads need longer timeouts than the client default.
+// The JSON Content-Type from defaultRequest is dropped for multipart bodies in HttpClientFactory.
+suspend inline fun <reified Response: Any> HttpClient.postMultipart(
+    route: String,
+    parts: List<PartData>,
+    requestTimeoutMillis: Long = UPLOAD_REQUEST_TIMEOUT_MILLIS,
+    crossinline builder: HttpRequestBuilder.() -> Unit = {}
+): Result<Response, DataError.Remote> {
+    return safeCall {
+        post {
+            url(constructRoute(route))
+            timeout {
+                this.requestTimeoutMillis = requestTimeoutMillis
+                socketTimeoutMillis = UPLOAD_SOCKET_TIMEOUT_MILLIS
+            }
+            setBody(MultiPartFormDataContent(parts))
             builder()
         }
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.yehorsk.medical_platform_mobile.core.data.lifecycle.AppLockManager
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
 import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
@@ -34,6 +35,7 @@ class LocalAuthScreenViewModel(
     private val mainLogger: MainLogger,
     private val authService: AuthService,
     private val sessionStorage: SessionStorage,
+    private val appLockManager: AppLockManager,
     savedStateHandle: SavedStateHandle,
 ): ViewModel() {
 
@@ -107,6 +109,7 @@ class LocalAuthScreenViewModel(
     }
 
     private suspend fun unlock() {
+        appLockManager.markUnlocked()
         eventChannel.send(LocalAuthEvent.Success)
     }
 

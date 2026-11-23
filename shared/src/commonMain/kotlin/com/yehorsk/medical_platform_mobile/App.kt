@@ -14,6 +14,7 @@ import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.toUiText
 import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
+import com.yehorsk.medical_platform_mobile.navigation.navigateToLocalAuth
 import com.yehorsk.medical_platform_mobile.navigation.navigateToLogin
 import com.yehorsk.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -45,6 +46,10 @@ fun App(
     ObserveAsEvents(viewModel.events){event ->
         when(event) {
             is MainEvent.OnSessionExpired -> navController.navigateToLogin()
+            is MainEvent.OnAppLocked -> navController.navigateToLocalAuth(
+                userId = event.userId,
+                userRole = event.userRole
+            )
         }
     }
 

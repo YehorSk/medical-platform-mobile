@@ -12,9 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.domain.model.UserRole
+import com.yehorsk.medical_platform_mobile.core.ui.components.cards.DefaultGridCard
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.util.currentWindowLayout
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.component.ConnectionsGridCard
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.viewmodel.ConnectionsMainViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -73,7 +73,7 @@ fun ConnectionsMainScreenRoot(
             verticalArrangement = Arrangement.spacedBy(if (large) 20.dp else 12.dp)
         ) {
             items(menuItems, key = { it.destination.toString() }) { item ->
-                ConnectionsGridCard(
+                DefaultGridCard(
                     title = stringResource(item.title),
                     icon = painterResource(item.icon),
                     large = large,

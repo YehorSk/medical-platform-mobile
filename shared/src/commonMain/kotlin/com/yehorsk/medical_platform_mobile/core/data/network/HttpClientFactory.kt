@@ -7,6 +7,9 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.api.Send
+import io.ktor.client.plugins.api.SendingRequest
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.http.HttpHeaders
 import io.ktor.client.plugins.api.createClientPlugin
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
@@ -52,6 +55,8 @@ class HttpClientFactory(
                     }
                 }
                 level = LogLevel.ALL
+                // Multipart uploads carry medical files (up to 100 MB); don't log them
+                filter { request -> request.body !is MultiPartFormDataContent }
             }
             install(WebSockets) {
                 pingIntervalMillis = 20_000L
@@ -59,6 +64,7 @@ class HttpClientFactory(
             defaultRequest {
                 contentType(ContentType.Application.Json)
             }
+            install(createMultipartContentTypeFix())
             install(createSessionGuard())
             install(Auth){
                 bearer {
@@ -92,6 +98,16 @@ class HttpClientFactory(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // defaultRequest sets Content-Type: application/json on every request. For multipart bodies
+    // the body supplies its own `multipart/form-data; boundary=...`, so the header must go.
+    private fun createMultipartContentTypeFix() = createClientPlugin("MultipartContentTypeFix") {
+        on(SendingRequest) { request, content ->
+            if (content is MultiPartFormDataContent) {
+                request.headers.remove(HttpHeaders.ContentType)
             }
         }
     }

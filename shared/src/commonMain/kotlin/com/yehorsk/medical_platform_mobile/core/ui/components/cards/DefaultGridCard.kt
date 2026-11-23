@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.component
+package com.yehorsk.medical_platform_mobile.core.ui.components.cards
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,23 +14,22 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.yehorsk.medical_platform_mobile.core.ui.components.other.AutoResizedText
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
 import medicalplatformmobile.shared.generated.resources.search_24px
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun ConnectionsGridCard(
+fun DefaultGridCard(
     title: String,
     icon: Painter,
     onClick: () -> Unit,
@@ -77,13 +76,12 @@ fun ConnectionsGridCard(
                     modifier = Modifier.size(iconSize)
                 )
             }
-            Text(
+            AutoResizedText(
                 text = title,
                 style = if (large) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -91,9 +89,9 @@ fun ConnectionsGridCard(
 
 @Preview
 @Composable
-fun ConnectionsGridCardPreview() {
+fun DefaultGridCardPreview() {
     AppTheme {
-        ConnectionsGridCard(
+        DefaultGridCard(
             title = "Find a Doctor",
             icon = painterResource(UiRes.drawable.search_24px),
             onClick = {}

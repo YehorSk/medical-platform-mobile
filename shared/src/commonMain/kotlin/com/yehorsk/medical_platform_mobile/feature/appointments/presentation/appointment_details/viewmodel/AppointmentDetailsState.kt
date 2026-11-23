@@ -1,6 +1,7 @@
 package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.appointment_details.viewmodel
 
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 
 data class AppointmentDetailsState(
     val isLoading: Boolean = false,
@@ -8,4 +9,6 @@ data class AppointmentDetailsState(
     val isRefreshing: Boolean = false,
     val appointment: Appointment? = null,
     val showBottomSheet: Boolean = false,
+    /** Status change waiting for the user's confirmation in a dialog. */
+    val pendingStatusChange: AppointmentStatus? = null,
 )

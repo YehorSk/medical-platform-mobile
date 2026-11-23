@@ -4,6 +4,25 @@ Kotlin Multiplatform + Compose Multiplatform client for a medical platform (pati
 Targets: Android (`androidApp`) and Desktop/JVM (`desktopApp`). There is no iOS app yet,
 even though the README mentions one. Almost all code lives in `shared`.
 
+## Workflow: plan before changing
+Before creating, editing or deleting any project file, write a detailed implementation plan and
+wait for my approval. I may change the plan; follow the version I approve.
+
+The plan must include:
+1. **Goal:** what the feature does and for which role (patient, doctor or both).
+2. **Approach:** how it will work end to end (UI → ViewModel → service/repository → API),
+   and any alternatives you considered and why you rejected them.
+3. **Dependencies:** any new libraries or permissions, and why they're needed.
+4. **Security:** how sensitive data is handled (storage, network, access by role).
+5. **Steps:** the order you'll implement things in, so I can stop you partway.
+6. **Open questions:** anything you're unsure about or need me to decide.
+
+For small changes (a bug fix, styling tweak, rename, or edits to 1–2 files), a short plan is enough:
+the files to change and a sentence on each. Use the full plan only for new features or larger changes.
+
+Reading files, searching and running builds don't need approval. If you find mid-implementation
+that the plan needs to change, stop, explain the change and wait for approval before continuing.
+
 ## Build & run
 - Android: `./gradlew :androidApp:assembleDebug`
 - Desktop: `./gradlew :desktopApp:run --no-configuration-cache`
@@ -32,7 +51,7 @@ kotlinx.datetime, DataStore, Paging, Kermit logging, FileKit, Firebase (Android 
 ## Shared UI components (`core/ui/components`)
 Reusable composables, grouped by type:
 - `buttons/`: `DefaultButton`, `DefaultAssistChip`, `TabToggleButton`
-- `cards/`: `DefaultContentCard`, `DefaultInfoCard`, `DefaultListCard`
+- `cards/`: `DefaultContentCard`, `DefaultInfoCard`, `DefaultListCard`, `DefaultGridCard` (menu tile for grid hub screens)
 - `dialogs/`: `DestructiveConfirmationDialog`
 - `layouts/`: `MainScaffold`, `AppTopBar`, `DashboardTopBar`, `BottomBar`
 - `textfields/`: `DefaultTextField`, `PwdTextField`, `DefaultMultilineTextField`, `DefaultDropdownTextField`,

@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.data.lifecycle.AppLockManager
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
@@ -24,7 +25,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val sessionStorage: SessionStorage,
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val appLockManager: AppLockManager
 ): ViewModel() {
 
     private val eventChannel = Channel<MainEvent>()
@@ -58,6 +60,16 @@ class MainViewModel(
                 userRole = authInfo?.user?.getUserRole()
             ) }
         }
+
+        appLockManager.lockEvents
+            .onEach {
+                val userId = _uiState.value.userId
+                val userRole = _uiState.value.userRole
+                if (userId != null && userRole != null) {
+                    eventChannel.send(MainEvent.OnAppLocked(userId, userRole))
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     private var previousRefreshToken: String? = null

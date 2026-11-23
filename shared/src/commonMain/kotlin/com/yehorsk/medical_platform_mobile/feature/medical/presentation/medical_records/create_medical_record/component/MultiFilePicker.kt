@@ -19,9 +19,11 @@ fun MultiFilePicker(
     onFilesPicked: (List<PlatformFile>) -> Unit,
     onFileRemoved: (PlatformFile) -> Unit,
     modifier: Modifier = Modifier,
-    label: String = "Attachments",
-    buttonText: String = "Add files",
+    label: String,
+    buttonText: String,
+    removeText: String,
     extensions: List<String>? = null,
+    canAddMore: Boolean = true,
     enabled: Boolean = true,
 ) {
     val launcher = rememberFilePickerLauncher(
@@ -45,7 +47,7 @@ fun MultiFilePicker(
                 text = if (files.isEmpty()) label else "$label (${files.size})",
                 style = MaterialTheme.typography.titleSmall
             )
-            OutlinedButton(onClick = { launcher.launch() }, enabled = enabled) {
+            OutlinedButton(onClick = { launcher.launch() }, enabled = enabled && canAddMore) {
                 Text(buttonText)
             }
         }
@@ -63,7 +65,7 @@ fun MultiFilePicker(
                         modifier = Modifier.weight(1f)
                     )
                     TextButton(onClick = { onFileRemoved(file) }, enabled = enabled) {
-                        Text("Remove")
+                        Text(removeText)
                     }
                 }
             }

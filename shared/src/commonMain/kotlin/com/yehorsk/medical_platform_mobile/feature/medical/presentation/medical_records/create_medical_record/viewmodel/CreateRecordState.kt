@@ -14,11 +14,18 @@ data class CreateRecordScreenState(
     val appointment: Appointment? = null,
     val form: CreateRecordForm = CreateRecordForm(),
     val files: List<PlatformFile> = emptyList(),
-    val maxFiles: Int = 10,
+    val maxFiles: Int = MAX_FILES,
     val isSubmitting: Boolean = false,
 ){
-    val canAddMore: Boolean get() = files.size < maxFiles
-    val canSubmit: Boolean get() = files.isNotEmpty() && !isSubmitting
+    val canAddMore: Boolean get() = files.size < maxFiles && !isSubmitting
+    // Files are optional; the record only needs the appointment to be loaded
+    val canSubmit: Boolean get() = !isSubmitting && !isLoading && form.appointmentId.isNotBlank()
+
+    companion object {
+        const val MAX_FILES = 10
+        const val MAX_FILE_BYTES = 20L * 1024 * 1024
+        const val MAX_TOTAL_BYTES = 100L * 1024 * 1024
+    }
 }
 
 data class CreateRecordForm(

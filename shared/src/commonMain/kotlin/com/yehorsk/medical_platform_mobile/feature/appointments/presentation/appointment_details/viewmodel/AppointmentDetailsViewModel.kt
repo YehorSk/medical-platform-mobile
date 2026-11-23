@@ -10,6 +10,7 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,14 +57,47 @@ class AppointmentDetailsViewModel(
     
     fun onAction(action: AppointmentDetailsAction) {
         when(action){
-            AppointmentDetailsAction.OnCancelClicked -> {
-                cancelAppointment()
-            }
             AppointmentDetailsAction.OnRescheduleClicked -> {}
             AppointmentDetailsAction.ShowBottomSheet -> {
                 _uiState.update { it.copy(showBottomSheet = !it.showBottomSheet) }
             }
+            is AppointmentDetailsAction.OnStatusChangeRequested -> {
+                _uiState.update { it.copy(pendingStatusChange = action.status) }
+            }
+            AppointmentDetailsAction.OnStatusChangeDismissed -> {
+                _uiState.update { it.copy(pendingStatusChange = null) }
+            }
+            AppointmentDetailsAction.OnStatusChangeConfirmed -> {
+                val status = _uiState.value.pendingStatusChange ?: return
+                _uiState.update { it.copy(pendingStatusChange = null) }
+                when (status) {
+                    // Cancel has its own endpoint (patients can cancel too)
+                    AppointmentStatus.CANCELLED -> cancelAppointment()
+                    else -> updateStatus(status)
+                }
+            }
             else -> {}
+        }
+    }
+
+    private fun updateStatus(status: AppointmentStatus) {
+        if (_uiState.value.isLoading) return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            appointmentService
+                .updateAppointmentStatus(appointmentId, status)
+                .onSuccess { data ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            appointment = data.data
+                        )
+                    }
+                }
+                .onFailure { error ->
+                    _uiState.update { it.copy(isLoading = false) }
+                    SnackbarController.sendEvent(SnackbarEvent(error = error))
+                }
         }
     }
 

@@ -5,8 +5,8 @@ import com.yehorsk.medical_platform_mobile.core.data.network.dto.response.ApiRes
 import com.yehorsk.medical_platform_mobile.core.util.DataError
 import com.yehorsk.medical_platform_mobile.core.util.Result
 import com.yehorsk.medical_platform_mobile.feature.appointments.data.dto.request.CreateAppointmentRequestDto
-import com.yehorsk.medical_platform_mobile.feature.appointments.data.dto.request.UpdateAppointmentStatusRequestDto
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentStatus
 
 interface AppointmentService {
 
@@ -16,7 +16,10 @@ interface AppointmentService {
 
     suspend fun getAppointmentById(appointmentId: String): Result<ApiResponseWithData<Appointment>, DataError.Remote>
 
-    suspend fun updateAppointmentStatus(request: UpdateAppointmentStatusRequestDto): Result<ApiResponseWithData<Appointment>, DataError.Remote>
+    suspend fun updateAppointmentStatus(
+        appointmentId: String,
+        status: AppointmentStatus
+    ): Result<ApiResponseWithData<Appointment>, DataError.Remote>
 
     suspend fun getMyAppointments(): Result<ApiResponseWithData<List<Appointment>>, DataError.Remote>
 
