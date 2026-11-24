@@ -5,6 +5,7 @@ import com.yehorsk.medical_platform_mobile.core.data.network.KtorWebSocketConnec
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.AccessRevokedPayloadDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.ErrorPayloadDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.IncomingWebSocketEvent
+import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.NotificationPayloadDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.WebSocketMessageDto
 import com.yehorsk.medical_platform_mobile.core.data.network.dto.ws.WsType
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
@@ -15,6 +16,7 @@ import com.yehorsk.medical_platform_mobile.feature.chat.data.dto.MessageDto
 import com.yehorsk.medical_platform_mobile.feature.chat.data.mappers.toDomain
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ChatSendError
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ConversationBlockReason
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.InAppNotification
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.PendingMessage
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.PendingMessageStatus
@@ -92,6 +94,10 @@ class WebSocketChatConnectionClient(
         .filterIsInstance<IncomingWebSocketEvent.NewMessage>()
         .map { it.message }
 
+    override val notifications: Flow<InAppNotification> = events
+        .filterIsInstance<IncomingWebSocketEvent.Notification>()
+        .map { InAppNotification(it.title, it.body, it.data) }
+
     override val connectionState: StateFlow<ConnectionState> = webSocketConnector.connectionState
 
     init {
@@ -123,6 +129,10 @@ class WebSocketChatConnectionClient(
                     val error = json.decodeFromString<ErrorPayloadDto>(envelope.payload)
                     IncomingWebSocketEvent.Error(error.code, error.message)
                 }
+                WsType.NOTIFICATION -> {
+                    val notification = json.decodeFromString<NotificationPayloadDto>(envelope.payload)
+                    IncomingWebSocketEvent.Notification(notification.title, notification.body, notification.data)
+                }
                 else -> {
                     logger.debug("Ignoring unknown WS message type -> ${envelope.type}")
                     null
@@ -149,6 +159,7 @@ class WebSocketChatConnectionClient(
                 logger.debug("WS server error -> ${event.code}: ${event.message}")
                 outboxMutex.withLock { failOldestInFlight(ChatSendError.fromCode(event.code)) }
             }
+            is IncomingWebSocketEvent.Notification -> Unit
         }
     }
 

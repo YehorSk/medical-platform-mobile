@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_messages">Messages</string>
+    <string name="notification_channel_messages_description">New chat messages</string>
+    <string name="notification_channel_appointments">Appointments</string>
+    <string name="notification_channel_appointments_description">Appointment requests, changes and reminders</string>
+    <string name="notification_channel_medical_records">Medical records</string>
+    <string name="notification_channel_medical_records_description">Problems with files attached to medical records</string>
+    <string name="notification_public_title">New notification</string>
+</resources>

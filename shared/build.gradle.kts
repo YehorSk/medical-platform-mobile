@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.google.services)
 }
 
 kotlin {
@@ -44,6 +43,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.koin.androidx.navigation)
             implementation(libs.koin.androidx.compose)
+            implementation(libs.androidx.activity.compose)
 
             // Firebase
             implementation(project.dependencies.platform(libs.firebase.bom))

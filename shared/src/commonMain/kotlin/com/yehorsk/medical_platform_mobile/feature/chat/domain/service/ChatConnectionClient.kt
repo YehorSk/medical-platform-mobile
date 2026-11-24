@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.chat.domain.service
 
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectionState
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.ConversationBlockReason
+import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.InAppNotification
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.Message
 import com.yehorsk.medical_platform_mobile.feature.chat.domain.model.PendingMessage
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 interface ChatConnectionClient {
     val chatMessages: Flow<Message>
     val connectionState: StateFlow<ConnectionState>
+
+    // NOTIFICATION frames; shown as system notifications on desktop
+    val notifications: Flow<InAppNotification>
 
     // Sent but not yet confirmed by the server, oldest first
     val pendingMessages: StateFlow<List<PendingMessage>>

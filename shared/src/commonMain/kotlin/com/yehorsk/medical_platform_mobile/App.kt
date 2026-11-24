@@ -13,7 +13,9 @@ import com.yehorsk.medical_platform_mobile.core.util.LocalSnackbarHostState
 import com.yehorsk.medical_platform_mobile.core.util.ObserveAsEvents
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
 import com.yehorsk.medical_platform_mobile.core.util.toUiText
+import com.yehorsk.medical_platform_mobile.core.ui.permissions.NotificationPermissionEffect
 import com.yehorsk.medical_platform_mobile.navigation.NavigationRoot
+import com.yehorsk.medical_platform_mobile.navigation.PushNavigationEffect
 import com.yehorsk.medical_platform_mobile.navigation.navigateToLocalAuth
 import com.yehorsk.medical_platform_mobile.navigation.navigateToLogin
 import com.yehorsk.theme.AppTheme
@@ -79,6 +81,14 @@ fun App(
                     isAuthenticated = state.isLoggedIn,
                     userId = state.userId,
                     userRole = state.userRole
+                )
+                PushNavigationEffect(
+                    navController = navController,
+                    isCheckingAuth = state.isCheckingAuth,
+                    isLoggedIn = state.isLoggedIn
+                )
+                NotificationPermissionEffect(
+                    isLoggedIn = state.isLoggedIn
                 )
             }
         }

@@ -7,7 +7,19 @@ sealed interface IncomingWebSocketEvent {
     data class NewMessage(val message: Message) : IncomingWebSocketEvent
     data class AccessRevoked(val conversationId: String) : IncomingWebSocketEvent
     data class Error(val code: String, val message: String) : IncomingWebSocketEvent
+    data class Notification(
+        val title: String,
+        val body: String,
+        val data: Map<String, String>
+    ) : IncomingWebSocketEvent
 }
+
+@Serializable
+data class NotificationPayloadDto(
+    val title: String,
+    val body: String,
+    val data: Map<String, String> = emptyMap()
+)
 
 @Serializable
 data class ErrorPayloadDto(
@@ -24,6 +36,7 @@ object WsType {
     const val NEW_MESSAGE = "NEW_MESSAGE"
     const val ACCESS_REVOKED = "ACCESS_REVOKED"
     const val ERROR = "ERROR"
+    const val NOTIFICATION = "NOTIFICATION"
 }
 
 @Serializable

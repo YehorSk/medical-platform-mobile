@@ -28,6 +28,7 @@ import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.window.core.layout.WindowSizeClass.Companion.WIDTH_DP_MEDIUM_LOWER_BOUND
+import com.yehorsk.medical_platform_mobile.core.util.ActiveChatTracker
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.ChatDetailScreen
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_detail.components.EmptySection
 import com.yehorsk.medical_platform_mobile.feature.chat.presentation.chat_list.ChatListScreen
@@ -145,6 +146,10 @@ fun ChatListDetailAdaptiveLayout(
                         )
                     }
                 } else {
+                    DisposableEffect(chatId) {
+                        ActiveChatTracker.setActiveChat(chatId)
+                        onDispose { ActiveChatTracker.clearActiveChat(chatId) }
+                    }
                     ChatDetailScreen(
                         modifier = Modifier.fillMaxSize(),
                         chatId = chatId,

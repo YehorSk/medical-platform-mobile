@@ -6,6 +6,7 @@ import com.yehorsk.medical_platform_mobile.core.data.datastore.createDataStore
 import com.yehorsk.medical_platform_mobile.core.data.lifecycle.AppLifecycleObserver
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectionErrorHandler
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectivityObserver
+import com.yehorsk.medical_platform_mobile.core.data.push.PushTokenProvider
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import org.koin.android.ext.koin.androidContext
@@ -20,4 +21,5 @@ actual val platformCoreDataModule = module {
     }
     singleOf(::ConnectivityObserver)
     singleOf(::ConnectionErrorHandler)
+    singleOf(::PushTokenProvider)
 }

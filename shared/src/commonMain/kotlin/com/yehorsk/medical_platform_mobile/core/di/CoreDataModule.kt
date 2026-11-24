@@ -7,7 +7,11 @@ import com.yehorsk.medical_platform_mobile.core.data.lifecycle.AppLockManager
 import com.yehorsk.medical_platform_mobile.core.data.logger.KermitLogger
 import com.yehorsk.medical_platform_mobile.core.data.network.ConnectionRetryHandler
 import com.yehorsk.medical_platform_mobile.core.data.network.KtorWebSocketConnector
+import com.yehorsk.medical_platform_mobile.core.data.network.service.DeviceTokenServiceImpl
 import com.yehorsk.medical_platform_mobile.core.data.network.service.DoctorServiceImpl
+import com.yehorsk.medical_platform_mobile.core.data.push.PendingPushNavigation
+import com.yehorsk.medical_platform_mobile.core.data.push.PushTokenManager
+import com.yehorsk.medical_platform_mobile.core.domain.service.DeviceTokenService
 import com.yehorsk.medical_platform_mobile.core.data.network.service.ScheduleServiceImpl
 import com.yehorsk.medical_platform_mobile.core.data.network.service.SpecializationServiceImpl
 import com.yehorsk.medical_platform_mobile.core.domain.logging.MainLogger
@@ -23,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.createdAtStart
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -48,6 +53,9 @@ val coreDataModule = module {
     singleOf(::SpecializationServiceImpl) bind SpecializationService::class
     singleOf(::ScheduleServiceImpl) bind ScheduleService::class
     singleOf(::DoctorServiceImpl) bind DoctorService::class
+    singleOf(::DeviceTokenServiceImpl) bind DeviceTokenService::class
+    singleOf(::PushTokenManager) { createdAtStart() }
+    singleOf(::PendingPushNavigation)
     single<MainLogger> { KermitLogger }
     single { AuthEventManager }
 }

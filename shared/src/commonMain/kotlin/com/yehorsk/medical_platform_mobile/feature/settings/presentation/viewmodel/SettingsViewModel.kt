@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.settings.presentation.viewmo
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.medical_platform_mobile.core.data.push.PushTokenManager
 import com.yehorsk.medical_platform_mobile.core.domain.repository.PinStorage
 import com.yehorsk.medical_platform_mobile.core.domain.repository.SessionStorage
 import com.yehorsk.medical_platform_mobile.core.util.SnackbarController
@@ -27,7 +28,8 @@ class SettingsViewModel(
     private val sessionStorage: SessionStorage,
     private val pinStorage: PinStorage,
     private val authService: AuthService,
-    private val settingsService: SettingsService
+    private val settingsService: SettingsService,
+    private val pushTokenManager: PushTokenManager
 ): ViewModel() {
 
     private val eventChannel = Channel<SettingsScreenEvent>()
@@ -132,6 +134,9 @@ class SettingsViewModel(
                 isLoading = true,
                 showLogoutConfirmation = false
             ) }
+            // Must run while the access token is still valid; a failure doesn't block logout
+            // (PushTokenManager also deletes the token locally once the session is cleared).
+            pushTokenManager.unregisterFromBackend()
             authService
                 .logout()
                 .onSuccess { response ->
