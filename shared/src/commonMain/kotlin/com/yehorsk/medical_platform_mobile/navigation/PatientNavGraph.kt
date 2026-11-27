@@ -21,7 +21,6 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doct
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.doctor_details.viewmodel.DoctorDetailsViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.FindDoctorScreen
-import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorAction
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.ConnectionsMainScreen
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.main.navigation.ConnectionsMainDestination
@@ -34,6 +33,7 @@ import com.yehorsk.medical_platform_mobile.feature.settings.presentation.Setting
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.account_activity.AccountActivityScreen
 import com.yehorsk.medical_platform_mobile.feature.settings.presentation.update_password.UpdatePasswordScreen
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 fun NavGraphBuilder.patientNavGraph(
     modifier: Modifier = Modifier,
@@ -157,7 +157,7 @@ fun NavGraphBuilder.patientNavGraph(
             )
         }
         composable<Screen.FindDoctor>{
-            val viewModel: FindDoctorViewModel = koinViewModel()
+            val viewModel: FindDoctorViewModel = koinViewModel { parametersOf(false) }
             FindDoctorScreen(
                 modifier = modifier
                     .fillMaxSize(),
@@ -171,10 +171,7 @@ fun NavGraphBuilder.patientNavGraph(
             )
         }
         composable<Screen.PatientDoctors>{
-            val viewModel: FindDoctorViewModel = koinViewModel()
-            LaunchedEffect(Unit) {
-                viewModel.onAction(FindDoctorAction.ShowMyDoctors)
-            }
+            val viewModel: FindDoctorViewModel = koinViewModel { parametersOf(true) }
             FindDoctorScreen(
                 modifier = modifier
                     .fillMaxSize(),

@@ -34,7 +34,8 @@ import kotlin.time.Instant
 @Composable
 fun DefaultDatePicker(
     modifier: Modifier = Modifier,
-    value: LocalDate = LocalDate.now(),
+    // null shows the placeholder; the dialog then opens on today
+    value: LocalDate? = LocalDate.now(),
     header: String? = null,
     placeholder: String = "",
     leadingIcon: Painter? = null,
@@ -56,7 +57,7 @@ fun DefaultDatePicker(
     ){
         DefaultTextField(
             modifier = modifier.fillMaxWidth(),
-            value = value.toString(),
+            value = value?.toString() ?: "",
             header = header,
             placeholder = placeholder,
             leadingIcon = leadingIcon,
@@ -70,7 +71,7 @@ fun DefaultDatePicker(
     }
 
     if (showDialog) {
-        val initialMillis = value
+        val initialMillis = (value ?: LocalDate.now())
             .atStartOfDayIn(TimeZone.UTC)
             .toEpochMilliseconds()
 

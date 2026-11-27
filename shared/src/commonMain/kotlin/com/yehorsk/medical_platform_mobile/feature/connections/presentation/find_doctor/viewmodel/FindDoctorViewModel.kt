@@ -11,6 +11,7 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.debounce
@@ -25,8 +26,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
+private const val DOCTORS_PAGE_SIZE = 100
+
 @OptIn(FlowPreview::class)
 class FindDoctorViewModel(
+    showMyDoctors: Boolean,
     private val specializationService: SpecializationService,
     private val doctorService: DoctorService,
     private val mainLogger: MainLogger,
@@ -34,12 +38,21 @@ class FindDoctorViewModel(
 ): ViewModel() {
 
     private var hasLoadedInitialData = false
+    private var doctorsJob: Job? = null
 
-    init {
-        observeConnectivity()
-    }
+    private val _uiState = MutableStateFlow(
+        FindDoctorState(form = GetDoctorsWithFilter(showMyDoctors = showMyDoctors))
+    )
 
-    private val _uiState = MutableStateFlow(FindDoctorState())
+    private val searchFlow = _uiState
+        .map { it.form.search }
+        .distinctUntilChanged()
+        .drop(1)
+        .debounce(1.seconds)
+        .onEach {
+            getAllDoctors()
+        }
+
     val uiState = _uiState
         .onStart {
             if(!hasLoadedInitialData){
@@ -53,35 +66,33 @@ class FindDoctorViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = FindDoctorState()
+            initialValue = _uiState.value
         )
 
-    private val searchFlow = _uiState
-        .map { it.form.search }
-        .distinctUntilChanged()
-        .drop(1)
-        .debounce(1.seconds)
-        .onEach {
-            getAllDoctors()
-        }
+    init {
+        observeConnectivity()
+    }
 
     fun onAction(action: FindDoctorAction){
         when(action){
             is FindDoctorAction.OnSearchTextChanged -> {
                 _uiState.update { it.copy(form = it.form.copy(search = action.value)) }
             }
-            FindDoctorAction.ShowFilterBottomSheet -> {
-                _uiState.update { it.copy(showFilterBottomSheet = !it.showFilterBottomSheet) }
+            FindDoctorAction.OnFiltersClicked -> {
+                _uiState.update { it.copy(showFilterBottomSheet = true, filterDraft = it.form) }
+            }
+            FindDoctorAction.OnDismissFilters -> {
+                _uiState.update { it.copy(showFilterBottomSheet = false) }
             }
             is FindDoctorAction.OnCityTextChanged -> {
-                _uiState.update { it.copy(form = it.form.copy(city = action.value)) }
+                _uiState.update { it.copy(filterDraft = it.filterDraft.copy(city = action.value)) }
             }
             is FindDoctorAction.OnSpecializationClicked -> {
                 _uiState.update { state ->
-                    val selected = state.form.specializations
+                    val selected = state.filterDraft.specializations
 
                     state.copy(
-                        form = state.form.copy(
+                        filterDraft = state.filterDraft.copy(
                             specializations =
                                 if (selected.any{ it.id == action.item.id}) {
                                     selected - action.item
@@ -93,14 +104,18 @@ class FindDoctorViewModel(
                 }
             }
             FindDoctorAction.OnApplyFiltersClicked -> {
-                _uiState.update { it.copy(showFilterBottomSheet = false) }
+                _uiState.update {
+                    it.copy(
+                        showFilterBottomSheet = false,
+                        form = it.form.copy(
+                            city = it.filterDraft.city,
+                            specializations = it.filterDraft.specializations
+                        )
+                    )
+                }
                 getAllDoctors()
             }
             is FindDoctorAction.OnDoctorClicked -> {}
-            FindDoctorAction.ShowMyDoctors -> {
-                _uiState.update { it.copy(form = it.form.copy(showMyDoctors = true)) }
-            }
-            FindDoctorAction.OnLoadNextPage -> {}
         }
     }
 
@@ -145,7 +160,9 @@ class FindDoctorViewModel(
     }
 
     private fun getAllDoctors(){
-        viewModelScope.launch {
+        // Cancel the previous request so a stale response can't overwrite newer results
+        doctorsJob?.cancel()
+        doctorsJob = viewModelScope.launch {
             _uiState.update {
                 it.copy( isLoadingDoctors = true )
             }
@@ -153,7 +170,7 @@ class FindDoctorViewModel(
                 .getDoctors(
                     request = _uiState.value.form,
                     page = 0,
-                    size = 10
+                    size = DOCTORS_PAGE_SIZE
                 )
                 .onSuccess { response ->
                     _uiState.update {

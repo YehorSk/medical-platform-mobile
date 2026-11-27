@@ -12,12 +12,10 @@ sealed interface FindDoctorAction {
 
     data class OnDoctorClicked(val id: String): FindDoctorAction
 
-    data object ShowFilterBottomSheet: FindDoctorAction
+    data object OnFiltersClicked: FindDoctorAction
+
+    data object OnDismissFilters: FindDoctorAction
 
     data object OnApplyFiltersClicked: FindDoctorAction
-
-    data object OnLoadNextPage: FindDoctorAction
-
-    data object ShowMyDoctors: FindDoctorAction
 
 }

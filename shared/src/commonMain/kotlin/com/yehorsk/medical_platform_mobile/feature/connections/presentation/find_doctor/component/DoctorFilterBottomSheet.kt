@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultButton
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultFilterChipRow
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
 import com.yehorsk.theme.AppTheme
 import medicalplatformmobile.shared.generated.resources.UiRes
@@ -99,9 +100,10 @@ fun DoctorFilterBottomSheetContent(
                     text = stringResource(UiRes.string.specialization)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                SpecializationFlowRow(
+                DefaultFilterChipRow(
                     items = state.specializations,
-                    selectedItems = state.form.specializations,
+                    isSelected = { spec -> state.filterDraft.specializations.any { it.id == spec.id } },
+                    label = { it.name },
                     onItemClick = { onSpecializationClicked(it) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -115,7 +117,7 @@ fun DoctorFilterBottomSheetContent(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onValueChange = { onCityValueChanged(it) },
-                    value = state.form.city,
+                    value = state.filterDraft.city,
                     placeholder = stringResource(UiRes.string.search_city)
                 )
                 Spacer(modifier = Modifier.height(24.dp))

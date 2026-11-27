@@ -1,7 +1,6 @@
 package com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,17 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.yehorsk.medical_platform_mobile.core.ui.components.buttons.DefaultFilterButton
 import com.yehorsk.medical_platform_mobile.core.ui.components.layouts.AppTopBar
 import com.yehorsk.medical_platform_mobile.core.ui.components.textfields.DefaultTextField
 import com.yehorsk.medical_platform_mobile.core.ui.components.other.NoConnectionBanner
@@ -33,8 +30,8 @@ import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorState
 import com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.viewmodel.FindDoctorViewModel
 import medicalplatformmobile.shared.generated.resources.UiRes
-import medicalplatformmobile.shared.generated.resources.filter_list_24px
 import medicalplatformmobile.shared.generated.resources.find_a_doctor
+import medicalplatformmobile.shared.generated.resources.my_doctors
 import medicalplatformmobile.shared.generated.resources.search_24px
 import medicalplatformmobile.shared.generated.resources.search_doctors
 import org.jetbrains.compose.resources.painterResource
@@ -73,21 +70,13 @@ fun FindDoctorScreenRoot(
 ){
     Column(modifier = modifier.fillMaxSize()) {
         AppTopBar(
-            title = stringResource(UiRes.string.find_a_doctor),
+            title = stringResource(
+                if (state.form.showMyDoctors) UiRes.string.my_doctors else UiRes.string.find_a_doctor
+            ),
             showGoBackButton = true,
             onGoBackClicked = { goBack() }
         )
         Box(modifier = Modifier.fillMaxSize()) {
-            if (state.isLoadingDoctors) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
             if (!state.isConnected) {
                 NoConnectionBanner(
                     modifier = Modifier.fillMaxSize()
@@ -99,7 +88,8 @@ fun FindDoctorScreenRoot(
                             .padding(10.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
+                        // Top, because DefaultTextField reserves empty space below for error text
+                        verticalAlignment = Alignment.Top
                     ) {
                         DefaultTextField(
                             modifier = Modifier.weight(1f),
@@ -110,23 +100,10 @@ fun FindDoctorScreenRoot(
                             placeholder = stringResource(UiRes.string.search_doctors)
                         )
                         Spacer(Modifier.width(8.dp))
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = Color.LightGray.copy(alpha = 0.4f),
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .padding(10.dp)
-                                .clickable{
-                                    onAction(FindDoctorAction.ShowFilterBottomSheet)
-                                },
-                            contentAlignment = Alignment.Center
-                        ){
-                            Icon(
-                                painter = painterResource(UiRes.drawable.filter_list_24px),
-                                contentDescription = null
-                            )
-                        }
+                        DefaultFilterButton(
+                            isActive = state.form.city.isNotBlank() || state.form.specializations.isNotEmpty(),
+                            onClick = { onAction(FindDoctorAction.OnFiltersClicked) }
+                        )
                     }
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
@@ -142,11 +119,22 @@ fun FindDoctorScreenRoot(
                     }
                 }
             }
+            // Drawn last so it overlays the list
+            if (state.isLoadingDoctors) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
     if(state.showFilterBottomSheet){
         DoctorFilterBottomSheet(
-            onDismiss = { onAction(FindDoctorAction.ShowFilterBottomSheet) },
+            onDismiss = { onAction(FindDoctorAction.OnDismissFilters) },
             state = state,
             onSpecializationClicked = { onAction(FindDoctorAction.OnSpecializationClicked(it)) },
             onCityValueChanged = { onAction(FindDoctorAction.OnCityTextChanged(it)) },

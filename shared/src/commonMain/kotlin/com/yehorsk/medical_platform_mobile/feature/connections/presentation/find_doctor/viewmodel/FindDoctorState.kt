@@ -12,7 +12,8 @@ data class FindDoctorState(
     val showFilterBottomSheet: Boolean = false,
     val specializations: List<Specialization> = listOf(),
     val doctors: List<Doctor> = listOf(),
-    val form: GetDoctorsWithFilter = GetDoctorsWithFilter()
+    val form: GetDoctorsWithFilter = GetDoctorsWithFilter(),
+    val filterDraft: GetDoctorsWithFilter = GetDoctorsWithFilter()
 )
 
 data class GetDoctorsWithFilter(

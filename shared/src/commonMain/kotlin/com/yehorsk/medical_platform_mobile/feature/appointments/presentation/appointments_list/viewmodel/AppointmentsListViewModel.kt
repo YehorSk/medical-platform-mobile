@@ -10,6 +10,7 @@ import com.yehorsk.medical_platform_mobile.core.util.SnackbarEvent
 import com.yehorsk.medical_platform_mobile.core.util.onFailure
 import com.yehorsk.medical_platform_mobile.core.util.onSuccess
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.AppointmentService
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentsFilter
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
+// Spring's default max page size; a single page this big returns all appointments for the MVP
+private const val APPOINTMENTS_PAGE_SIZE = 2000
+
 @OptIn(FlowPreview::class)
 class AppointmentsListViewModel(
     private val mainLogger: MainLogger,
@@ -38,6 +42,7 @@ class AppointmentsListViewModel(
     private var scheduleRequested: Boolean = false
     private var hasLoadedOnce: Boolean = false
     private var hasResumedOnce: Boolean = false
+    private var isCalendarVisible: Boolean = false
 
     private val _uiState = MutableStateFlow(AppointmentsListState())
     val uiState = _uiState
@@ -56,7 +61,48 @@ class AppointmentsListViewModel(
 
     fun onAction(action: AppointmentsListAction) {
         when (action) {
-            AppointmentsListAction.OnCalendarShown -> loadDoctorSchedule(force = false)
+            is AppointmentsListAction.OnCalendarVisibilityChanged -> {
+                if (isCalendarVisible == action.visible) return
+                isCalendarVisible = action.visible
+                if (action.visible) loadDoctorSchedule(force = false)
+                // List filters don't apply to the calendar, so reload when switching between them
+                if (_uiState.value.filter.isActive && hasLoadedOnce) getAllAppointments(isRefresh = true)
+            }
+            AppointmentsListAction.OnFiltersClicked -> _uiState.update {
+                it.copy(showFilterSheet = true, filterDraft = it.filter)
+            }
+            AppointmentsListAction.OnDismissFilters -> _uiState.update {
+                it.copy(showFilterSheet = false)
+            }
+            is AppointmentsListAction.OnStatusClicked -> _uiState.update { state ->
+                val selected = state.filterDraft.statuses
+                state.copy(
+                    filterDraft = state.filterDraft.copy(
+                        statuses = if (action.status in selected) selected - action.status else selected + action.status
+                    )
+                )
+            }
+            is AppointmentsListAction.OnFromDateChanged -> _uiState.update {
+                it.copy(filterDraft = it.filterDraft.copy(from = action.date))
+            }
+            is AppointmentsListAction.OnToDateChanged -> _uiState.update {
+                it.copy(filterDraft = it.filterDraft.copy(to = action.date))
+            }
+            is AppointmentsListAction.OnUpcomingToggled -> _uiState.update {
+                it.copy(filterDraft = it.filterDraft.copy(upcoming = action.upcoming))
+            }
+            is AppointmentsListAction.OnSortDirectionChanged -> _uiState.update {
+                it.copy(filterDraft = it.filterDraft.copy(sortDirection = action.direction))
+            }
+            AppointmentsListAction.OnClearFilters -> _uiState.update {
+                it.copy(filterDraft = AppointmentsFilter())
+            }
+            AppointmentsListAction.OnApplyFiltersClicked -> {
+                val draft = _uiState.value.filterDraft
+                if (draft.hasInvalidRange) return
+                _uiState.update { it.copy(filter = draft, showFilterSheet = false) }
+                getAllAppointments(isRefresh = false)
+            }
             AppointmentsListAction.OnRefreshClicked -> {
                 refresh()
                 // The schedule may have been changed in settings since it was loaded
@@ -140,13 +186,18 @@ class AppointmentsListViewModel(
                 if (isRefresh) it.copy(isRefreshing = true)
                 else it.copy(isLoading = true)
             }
+            val filter = if (isCalendarVisible) AppointmentsFilter() else _uiState.value.filter
             appointmentService
-                .getMyAppointments()
+                .getMyAppointments(
+                    filter = filter,
+                    page = 0,
+                    size = APPOINTMENTS_PAGE_SIZE
+                )
                 .onSuccess { response ->
                     hasLoadedOnce = true
                     _uiState.update {
                         it.copy(
-                            appointments = response.data,
+                            appointments = response.content,
                             isLoading = false,
                             isRefreshing = false,
                         )

@@ -106,6 +106,22 @@
     <string name="city">City</string>
     <string name="search_city">City</string>
     <string name="apply_filters">Apply Filters</string>
+    <string name="filters">Filters</string>
+    <string name="clear_filters">Clear</string>
+
+    <!-- Appointments filter -->
+    <string name="filter_appointments">Filter Appointments</string>
+    <string name="appointment_status">Status</string>
+    <string name="date_range">Date range</string>
+    <string name="date_from">From</string>
+    <string name="date_to">To</string>
+    <string name="clear_date">Clear date</string>
+    <string name="date_range_invalid">\"From\" must be before \"To\"</string>
+    <string name="upcoming_only">Upcoming only</string>
+    <string name="sort_order">Sort order</string>
+    <string name="sort_oldest_first">Oldest first</string>
+    <string name="sort_newest_first">Newest first</string>
+    <string name="no_appointments_match_filters">No appointments match these filters</string>
     <string name="my_doctors">My Doctors</string>
     <string name="pending_requests">Pending Request</string>
     <string name="data_access">Data Access (GDPR)</string>

@@ -2,6 +2,7 @@ package com.yehorsk.medical_platform_mobile.feature.appointments.presentation.ap
 
 import com.yehorsk.medical_platform_mobile.core.domain.model.DaySchedule
 import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.Appointment
+import com.yehorsk.medical_platform_mobile.feature.appointments.domain.model.AppointmentsFilter
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
@@ -18,6 +19,11 @@ data class AppointmentsListState(
     val calendarMode: CalendarMode = CalendarMode.WEEK,
     // Shared by the month, week and day views, so switching keeps the same date in view
     val selectedDate: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
+    // Applied filter, used only by the list; the calendar always loads everything
+    val filter: AppointmentsFilter = AppointmentsFilter(),
+    // Edited in the filter sheet; copied into filter only on Apply
+    val filterDraft: AppointmentsFilter = AppointmentsFilter(),
+    val showFilterSheet: Boolean = false,
 )
 
 enum class AppointmentsViewMode { CALENDAR, LIST }

@@ -1,4 +1,4 @@
-package com.yehorsk.medical_platform_mobile.feature.connections.presentation.find_doctor.component
+package com.yehorsk.medical_platform_mobile.core.ui.components.buttons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.FlowRow
@@ -11,28 +11,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.medical_platform_mobile.core.domain.model.Specialization
 import com.yehorsk.theme.AppTheme
 
+// Wrapping row of multi-select chips, used by filter sheets
 @Composable
-fun SpecializationFlowRow(
+fun <T> DefaultFilterChipRow(
     modifier: Modifier = Modifier,
-    items: List<Specialization>,
-    selectedItems: Set<Specialization>,
-    onItemClick: (Specialization) -> Unit
+    items: List<T>,
+    isSelected: (T) -> Boolean,
+    label: @Composable (T) -> String,
+    onItemClick: (T) -> Unit
 ){
     FlowRow(
         modifier = modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ){
-        items.forEach { specialization ->
+        items.forEach { item ->
             FilterChip(
-                selected = selectedItems.any { it.id == specialization.id },
-                onClick = { onItemClick(specialization) },
+                selected = isSelected(item),
+                onClick = { onItemClick(item) },
                 label = {
                     Text(
-                        text = specialization.name,
+                        text = label(item),
                         style = MaterialTheme.typography.labelLarge
                     )
                 },
@@ -53,23 +54,12 @@ fun SpecializationFlowRow(
 
 @Preview(showBackground = true)
 @Composable
-private fun SpecializationFlowRowPreview() {
+private fun DefaultFilterChipRowPreview() {
     AppTheme {
-        SpecializationFlowRow(
-            items = listOf(
-                Specialization("1", "Cardiology"),
-                Specialization("2", "Dermatology"),
-                Specialization("3", "Neurology"),
-                Specialization("4", "Orthopedics"),
-                Specialization("5", "Pediatrics"),
-                Specialization("6", "Psychiatry"),
-                Specialization("7", "Radiology"),
-                Specialization("8", "Urology")
-            ),
-            selectedItems = setOf(
-                Specialization("2", "Dermatology"),
-                Specialization("5", "Pediatrics")
-            ),
+        DefaultFilterChipRow(
+            items = listOf("Cardiology", "Dermatology", "Neurology", "Pediatrics"),
+            isSelected = { it == "Dermatology" },
+            label = { it },
             onItemClick = {}
         )
     }
